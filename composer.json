@@ -1,0 +1,19 @@
+{
+    "name": "user/booking-management",
+    "description": "Booking Management",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Marsidi",
+            "email": "marsidzyberi9@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "./inc"
+        }
+    }
+}
