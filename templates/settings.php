@@ -1,2 +1,3 @@
-<h1>Settings</h1>
-<h2>Settings 2</h2>
+<div class="wrap-b">
+    <h1>Settings</h1>
+</div>

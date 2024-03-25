@@ -4,6 +4,10 @@
 
 /* Admin Dashboard Style */
 
+.wrap-b > h1 {
+    @apply my-5 text-3xl font-bold dark:text-white;
+}
+
 .nav-tabs {
     @apply flex flex-wrap border-b border-gray-300;
 }
@@ -31,5 +35,5 @@
 }
 
 .tab-content > .tab-pane.active {
-    @apply block p-2.5 bg-white shadow-md ;
+    @apply block p-2.5 bg-white shadow-md sm:rounded-lg;
 }

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:js": "webpack --mode=production --config webpack.config.js",
-    "build:css": "tailwindcss build css/src/tailwind.css -o css/dist/styles.css",
+    "build:css:frontend": "tailwindcss build css/frontend/tailwind.css -o css/dist/frontend.styles.css",
+    "build:css:backend": "tailwindcss build css/backend/tailwind.css -o css/dist/backend.styles.css",
+    "build:css": "npm run build:css:frontend && npm run build:css:backend",
     "build": "npm run build:js && npm run build:css",
     "watch": "concurrently \"npm:build:* -- --watch\""
   },

@@ -7,6 +7,7 @@ window.addEventListener('load', function()  {
         tabs[i].addEventListener('click', switchTab)
     }
 
+    // get active tab
     function switchTab(e) {  
         e.preventDefault();
 
