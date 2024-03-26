@@ -2,8 +2,10 @@
 
 module.exports = {
   content: [
-    './js/src/**/*.{vue,js}', // Path to Vue.js files
-    './css/src/*.css', // Path to CSS files
+    './admin/js/**/*.{vue,js}', // Path to Vue.js files
+    './frontend/js/**/*.{vue,js}', // Path to Vue.js files
+    './admin/css/**/*.css', // Path to CSS files
+    './frontend/css/**/*.css', // Path to CSS files
     '../templates/*.php', // Path to PHP files in the template folder
   ],
   theme: {

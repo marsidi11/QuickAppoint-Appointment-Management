@@ -7,11 +7,11 @@ module.exports = [
   {
     mode: 'development',
     entry: {
-      frontend: './js/frontend/entry.js',
-      backend: './js/backend/entry.js',
+      frontend: './admin/js/entry.js',
+      backend: './frontend/js/entry.js',
     },
     output: {
-      path: path.resolve(__dirname, 'js/dist'),
+      path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
     },
     module: {

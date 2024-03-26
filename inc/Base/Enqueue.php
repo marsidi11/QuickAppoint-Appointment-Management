@@ -17,12 +17,12 @@ class Enqueue extends BaseController
     }
 
     public function enqueue_backend_scripts() {
-        wp_enqueue_style( 'booking-management-backend-style', $this->plugin_url . 'assets/css/dist/backend.styles.css' );
-        wp_enqueue_script( 'booking-management-backend-script', $this->plugin_url . 'assets/js/dist/backend.bundle.js' );
+        wp_enqueue_style( 'booking-management-backend-style', $this->plugin_url . 'assets/dist/backend.styles.css' );
+        wp_enqueue_script( 'booking-management-backend-script', $this->plugin_url . 'assets/dist/backend.bundle.js' );
     }
 
     public function enqueue_frontend_scripts() {
-        wp_enqueue_style( 'booking-management-frontend-style', $this->plugin_url . 'assets/css/dist/frontend.styles.css' );
-        wp_enqueue_script( 'booking-management-frontend-script', $this->plugin_url . 'assets/js/dist/frontend.bundle.js' );
+        wp_enqueue_style( 'booking-management-frontend-style', $this->plugin_url . 'assets/dist/frontend.styles.css' );
+        wp_enqueue_script( 'booking-management-frontend-script', $this->plugin_url . 'assets/dist/frontend.bundle.js' );
     }
 }
