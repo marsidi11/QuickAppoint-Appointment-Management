@@ -7,8 +7,8 @@ module.exports = [
   {
     mode: 'development',
     entry: {
-      frontend: './admin/js/entry.js',
-      backend: './frontend/js/entry.js',
+      frontend: './frontend/js/entry.js',
+      backend: './admin/js/entry.js',
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
