@@ -37,61 +37,70 @@ export default {
       startDay: 1, // Monday is 1
     }
   },
-  computed: {
+	computed: {
+
     currentMonth() {
-      return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-    },
+      	return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+	},
+
     calendar() {
-      const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
-      const days = [];
-      const firstDayOfMonth = (date.getDay() + 6) % 7; // Adjust for the desired start day (Monday)
-      // Add days from the previous month
-      for (let i = firstDayOfMonth; i > 0; i--) {
-        const prevMonthDay = new Date(date);
-        prevMonthDay.setDate(prevMonthDay.getDate() - i);
-        days.unshift({ date: prevMonthDay });
-      }
-      // Add days of the current month
-      while (date.getMonth() === this.currentDate.getMonth()) {
-        days.push({ date: new Date(date) });
-        date.setDate(date.getDate() + 1);
-      }
-    // Add days from the next month
-    const lastDayOfMonth = days[days.length - 1].date.getDay();
-    const daysToAdd = 7 - ((lastDayOfMonth + 1) % 7); // Calculate the number of days to add
-    for (let i = 1; i <= daysToAdd; i++) {
-        const nextMonthDay = new Date(days[days.length - 1].date);
-        nextMonthDay.setDate(nextMonthDay.getDate() + 1);
-        days.push({ date: nextMonthDay });
-    }
-      // Group days into weeks
-      const weeks = [];
-      for (let i = 0; i < days.length; i += 7) {
-        weeks.push(days.slice(i, i + 7));
-      }
-      return weeks;
-    }
-  },
-  methods: {
-    prevMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
-    },
-    nextMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1);
-    },
-    isCurrentDay(date) {
-      const today = new Date();
-      return (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-      );
-    }
+		const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+		const days = [];
+		const firstDayOfMonth = (date.getDay() + 6) % 7; // Adjust for the desired start day (Monday)
+
+		// Add days from the previous month
+		for (let i = firstDayOfMonth; i > 0; i--) {
+			const prevMonthDay = new Date(date);
+			prevMonthDay.setDate(prevMonthDay.getDate() - i);
+			days.unshift({ date: prevMonthDay });
+		}
+
+		// Add days of the current month
+		while (date.getMonth() === this.currentDate.getMonth()) {
+			days.push({ date: new Date(date) });
+			date.setDate(date.getDate() + 1);
+		}
+		// Add days from the next month
+		const lastDayOfMonth = days[days.length - 1].date.getDay();
+		let daysToAdd = 0;
+		// Determine the number of days to add
+		if (lastDayOfMonth !== 0) {
+			daysToAdd = 7 - lastDayOfMonth;
+		}
+		for (let i = 1; i <= daysToAdd; i++) {
+			const nextMonthDay = new Date(days[days.length - 1].date);
+			nextMonthDay.setDate(nextMonthDay.getDate() + 1);
+			days.push({ date: nextMonthDay });
+		}
+
+		// Group days into weeks
+		const weeks = [];
+		for (let i = 0; i < days.length; i += 7) {
+			weeks.push(days.slice(i, i + 7));
+		}
+		return weeks;
+	}
+	},
+	methods: {
+		prevMonth() {
+			this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
+		},
+		nextMonth() {
+			this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1);
+		},
+		isCurrentDay(date) {
+			const today = new Date();
+			return (
+			date.getDate() === today.getDate() &&
+			date.getMonth() === today.getMonth() &&
+			date.getFullYear() === today.getFullYear()
+			);
+		}
   },
   mounted() {
-    // Fetch data or perform any necessary operations when the component is mounted
-    // You can access the localized data from WordPress using `window.yourPluginData`
-    console.log(window.yourPluginData);
+	// Fetch data or perform any necessary operations when the component is mounted
+	// You can access the localized data from WordPress using `window.yourPluginData`
+	console.log(window.yourPluginData);
   }
 }
 </script>

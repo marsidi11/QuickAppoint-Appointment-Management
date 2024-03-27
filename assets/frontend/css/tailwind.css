@@ -33,7 +33,7 @@
 }
 
 .calendar-day {
-    @apply w-12 text-center text-gray-500 font-semibold;
+    @apply w-12 p-2 text-center text-gray-500 font-semibold;
 }
 
 .current-day {
