@@ -11,3 +11,35 @@
 .calendar-container {
     @apply bg-gray-300 p-6;
 }
+
+.calendar-header {
+    @apply flex items-center justify-between mb-4;
+}
+
+.prev-month-icon, .next-month-icon {
+    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded;
+}
+
+.current-month {
+    @apply text-lg font-semibold;
+}
+
+.calendar-body {
+    @apply bg-white p-4 rounded-lg;
+}
+
+.calendar-week {
+    @apply grid grid-cols-7 gap-4 my-4;
+}
+
+.calendar-day {
+    @apply w-12 text-center text-gray-500 font-semibold;
+}
+
+.current-day {
+    @apply bg-blue-500 text-white rounded-full; 
+}
+
+.prev-month-days, .next-month-days {
+    @apply w-12 text-center text-gray-400 font-semibold;
+}
