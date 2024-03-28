@@ -748,6 +748,10 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -897,7 +901,7 @@ video {
   }
 }
 
-.calendar-day {
+.calendar-days {
   width: 3rem;
   padding: 0.5rem;
   text-align: center;
@@ -907,19 +911,19 @@ video {
 }
 
 @media (min-width: 640px) {
-  .calendar-day {
+  .calendar-days {
     width: 2.5rem;
   }
 }
 
 @media (min-width: 768px) {
-  .calendar-day {
+  .calendar-days {
     width: 3rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .calendar-day {
+  .calendar-days {
     width: 3.5rem;
   }
 }
@@ -951,7 +955,8 @@ video {
 }
 
 .prev-month-days, 
-.next-month-days {
+.next-month-days,
+.past-days {
   width: 3rem;
   text-align: center;
   font-weight: 600;

@@ -29,7 +29,7 @@
     @apply grid grid-cols-7 gap-4 my-4 sm:gap-4 sm:my-4;
 }
 
-.calendar-day {
+.calendar-days {
     @apply w-12 p-2 text-center text-gray-500 font-semibold sm:w-10 md:w-12 lg:w-14;
 }
 
@@ -38,6 +38,7 @@
 }
 
 .prev-month-days, 
-.next-month-days {
+.next-month-days,
+.past-days {
     @apply w-12 text-center text-gray-400 font-semibold;
 }
