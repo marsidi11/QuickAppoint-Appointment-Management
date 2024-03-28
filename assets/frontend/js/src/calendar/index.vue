@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       currentDate: new Date(),
-      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], // Change the order to start with Monday
+      daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
       startDay: 1, // Monday is 1
     }
   },
@@ -46,9 +46,9 @@ export default {
     calendar() {
 		const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
 		const days = [];
-		const firstDayOfMonth = (date.getDay() + 6) % 7; // Adjust for the desired start day (Monday)
+		const firstDayOfMonth = (date.getDay() + 6) % 7;
 
-		// Add days from the previous month
+		// Add days from the previous month to the current calendar
 		for (let i = firstDayOfMonth; i > 0; i--) {
 			const prevMonthDay = new Date(date);
 			prevMonthDay.setDate(prevMonthDay.getDate() - i);
@@ -60,7 +60,7 @@ export default {
 			days.push({ date: new Date(date) });
 			date.setDate(date.getDate() + 1);
 		}
-		// Add days from the next month
+		// Add days from the next month to the current calendar
 		const lastDayOfMonth = days[days.length - 1].date.getDay();
 		let daysToAdd = 0;
 		// Determine the number of days to add

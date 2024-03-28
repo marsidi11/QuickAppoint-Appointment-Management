@@ -4,42 +4,40 @@
 
 /* Frontend Calendar Style */
 
-#app {
-    @apply bg-gray-300 p-6;
-}
-
 .calendar-container {
-    @apply bg-gray-300 p-6;
+    @apply bg-gray-300 p-4 sm:p-6 md:p-8 lg:p-10;
 }
 
 .calendar-header {
-    @apply flex items-center justify-between mb-4;
+    @apply flex items-center justify-between mb-4 sm:flex-row;
 }
 
-.prev-month-icon, .next-month-icon {
-    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded;
+.prev-month-icon, 
+.next-month-icon {
+    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300 mt-2 sm:mt-0;
 }
 
 .current-month {
-    @apply text-lg font-semibold;
+    @apply text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl;
 }
 
 .calendar-body {
-    @apply bg-white p-4 rounded-lg;
+    @apply bg-white p-4 rounded-lg sm:p-4 md:p-6 lg:p-8;
 }
 
 .calendar-week {
-    @apply grid grid-cols-7 gap-4 my-4;
+    @apply grid grid-cols-7 gap-4 my-4 sm:gap-4 sm:my-4;
 }
 
 .calendar-day {
-    @apply w-12 p-2 text-center text-gray-500 font-semibold;
+    @apply w-12 p-2 text-center text-gray-500 font-semibold sm:w-10 md:w-12 lg:w-14;
 }
 
 .current-day {
-    @apply bg-blue-500 text-white rounded-full; 
+    @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14; 
 }
 
-.prev-month-days, .next-month-days {
+.prev-month-days, 
+.next-month-days {
     @apply w-12 text-center text-gray-400 font-semibold;
 }
