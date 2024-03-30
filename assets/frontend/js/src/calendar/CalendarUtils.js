@@ -1,3 +1,8 @@
+/**
+ * CalendarUtils.js
+ */
+
+// Generate Calendar
 export function generateCalendar(currentDate) {
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const days = [];
@@ -51,9 +56,40 @@ export function isCurrentDay(date) {
     );
 }
 
-// Get the dates before the current date
-export function pastDates(calendar) {
+// Check if a date is before today
+export function isPastDate(date) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return calendar.flat().filter(day => new Date(day.date).setHours(0, 0, 0, 0) < today);
+    return new Date(date).setHours(0, 0, 0, 0) < today;
+}
+
+// Check if the date is within the next x days from today
+export function isDateWithinNextXDays(date, x) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000
+
+    const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + x);
+
+    date = new Date(date);
+    date.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000
+
+    return date >= today && date <= maxDate;
+}
+
+// When the users clicks a date
+export function dayClicked(date) {
+    console.log(date);
+    let numberOfDays = 14;
+    
+    // Check if the date is within the allowed range (today to the next number of days)
+    if (isDateWithinNextXDays(date, numberOfDays)) {
+        this.selectedDate = date;
+        // Optionally, you can emit an event or call a method to communicate with the PHP backend
+        this.$emit('dateSelected', date);
+    }
+}
+
+export function isDateWithinAllowedRange(date) {
+    // Check if the date is within the allowed range (today to the next 14 days)
+    return isDateWithinNextXDays(date, 14);
 }

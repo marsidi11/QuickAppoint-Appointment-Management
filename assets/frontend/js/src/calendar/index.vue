@@ -2,6 +2,7 @@
 	<div class="calendar-container">
 		<CalendarHeader :currentMonth="currentMonth" @prev-month="prevMonth" @next-month="nextMonth" />
 		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" />
+		<CalendarTime />
 	</div>
 </template>
 
@@ -9,6 +10,7 @@
 import { generateCalendar } from './CalendarUtils.js';
 import CalendarHeader from './CalendarHeader.vue';
 import CalendarBody from './CalendarBody.vue';
+import CalendarTime from './CalendarTime.vue';
 
 export default {
 	name: 'CalendarComponent',
@@ -21,6 +23,7 @@ export default {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
 			startDay: 1,
+			selectedDate: null,
 		}
 	},
 	computed: {

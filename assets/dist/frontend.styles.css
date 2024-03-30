@@ -668,6 +668,11 @@ video {
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
+.bg-slate-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -746,10 +751,6 @@ video {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .transition-colors {
@@ -901,8 +902,9 @@ video {
   }
 }
 
-.calendar-days {
+.calendar-day {
   width: 3rem;
+  cursor: default;
   padding: 0.5rem;
   text-align: center;
   font-weight: 600;
@@ -911,19 +913,19 @@ video {
 }
 
 @media (min-width: 640px) {
-  .calendar-days {
+  .calendar-day {
     width: 2.5rem;
   }
 }
 
 @media (min-width: 768px) {
-  .calendar-days {
+  .calendar-day {
     width: 3rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .calendar-days {
+  .calendar-day {
     width: 3.5rem;
   }
 }
@@ -954,14 +956,58 @@ video {
   }
 }
 
-.prev-month-days, 
-.next-month-days,
-.past-days {
+.prev-month-day, 
+.next-month-day,
+.past-day {
   width: 3rem;
   text-align: center;
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.clickable-day {
+  cursor: pointer;
+  border-radius: 9999px;
+}
+
+.clickable-day:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
+}
+
+@media (min-width: 640px) {
+  .clickable-day {
+    width: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .clickable-day {
+    width: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .clickable-day {
+    width: 3.5rem;
+  }
+}
+
+/* Frontend Calendar Time Style */
+
+.calendar-time {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-gray-700:hover {
@@ -1012,6 +1058,12 @@ video {
   .md\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:w-14 {
+    width: 3.5rem;
   }
 }
 
