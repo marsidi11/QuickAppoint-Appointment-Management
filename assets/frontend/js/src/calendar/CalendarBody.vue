@@ -28,6 +28,7 @@ import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked } from '
 
 export default {
     name: 'CalendarBody',
+
     props: {
         currentDate: {
             type: Date,

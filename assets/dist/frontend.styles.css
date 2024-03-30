@@ -566,6 +566,10 @@ video {
   margin-top: 0.5rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .block {
   display: block;
 }
@@ -753,6 +757,12 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -930,31 +940,9 @@ video {
   }
 }
 
-.current-day {
-  border-radius: 9999px;
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-@media (min-width: 640px) {
-  .current-day {
-    width: 2.5rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .current-day {
-    width: 3rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .current-day {
-    width: 3.5rem;
-  }
-}
+/* .current-day {
+    @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14; 
+} */
 
 .prev-month-day, 
 .next-month-day,
@@ -1003,6 +991,9 @@ video {
   justify-content: space-between;
   --tw-bg-opacity: 1;
   background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover\:bg-blue-300:hover {
