@@ -25,6 +25,8 @@
 
 <script>
 import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked } from './CalendarUtils.js';
+import DataHandler from './DataHandler.vue'; // Import the DataHandler to use the create and get methods
+
 
 export default {
     name: 'CalendarBody',

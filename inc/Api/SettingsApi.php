@@ -4,6 +4,7 @@
  */
 namespace Inc\Api;
 
+// SettingsApi class for creating admin pages, subpages, settings, sections and fields
 class SettingsApi 
 {
     // Declare the admin pages and subpages
@@ -102,7 +103,6 @@ class SettingsApi
 
     
     // Setters for settings, sections and fields
-    
     public function setSettings( array $settings ) 
     {
         $this->settings = $settings;

@@ -25,7 +25,6 @@ export default {
 		return {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
-			// startDay: 1,
 			selectedDate: null,
 			showCalendarTimeComponent: false,
 		}

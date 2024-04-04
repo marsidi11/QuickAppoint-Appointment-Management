@@ -19,7 +19,8 @@ final class Init {
             Pages\Admin::class,
             Base\Enqueue::class, 
             Base\SettingsLinks::class, 
-            Pages\Shortcodes::class 
+            Pages\Shortcodes::class,
+            Api\CustomDataController::class,
         ];
     }
 
