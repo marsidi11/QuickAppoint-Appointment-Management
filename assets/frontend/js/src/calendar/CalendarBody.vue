@@ -1,9 +1,12 @@
 <template>
     <div class="calendar-body">
+
         <div class="calendar-week">
             <div class="calendar-day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
         </div>
+
         <div class="calendar-week" v-for="(week, index) in calendar" :key="index">
+
             <div
                 class="calendar-day"
                 v-for="(day, dayIndex) in week"
@@ -19,17 +22,23 @@
             >
                 {{ day.date.getDate() }}
             </div>
+            
         </div>
+
     </div>
 </template>
 
 <script>
 import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked } from './CalendarUtils.js';
-import DataHandler from './DataHandler.vue'; // Import the DataHandler to use the create and get methods
-
 
 export default {
     name: 'CalendarBody',
+
+    data() {
+        return {
+            selectedDate: null,
+        };
+    },
 
     props: {
         currentDate: {

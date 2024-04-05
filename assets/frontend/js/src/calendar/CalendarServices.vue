@@ -1,17 +1,22 @@
 <template>
-    <div>
-        <h2>Select a Service:</h2>
+    <div class="calendar-services">
+
+        <h2 class="calendar-services-header">Select a Service:</h2>
+
         <div v-for="service in services" :key="service.id" @click="selectService(service)">
             <div class="service-box">
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
             </div>
         </div>
+        
     </div>
 </template>
 
 <script>
 export default {
+    name: 'CalendarServices',
+
     data() {
         return {
             services: [
@@ -22,20 +27,12 @@ export default {
             selectedService: null,
         };
     },
+
     methods: {
         selectService(service) {
             this.selectedService = service;
-            // You can save the selected service data or perform any other actions here
+            this.$emit('services-selected', service.name);
         },
     },
 };
 </script>
-
-<style scoped>
-.service-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-</style>
