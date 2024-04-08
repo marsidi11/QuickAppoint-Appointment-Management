@@ -9,7 +9,9 @@
 
 		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="showCalendarUserData" />
 
-		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @create-booking="createBooking" />
+		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
+
+		<DataHandler v-if="showCalendarUserDataComponent" :booking-data="bookingData" />
 
 	</div>
 </template>
@@ -21,6 +23,7 @@ import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
 import CalendarTime from './CalendarTime.vue';
 import CalendarUserData from './CalendarUserData.vue';
+import DataHandler from './DataHandler.vue';
 
 
 export default {
@@ -32,6 +35,7 @@ export default {
 		CalendarServices,
 		CalendarTime,
 		CalendarUserData,
+		DataHandler,
 	},
 
 	data() {
@@ -41,6 +45,13 @@ export default {
 			showCalendarServicesComponent: false,
 			showCalendarTimeComponent: false,
 			showCalendarUserDataComponent: false,
+
+			userData: {
+                name: '',
+                surname: '',
+                phone: '',
+                email: ''
+            },
 		}
 	},
 
@@ -51,6 +62,19 @@ export default {
 
 		calendar() {
 			return generateCalendar(this.currentDate);
+		},
+
+		bookingData() {
+			return {
+				name: this.userData.name,
+				surname: this.userData.surname,
+				phone: this.userData.phone,
+				email: this.userData.email,
+				date: this.selectedDate.toISOString().slice(0,10),
+				services: this.selectedServices,
+				startTime: `${this.selectedTime}:00`,
+				endTime: `${this.selectedTime}:00`,
+			};
 		},
 	},
 
@@ -77,11 +101,16 @@ export default {
 			console.log("Service: " + this.selectedServices);
 		},
 
-		// Show the CalendarUserData component when a time is selected
+		// Show the CalendarUserData component and Submit button when the time is selected
 		showCalendarUserData(time) {
 			this.showCalendarUserDataComponent = true;
 			this.selectedTime = time;
 			console.log("Time: " + this.selectedTime);
+		},
+
+		// Store the user data emitted from the CalendarUserData component
+		storeUserData(userData) {
+			this.userData = userData;
 		},
 	},
 

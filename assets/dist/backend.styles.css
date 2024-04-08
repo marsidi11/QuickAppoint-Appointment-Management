@@ -642,6 +642,10 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1066,6 +1070,10 @@ video {
 @media (min-width: 1024px) {
   .lg\:w-14 {
     width: 3.5rem;
+  }
+
+  .lg\:p-10 {
+    padding: 2.5rem;
   }
 }
 

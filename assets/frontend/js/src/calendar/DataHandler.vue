@@ -1,95 +1,57 @@
 <template>
-    
+    <button class="button-appointment" @click="createBooking">Submit</button>
+    <div v-if="loading" class="loading-message">Loading...</div>
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 </template>
 
 <script>
-import axios from 'axios';
+import apiService from './apiService.js';
 
 export default {
     name: 'DataHandler',
+
     props: ['bookingId', 'bookingData'],
+
+    data() {
+        return {
+            loading: false,
+            errorMessage: null,
+        };
+    },
+
     methods: {
-        getBooking() {
-            axios.get(`/wp-json/booking-management/v1/bookings?id=${this.bookingId}`, {
-                headers: {
-                    'X-WP-Nonce': window.wpApiSettings.nonce
-                }
-            })
-                .then(response => {
-                    console.log('Booking data:', response.data);
-                    // Update the component's data with the server's response
-                    this.bookingData = response.data;
+        async getBooking() {
+            try {
+                this.loading = true;
+                const response = await apiService.getBooking(this.bookingId);
+                // Update the component's data with the server's response
+                // this.bookingData = response;
 
-                    // Or emit an event with the server's response
-                    this.$emit('booking-retrieved', response.data);
-                })
-                .catch(error => {
-                    // Log the error for debugging
-                    console.error('Error:', error);
-
-                    // Check if the error response from server is available
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-
-                        // You can also show a user-friendly error message
-                        this.errorMessage = `Error: ${error.response.data.message || 'An error occurred.'}`;
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        console.log(error.request);
-                        this.errorMessage = 'Error: No response from server.';
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                        this.errorMessage = `Error: ${error.message}`;
-                    }
-                });
+                // Or emit an event with the server's response
+                this.$emit('booking-retrieved', response);
+                console.log("Get Booking: " + response);
+            } catch (error) {
+                this.errorMessage = error;
+            } finally {
+                this.loading = false;
+            }
         },
-        
-        createBooking() {
-            axios.post('/wp-json/booking-management/v1/bookings', this.bookingData, {
-                headers: {
-                    'X-WP-Nonce': window.wpApiSettings.nonce
-                }
-            })
-            
-                .then(response => {
-                    // Update the component's data with the server's response
-                    this.bookingData = response.data;
 
-                    // Or emit an event with the server's response
-                    this.$emit('booking-created', response.data);
-                })
-
-                .catch(error => {
-                    // Log the error for debugging
-                    console.error('Error:', error);
-
-                    // Check if the error response from server is available
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-
-                        // You can also show a user-friendly error message
-                        this.errorMessage = `Error: ${error.response.data.message || 'An error occurred.'}`;
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        console.log(error.request);
-                        this.errorMessage = 'Error: No response from server.';
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                        this.errorMessage = `Error: ${error.message}`;
-                    }
-                });
-        }
-    }
-}
+        async createBooking() {
+            try {
+                this.$emit('submit');
+                this.loading = true;
+                console.log(this.bookingData);
+                const response = await apiService.createBooking(this.bookingData);
+                // Handle the successful response, e.g., show a success message or update the component's data
+                this.errorMessage = 'Booking created successfully';
+                console.log("Create Booking: " + response);
+            } catch (error) {
+                this.errorMessage = error;
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
+};
 </script>

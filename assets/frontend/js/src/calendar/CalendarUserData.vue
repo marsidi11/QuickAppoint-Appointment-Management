@@ -4,6 +4,7 @@
         <h2 class="form-title">Your Information</h2>
 
         <form @submit.prevent="submitForm" class="form">
+            
 
             <div class="form-group">
                 <label for="name" class="label">Name:</label>
@@ -25,17 +26,16 @@
                 <input type="email" id="email" v-model="email" placeholder="name@example.com" required class="input">
             </div>
 
-            <button class="button-appointment" @click="emitCreateBookingEvent">Submit</button>
-
         </form>
     </div>
 </template>
 
 <script>
-import DataHandler from './DataHandler.vue';
 
 export default {
     name: 'CalendarUserData',
+
+    inject: ['formData'],
 
     data() {
         return {
@@ -46,13 +46,16 @@ export default {
         };
     },
 
-    methods: {
-        submitForm() {
-            this.emitCreateBookingEvent();
-        },
+    watch: {
+        name: 'emitUserData',
+        surname: 'emitUserData',
+        phone: 'emitUserData',
+        email: 'emitUserData'
+    },
 
-        emitCreateBookingEvent() {
-            this.$emit('create-booking', {
+    methods: {
+        emitUserData() {
+            this.$emit('update-user-data', {
                 name: this.name,
                 surname: this.surname,
                 phone: this.phone,
