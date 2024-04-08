@@ -43,9 +43,9 @@ class Enqueue extends BaseController
         // Localize the script with your data.
         $data = array(
                 'nonce' => $nonce,
+                'apiUrl' => esc_url_raw( rest_url('booking-management/v1/bookings') ),
             );
         wp_localize_script('booking-management-frontend-script', 'wpApiSettings', $data);
-
 
     }
 }

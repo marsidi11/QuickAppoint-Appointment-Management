@@ -21,6 +21,12 @@ function handleError(error) {
 // API service module
 const apiService = {
 	async getBooking(bookingId) {
+
+		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
 		try {
 			const response = await axios.get(`/wp-json/booking-management/v1/bookings?id=${bookingId}`, {
 				headers: {
@@ -34,8 +40,14 @@ const apiService = {
 	},
 
 	async createBooking(bookingData) {
+
+		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
 		try {
-			const response = await axios.post('/wordpress-test/wp-json/booking-management/v1/bookings/create', bookingData, {
+			const response = await axios.post(window.wpApiSettings.apiUrl + '/create', bookingData, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},
