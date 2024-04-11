@@ -19,7 +19,7 @@ function handleError(error) {
 }
 
 const apiService = {
-    async getAllBookings() { 
+    async getAllBookings(page) { 
 
         if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');
@@ -27,7 +27,7 @@ const apiService = {
 		}
 
         try {
-            const response = await axios.get(window.wpApiSettings.apiUrl, {
+			const response = await axios.get(`${window.wpApiSettings.apiUrl}?page=${page}`, {
                 headers: {
                     'X-WP-Nonce': window.wpApiSettings.nonce,
                 },

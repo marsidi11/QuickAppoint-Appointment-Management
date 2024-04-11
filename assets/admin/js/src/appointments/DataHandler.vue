@@ -1,4 +1,8 @@
 <template>
+    
+    <button @click="loadMore" v-if="!loading">Load More</button>
+    <div v-if="loading">Loading...</div>
+    <div v-if="errorMessage">{{ errorMessage }}</div>
 
 </template>
 
@@ -14,6 +18,7 @@ export default {
         return {
             loading: false,
             errorMessage: null,
+            page: 1, 
         };
     },
 
@@ -21,9 +26,13 @@ export default {
         async getAllBookings() {
             try {
                 this.loading = true;
-                const response = await apiService.getAllBookings();
+                const response = await apiService.getAllBookings(this.page);
                 console.log("Get All Bookings: ", JSON.stringify(response, null, 2));
-                this.$emit('bookings-retrieved', response);
+                this.$emit('updateBookings', response);
+
+                if (response.length === 0) {
+                    this.errorMessage = 'No more bookings to load';
+                }
 
             } catch (error) {
                 this.errorMessage = error;
@@ -31,6 +40,11 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+
+        loadMore() {
+            this.page++;
+            this.getAllBookings();
         },
 
 

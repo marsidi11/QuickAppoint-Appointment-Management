@@ -1,7 +1,5 @@
 <template>
-    
-    <DataHandler @bookings-retrieved="handleBookingsRetrieved" />
-
+  
     <div class="relative overflow-x-auto">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -25,6 +23,9 @@
         </tbody>
       </table>
     </div>
+
+    <DataHandler @updateBookings="handleUpdateBookings" />
+
   </template>
 
 <script>
@@ -32,23 +33,23 @@ import DataHandler from './DataHandler.vue';
 
 export default {
 
-    name: 'AppointmentsComponent',
+	name: 'AppointmentsComponent',
 
-    components: {
-        DataHandler,
-    },
+	components: {
+		DataHandler,
+	},
 
-    data() {
-        return {
-            columns: ['Name', 'Surname', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time'],
-            users: [],
-        };
-    },
+	data() {
+		return {
+			columns: ['Name', 'Surname', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time'],
+			users: [],
+		};
+	},
 
-    methods: {
-        handleBookingsRetrieved(bookings) {
-          this.users = bookings;
-        },
-    },
+	methods: {
+		handleUpdateBookings(newBookings) {
+			this.users = [...this.users, ...newBookings];
+		},
+	},
 };
 </script>

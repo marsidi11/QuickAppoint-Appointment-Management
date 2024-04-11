@@ -61,14 +61,21 @@ class CustomDataController extends RestController
     }
 
     // TODO: Add custom endpoints to order bookings by date, by name, booked date, etc.
+    // TODO: Show only upcoming appointments
     public function get_all_data(\WP_REST_Request $request) 
     {
-        // Get all bookings from the database and order them by date and start time
+        // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_bookings';
-        $bookings = $wpdb->get_results("SELECT * FROM $table_name ORDER BY date ASC, startTime ASC");
 
-        // Return the bookings data
+        $page = $request->get_param('page');
+        $items_per_page = 10;
+        $offset = ($page - 1) * $items_per_page;
+
+        $query = "SELECT * FROM $table_name ORDER BY date ASC, startTime ASC LIMIT $items_per_page OFFSET $offset";
+
+        $bookings = $wpdb->get_results($query);
+
         return new \WP_REST_Response($bookings, 200);
     }
 
@@ -88,7 +95,6 @@ class CustomDataController extends RestController
             return new \WP_Error('not_found', 'Booking not found', array('status' => 404));
         }
 
-        // Return the booking data
         return new \WP_REST_Response($booking, 200);
     }
 
@@ -143,13 +149,11 @@ class CustomDataController extends RestController
             'endTime' => $booking_data['endTime']
         ));
 
-        // Check if the insert was successful
         if ($result === false) 
         {
             return new \WP_Error('db_insert_error', 'Could not insert booking into the database', array('status' => 500));
         }
 
-        // Return a success message
         return new \WP_REST_Response('Booking created successfully', 201);
 
     }
