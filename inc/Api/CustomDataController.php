@@ -9,7 +9,6 @@ class CustomDataController extends RestController
     public function register() 
     {
         add_action('rest_api_init', array($this, 'register_routes'));
-        // echo 'Registering route: ' . get_site_url() . '/wp-json/' . $this->get_namespace() . '/' . $this->get_base() . '/create' . PHP_EOL;
     }
 
     protected function get_namespace() 
@@ -25,6 +24,17 @@ class CustomDataController extends RestController
     public function register_routes() 
     {
 
+        // Route to get all bookings
+        \register_rest_route($this->get_namespace(), '/' . $this->get_base(), array(
+            'methods' => 'GET',
+            'callback' => array($this, 'get_all_data'),
+            'permission_callback' => function () 
+            {
+                return current_user_can('edit_posts');
+            }
+        ));
+
+        // Route to get a single booking
         \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => array($this, 'get_custom_data'),
@@ -34,14 +44,26 @@ class CustomDataController extends RestController
             }
         ));
 
+        // Route to create a new booking
         \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/create', array(
             'methods' => 'POST',
             'callback' => array($this, 'post_custom_data'),
             'permission_callback' => function () 
             {
-            return true; // Allow all users to create bookings
+                return true; // Allow all users to create bookings
             }
         ));
+    }
+
+    public function get_all_data(\WP_REST_Request $request) 
+    {
+        // Get all bookings from the database
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'am_bookings';
+        $bookings = $wpdb->get_results("SELECT * FROM $table_name");
+
+        // Return the bookings data
+        return new \WP_REST_Response($bookings, 200);
     }
 
     public function get_custom_data(\WP_REST_Request $request) 
@@ -66,7 +88,8 @@ class CustomDataController extends RestController
 
     public function post_custom_data(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) {
+        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
+        {
             return new WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
         }
 

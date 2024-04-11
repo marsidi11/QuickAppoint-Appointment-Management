@@ -4,7 +4,7 @@
 
 /* Admin Dashboard Style */
 
-.wrap-b > h1 {
+.wrap-am > h1 {
     @apply my-5 text-3xl font-bold dark:text-white;
 }
 
@@ -37,3 +37,6 @@
 .tab-content > .tab-pane.active {
     @apply block p-2.5 bg-white shadow-md sm:rounded-lg;
 }
+
+/* All Appointments Table */
+
