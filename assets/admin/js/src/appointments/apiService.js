@@ -33,6 +33,7 @@ const apiService = {
                 },
             });
             return response.data;
+
         } catch (error) {
 			throw handleError(error);
 		}
@@ -52,6 +53,7 @@ const apiService = {
 				},
 			});
 			return response.data;
+			
 		} catch (error) {
 			throw handleError(error);
 		}
@@ -71,6 +73,7 @@ const apiService = {
 				},
 			});
 			return response.data;
+			
 		} catch (error) {
 			throw handleError(error);
 		}

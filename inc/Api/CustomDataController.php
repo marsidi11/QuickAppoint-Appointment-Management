@@ -4,6 +4,11 @@
  */
 namespace Inc\Api;
 
+/**
+ * Custom REST API controller for handling custom data. 
+ * Endpoints for getting all bookings (ordered by date and startTime), getting a single booking and creating a new booking.
+ */
+
 class CustomDataController extends RestController 
 {
     public function register() 
@@ -55,12 +60,13 @@ class CustomDataController extends RestController
         ));
     }
 
+    // TODO: Add custom endpoints to order bookings by date, by name, booked date, etc.
     public function get_all_data(\WP_REST_Request $request) 
     {
-        // Get all bookings from the database
+        // Get all bookings from the database and order them by date and start time
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_bookings';
-        $bookings = $wpdb->get_results("SELECT * FROM $table_name");
+        $bookings = $wpdb->get_results("SELECT * FROM $table_name ORDER BY date ASC, startTime ASC");
 
         // Return the bookings data
         return new \WP_REST_Response($bookings, 200);

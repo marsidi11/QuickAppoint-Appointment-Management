@@ -12,6 +12,7 @@
       $charset_collate = $wpdb->get_charset_collate();
       $table_name = $wpdb->prefix . 'am_bookings';
 
+      // TODO: Add the booked date and time to the table
       $sql = "CREATE TABLE $table_name 
       (
          id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,

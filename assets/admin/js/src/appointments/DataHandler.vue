@@ -22,13 +22,12 @@ export default {
             try {
                 this.loading = true;
                 const response = await apiService.getAllBookings();
-                console.log("Get All Bookings: " + response);
-
+                console.log("Get All Bookings: ", JSON.stringify(response, null, 2));
                 this.$emit('bookings-retrieved', response);
 
             } catch (error) {
                 this.errorMessage = error;
-                
+
             } finally {
                 this.loading = false;
             }
@@ -39,10 +38,7 @@ export default {
             try {
                 this.loading = true;
                 const response = await apiService.getBooking(this.bookingId);
-                // Update the component's data with the server's response
-                // this.bookingData = response;
 
-                // Or emit an event with the server's response
                 this.$emit('booking-retrieved', response);
                 console.log("Get Booking: " + response);
 
