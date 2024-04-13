@@ -20,7 +20,8 @@ final class Init {
             Base\Enqueue::class, 
             Base\SettingsLinks::class, 
             Pages\Shortcodes::class,
-            Api\CustomDataController::class,
+            Api\AppointmentsDataController::class,
+            Api\ServicesDataController::class,
         ];
     }
 

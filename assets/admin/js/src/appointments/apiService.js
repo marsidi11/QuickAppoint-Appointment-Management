@@ -19,6 +19,7 @@ function handleError(error) {
 }
 
 const apiService = {
+	
     async getAllBookings(page) { 
 
         if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
@@ -27,7 +28,7 @@ const apiService = {
 		}
 
         try {
-			const response = await axios.get(`${window.wpApiSettings.apiUrl}?page=${page}`, {
+			const response = await axios.get(`${window.wpApiSettings.apiUrlAppointments}?page=${page}`, {
                 headers: {
                     'X-WP-Nonce': window.wpApiSettings.nonce,
                 },
@@ -67,7 +68,7 @@ const apiService = {
 		}
         // TODO : Check for better way to get the api url
 		try {
-			const response = await axios.post(window.wpApiSettings.apiUrl + '/create', bookingData, {
+			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', bookingData, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},

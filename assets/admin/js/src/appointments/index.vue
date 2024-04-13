@@ -24,19 +24,19 @@
       </table>
     </div>
 
-    <DataHandler @updateBookings="handleUpdateBookings" />
+    <GetAllAppointments @updateBookings="handleUpdateBookings" />
 
   </template>
 
 <script>
-import DataHandler from './DataHandler.vue';
+import GetAllAppointments from './GetAllAppointments.vue';
 
 export default {
 
 	name: 'AppointmentsComponent',
 
 	components: {
-		DataHandler,
+		GetAllAppointments,
 	},
 
 	data() {

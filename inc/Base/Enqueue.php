@@ -29,7 +29,8 @@ class Enqueue extends BaseController
         // Localize the script with your data.
         $data = array(
                 'nonce' => $nonce,
-                'apiUrl' => esc_url_raw( rest_url('booking-management/v1/bookings') ),
+                'apiUrlAppointments' => esc_url_raw( rest_url('booking-management/v1/appointments') ),
+                'apiUrlServices' => esc_url_raw( rest_url('booking-management/v1/services') ),
             );
         wp_localize_script('booking-management-backend-script', 'wpApiSettings', $data);
     }
@@ -46,7 +47,8 @@ class Enqueue extends BaseController
         // Localize the script with your data.
         $data = array(
                 'nonce' => $nonce,
-                'apiUrl' => esc_url_raw( rest_url('booking-management/v1/bookings') ),
+                'apiUrlAppointments' => esc_url_raw( rest_url('booking-management/v1/appointments') ),
+                'apiUrlServices' => esc_url_raw( rest_url('booking-management/v1/services') ),
             );
         wp_localize_script('booking-management-frontend-script', 'wpApiSettings', $data);
 

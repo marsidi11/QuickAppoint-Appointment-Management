@@ -5,11 +5,11 @@
 namespace Inc\Api;
 
 /**
- * Custom REST API controller for handling custom data. 
- * Endpoints for getting all bookings (ordered by date and startTime), getting a single booking and creating a new booking.
+ * Custom REST API controller for handling appointments data. 
+ * Endpoints for getting and posting all appointments (ordered by date and startTime), getting a single appointment and creating a new appointment.
  */
 
-class CustomDataController extends RestController 
+class AppointmentsDataController extends RestController 
 {
     public function register() 
     {
@@ -23,46 +23,47 @@ class CustomDataController extends RestController
 
     protected function get_base() 
     {
-        return 'bookings';
+        return 'appointments';
     }
 
     public function register_routes() 
     {
 
-        // Route to get all bookings
+        // Route to get all appointments
         \register_rest_route($this->get_namespace(), '/' . $this->get_base(), array(
             'methods' => 'GET',
-            'callback' => array($this, 'get_all_data'),
+            'callback' => array($this, 'get_all_appointments'),
             'permission_callback' => function () 
             {
                 return current_user_can('edit_posts');
             }
         ));
 
-        // Route to get a single booking
+        // Route to get a single appointment
         \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/(?P<id>\d+)', array(
             'methods' => 'GET',
-            'callback' => array($this, 'get_custom_data'),
+            'callback' => array($this, 'get_single_appointment'),
             'permission_callback' => function () 
             {
                 return current_user_can('edit_posts');
             }
         ));
 
-        // Route to create a new booking
+        // Route to create a new appointment
         \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/create', array(
             'methods' => 'POST',
-            'callback' => array($this, 'post_custom_data'),
+            'callback' => array($this, 'post_appointment_data'),
             'permission_callback' => function () 
             {
-                return true; // Allow all users to create bookings
+                return true; // Allow all users to create appointments
             }
         ));
+
     }
 
     // TODO: Add custom endpoints to order bookings by date, by name, booked date, etc.
     // TODO: Show only upcoming appointments
-    public function get_all_data(\WP_REST_Request $request) 
+    public function get_all_appointments(\WP_REST_Request $request) 
     {
         // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
@@ -79,7 +80,8 @@ class CustomDataController extends RestController
         return new \WP_REST_Response($bookings, 200);
     }
 
-    public function get_custom_data(\WP_REST_Request $request) 
+
+    public function get_single_appointment(\WP_REST_Request $request) 
     {
         // Get the booking ID from the request
         $booking_id = $request->get_param('id');
@@ -97,8 +99,9 @@ class CustomDataController extends RestController
 
         return new \WP_REST_Response($booking, 200);
     }
+    
 
-    public function post_custom_data(\WP_REST_Request $request) 
+    public function post_appointment_data(\WP_REST_Request $request) 
     {
         if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
         {
@@ -108,7 +111,7 @@ class CustomDataController extends RestController
         // Get the booking data from the request
         $booking_data = $request->get_json_params();
 
-        // Validate the booking data
+        // Validate the appointment data
         if (!isset($booking_data['name']) || !isset($booking_data['date'])) 
         {
             return new WP_Error('invalid_request', 'Invalid booking data', array('status' => 400));
@@ -126,7 +129,8 @@ class CustomDataController extends RestController
             return new WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
         }
 
-        // Insert the booking data into the database
+        // TODO: Update the code to post services to the table
+        // Insert the apppointment data into the database
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_bookings';
 
@@ -140,7 +144,7 @@ class CustomDataController extends RestController
 
             'email' => sanitize_email($booking_data['email']),
 
-            'services' => sanitize_text_field($booking_data['services']),
+            'service_id' => $booking_data['service_id'],
 
             'date' => $booking_data['date'],
 
@@ -151,10 +155,10 @@ class CustomDataController extends RestController
 
         if ($result === false) 
         {
-            return new \WP_Error('db_insert_error', 'Could not insert booking into the database', array('status' => 500));
+            return new \WP_Error('db_insert_error', 'Could not insert appointment into the database', array('status' => 500));
         }
 
-        return new \WP_REST_Response('Booking created successfully', 201);
+        return new \WP_REST_Response('Appointment created successfully', 201);
 
     }
 }

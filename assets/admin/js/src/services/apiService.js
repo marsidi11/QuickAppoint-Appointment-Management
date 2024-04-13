@@ -20,26 +20,8 @@ function handleError(error) {
 
 // API service module
 const apiService = {
-	// async getBooking(bookingId) {
 
-	// 	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-	// 		console.log('Nonce is not set');
-	// 		return;
-	// 	}
-
-	// 	try {
-	// 		const response = await axios.get(`/wp-json/booking-management/v1/bookings?id=${bookingId}`, {
-	// 			headers: {
-	// 				'X-WP-Nonce': window.wpApiSettings.nonce,
-	// 			},
-	// 		});
-	// 		return response.data;
-	// 	} catch (error) {
-	// 		throw handleError(error);
-	// 	}
-	// },
-
-	async createBooking(bookingData) {
+	async createService(serviceData) {
 
 		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');
@@ -47,7 +29,7 @@ const apiService = {
 		}
 
 		try {
-			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', bookingData, {
+			const response = await axios.post(window.wpApiSettings.apiUrlServices + '/create', serviceData, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},
@@ -57,6 +39,27 @@ const apiService = {
 			throw handleError(error);
 		}
 	},
+
+	async getServices() { 
+
+        if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
+        try {
+			const response = await axios.get(window.wpApiSettings.apiUrlServices, {
+                headers: {
+                    'X-WP-Nonce': window.wpApiSettings.nonce,
+                },
+            });
+            return response.data;
+
+        } catch (error) {
+			throw handleError(error);
+		}
+    },
+
 };
 
 export default apiService;
