@@ -24,9 +24,8 @@
           <td class="px-6 py-4 text-gray-800">{{ service.duration }}</td>
           <td class="px-6 py-4 text-gray-800">{{ service.price }}</td>
 
-          <td class="px-6 py-4 text-end text-sm font-medium">
-            <button type="button"
-              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">Delete</button>
+          <td class="px-6 py-4 text-sm font-medium">
+            <DeleteService :serviceData="service" :serviceId="service.id" @serviceDeleted="handleServiceDeleted" />
           </td>
 
         </tr>
@@ -55,13 +54,14 @@
 
   </div>
 
-  <GetServices @getServices="handleGetServices" />
+  <GetServices ref="getServicesRef" @getServices="handleGetServices" />
 
 
 </template>
 
 <script>
 import CreateService from './CreateService.vue';
+import DeleteService from './DeleteService.vue';
 import GetServices from './GetServices.vue';
 
 export default {
@@ -69,6 +69,7 @@ export default {
 
     components: {
       CreateService,
+      DeleteService,
       GetServices,
     },
     
@@ -113,6 +114,10 @@ export default {
 
     async handleGetServices(services) {
       this.services = services;
+    },
+
+    async handleServiceDeleted() {
+      this.$refs.getServicesRef.getServices();
     },
   },
 }

@@ -60,6 +60,25 @@ const apiService = {
 		}
     },
 
+	async deleteService(serviceId) {
+
+		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
+		try {
+			const response = await axios.delete(window.wpApiSettings.apiUrlServices + '/delete/' + serviceId, {
+				headers: {
+					'X-WP-Nonce': window.wpApiSettings.nonce,
+				},
+			});
+			return response.data;
+		} catch (error) {
+			throw handleError(error);
+		}
+	}
+
 };
 
 export default apiService;

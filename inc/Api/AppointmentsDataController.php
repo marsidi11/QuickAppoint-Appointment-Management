@@ -65,6 +65,11 @@ class AppointmentsDataController extends RestController
     // TODO: Show only upcoming appointments
     public function get_all_appointments(\WP_REST_Request $request) 
     {
+        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
+        {
+            return new WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+        
         // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_bookings';

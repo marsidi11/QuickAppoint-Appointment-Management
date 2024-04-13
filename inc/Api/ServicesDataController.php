@@ -49,10 +49,25 @@ class ServicesDataController extends RestController
             }
         ));
 
+        // Route to delete a service
+        \register_rest_route( $this->get_namespace(), $this->get_base() . '/delete/(?P<id>\d+)', array(
+            'methods' => 'DELETE',
+            'callback' => array($this, 'delete_service_data'),
+            'permission_callback' => function () 
+            {
+                return current_user_can('edit_posts');
+            }
+        ));
+
     }
 
     public function get_all_services(\WP_REST_Request $request) 
     {
+        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
+        {
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+        
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_services';
 
@@ -67,7 +82,7 @@ class ServicesDataController extends RestController
     {
         if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
         {
-            return new WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
         }
 
         $booking_data = $request->get_json_params();
@@ -100,6 +115,28 @@ class ServicesDataController extends RestController
 
         return new \WP_REST_Response('Service created successfully', 201);
         
+    }
+
+    public function delete_service_data(\WP_REST_Request $request) 
+    {
+        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
+        {
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+
+        $service_id = $request['id'];
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'am_services';
+
+        $result = $wpdb->delete($table_name, array('id' => $service_id));
+
+        if ($result === false) 
+        {
+            return new \WP_Error('db_delete_error', 'Could not delete service from the database', array('status' => 500));
+        }
+
+        return new \WP_REST_Response('Service deleted successfully', 200);
     }
 
 }

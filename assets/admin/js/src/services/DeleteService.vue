@@ -1,6 +1,8 @@
 <template>
 
-    <button>Delete</button>
+    <button @click="deleteService()" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+        Delete
+    </button>
     <div v-if="errorMessage">{{ errorMessage }}</div>
     
 </template>
@@ -11,7 +13,7 @@ import apiService from './apiService.js';
 export default {
     name: 'DeleteService',
 
-    props: ['serviceData'],
+    props: ['serviceId', 'serviceData'],
 
     data() {
         return {
@@ -21,11 +23,11 @@ export default {
 
     methods: {
 
-        async deleteService(id) {
+        async deleteService() {
             try {
-                const response = await apiService.deleteService(id);
-                console.log("Delete Service: ", JSON.stringify(response, null, 2));
-                this.getServices();
+                const response = await apiService.deleteService(this.serviceId);
+                console.log("Deleted Service: ", this.serviceId);
+                this.$emit('serviceDeleted');
 
             } catch (error) {
                 this.errorMessage = error;
