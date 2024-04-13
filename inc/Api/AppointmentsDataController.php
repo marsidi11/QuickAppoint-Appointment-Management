@@ -9,6 +9,7 @@ namespace Inc\Api;
  * Endpoints for getting and posting all appointments (ordered by date and startTime), getting a single appointment and creating a new appointment.
  */
 
+ // TODO: Add validation for all the appointment data
 class AppointmentsDataController extends RestController 
 {
     public function register() 

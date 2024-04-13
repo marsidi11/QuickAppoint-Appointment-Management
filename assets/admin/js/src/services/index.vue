@@ -1,5 +1,5 @@
 <template>
-
+  <!-- TODO: Make some fields required -->
   <div class="relative overflow-x-auto">
 
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -93,6 +93,8 @@ export default {
     async handleCreateService() {
 
       // Create a new service object
+      // TODO: Accept only minutes in duration
+      // TODO: Accept only numbers in price
       const newService = {
         name: this.serviceData.name,
         description: this.serviceData.description,
