@@ -163,13 +163,17 @@ class AppointmentsDataController extends RestController
 
         // Insert the services id and appointment id into the mapping table
         foreach ($booking_data['service_id'] as $service_id) {
-            $insert_result = $wpdb->insert(
+            $mapping_result = $wpdb->insert(
                 $mapping_table,
                 array(
                     'appointment_id' => $appointment_id,
                     'service_id' => $service_id
                 )
             );
+
+            if ($mapping_result === false) {
+                return new \WP_Error('db_insert_error', 'Could not insert appointment into the database', array('status' => 500));
+            }
         }
         
 
