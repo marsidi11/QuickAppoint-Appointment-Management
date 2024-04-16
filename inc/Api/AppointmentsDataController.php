@@ -139,23 +139,17 @@ class AppointmentsDataController extends RestController
         // Insert the apppointment data into the database
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_bookings';
+        $mapping_table = $wpdb->prefix . 'am_mapping';
+
 
         $result = $wpdb->insert($table_name, array
         (
             'name' => sanitize_text_field($booking_data['name']),
-
             'surname' => sanitize_text_field($booking_data['surname']),
-
             'phone' => sanitize_text_field($booking_data['phone']),
-
             'email' => sanitize_email($booking_data['email']),
-
-            'service_id' => $booking_data['service_id'],
-
             'date' => $booking_data['date'],
-
             'startTime' => $booking_data['startTime'],
-
             'endTime' => $booking_data['endTime']
         ));
 
@@ -163,6 +157,21 @@ class AppointmentsDataController extends RestController
         {
             return new \WP_Error('db_insert_error', 'Could not insert appointment into the database', array('status' => 500));
         }
+
+        // Get the ID of the inserted booking
+        $appointment_id = $wpdb->insert_id;
+
+        // Insert the services id and appointment id into the mapping table
+        foreach ($booking_data['service_id'] as $service_id) {
+            $insert_result = $wpdb->insert(
+                $mapping_table,
+                array(
+                    'appointment_id' => $appointment_id,
+                    'service_id' => $service_id
+                )
+            );
+        }
+        
 
         return new \WP_REST_Response('Appointment created successfully', 201);
 

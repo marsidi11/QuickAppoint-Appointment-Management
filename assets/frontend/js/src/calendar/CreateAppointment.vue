@@ -8,7 +8,7 @@
 import apiService from './apiService.js';
 
 export default {
-    name: 'DataHandler',
+    name: 'CreateAppointment',
 
     props: ['bookingId', 'bookingData'],
 

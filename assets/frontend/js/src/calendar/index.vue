@@ -5,13 +5,13 @@
 
 		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices" />
 
-		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="showCalendarTime" />
+		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @servicesSelected="showCalendarTime" />
 
 		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="showCalendarUserData" />
 
 		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
 
-		<DataHandler v-if="showCalendarUserDataComponent" :booking-data="bookingData" />
+		<CreateAppointment v-if="showCalendarUserDataComponent" :booking-data="bookingData" />
 
 	</div>
 </template>
@@ -23,7 +23,7 @@ import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
 import CalendarTime from './CalendarTime.vue';
 import CalendarUserData from './CalendarUserData.vue';
-import DataHandler from './DataHandler.vue';
+import CreateAppointment from './CreateAppointment.vue';
 
 
 export default {
@@ -35,13 +35,14 @@ export default {
 		CalendarServices,
 		CalendarTime,
 		CalendarUserData,
-		DataHandler,
+		CreateAppointment,
 	},
 
 	data() {
 		return {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
+
 			showCalendarServicesComponent: false,
 			showCalendarTimeComponent: false,
 			showCalendarUserDataComponent: false,
@@ -71,7 +72,7 @@ export default {
 				phone: this.userData.phone,
 				email: this.userData.email,
 				date: this.selectedDate.toISOString().slice(0,10),
-				services: this.selectedServices,
+				service_id: this.selectedServices,
 				startTime: `${this.selectedTime}:00`,
 				endTime: `${this.selectedTime}:00`,
 			};

@@ -3,29 +3,28 @@
  * @package BookingManagementPlugin
  */
 
- namespace Inc\Base;
+namespace Inc\Base;
 
- class Activate {
+class Activate {
     public static function activate() 
     {
       global $wpdb;
       $charset_collate = $wpdb->get_charset_collate();
-      $bookings_table_name = $wpdb->prefix . 'am_bookings';
+      $appointments_table_name = $wpdb->prefix . 'am_bookings';
       $services_table_name = $wpdb->prefix . 'am_services';
+      $mapping_table_name = $wpdb->prefix . 'am_mapping';
 
       // TODO: Add the booked date and time to the table
-      $sql1 = "CREATE TABLE $bookings_table_name 
+      $sql1 = "CREATE TABLE $appointments_table_name 
       (
          id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
          name varchar(255) NOT NULL,
          surname varchar(255) NOT NULL,
          phone varchar(20) NOT NULL,
          email varchar(255) NOT NULL,
-         service_id mediumint(9) NOT NULL,
          date date NOT NULL,
          startTime time NOT NULL,
-         endTime time NOT NULL,
-         FOREIGN KEY (service_id) REFERENCES $services_table_name(id)
+         endTime time NOT NULL
       ) $charset_collate;";
 
 
@@ -40,10 +39,35 @@
       ) $charset_collate;";
 
 
+      $sql3 = "CREATE TABLE $mapping_table_name
+      (
+         id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+         appointment_id mediumint(9) NOT NULL,
+         service_id mediumint(9) NOT NULL,
+         UNIQUE KEY unique_booking_service (appointment_id, service_id)
+      ) $charset_collate;";
+
+
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      $wpdb->show_errors();
       dbDelta($sql1);
       dbDelta($sql2);
-      $wpdb->hide_errors();
-    }
- }
+      dbDelta($sql3);
+
+      // Add foregin keys to the mapping table
+      $wpdb->query("
+         ALTER TABLE $mapping_table_name
+         ADD CONSTRAINT fk_appointment_id
+            FOREIGN KEY (appointment_id)
+            REFERENCES $appointments_table_name(id)
+            ON DELETE CASCADE;
+      ");
+
+      $wpdb->query("
+         ALTER TABLE $mapping_table_name
+         ADD CONSTRAINT fk_service_id
+            FOREIGN KEY (service_id)
+            REFERENCES $services_table_name(id)
+            ON DELETE CASCADE;
+      ");
+   }
+}

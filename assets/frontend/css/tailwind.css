@@ -58,7 +58,11 @@
 }
 
 .service-box {
-    @apply bg-white p-4 rounded-lg mt-4 cursor-pointer transition-all duration-300 ease-in-out;
+    @apply bg-white p-4 rounded-lg border-4 mt-4 cursor-pointer transition-all duration-300 ease-in-out;
+}
+
+.selected-service {
+    @apply border-4 border-indigo-600
 }
 
 /* Frontend Calendar Time Style */

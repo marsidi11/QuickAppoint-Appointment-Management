@@ -4,35 +4,64 @@
         <h2 class="calendar-services-header">Select a Service:</h2>
 
         <div v-for="service in services" :key="service.id" @click="selectService(service)">
-            <div class="service-box">
+            <div class="service-box" :class="{ 'selected-service': selectedServices.includes(service.id) }">
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
+                <p>{{ service.duration }}</p>
+                <p>{{ service.price }}</p>
             </div>
         </div>
+
+        <div v-if="errorMessage">{{ errorMessage }}</div>
         
     </div>
 </template>
 
 <script>
+import apiService from './apiService.js';
+
 export default {
     name: 'CalendarServices',
 
     data() {
         return {
-            services: [
-                { id: 1, name: 'Service 1', description: 'Description of Service 1' },
-                { id: 2, name: 'Service 2', description: 'Description of Service 2' },
-                { id: 3, name: 'Service 3', description: 'Description of Service 3' },
-            ],
-            selectedService: null,
+            services: [],
+            selectedServices: [],
+            errorMessage: null,
         };
     },
 
     methods: {
-        selectService(service) {
-            this.selectedService = service;
-            this.$emit('services-selected', service.name);
+
+        // Display services on frontend
+        async getServices() {
+            try {
+                const response = await apiService.getServices();
+                console.log("Get All Services: ", JSON.stringify(response, null, 2));
+                this.services = response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
         },
+
+        // Get selected services
+        selectService(service) {
+            const index = this.selectedServices.indexOf(service.id);
+            if (index > -1) {
+                this.selectedServices.splice(index, 1); // Remove the service ID from the array if it's already selected
+            } else {
+                this.selectedServices.push(service.id); // Add the service ID to the array if it's not already selected
+            }
+            this.$emit('servicesSelected', this.selectedServices); // Emit the array of selected service IDs
+        },
+        
+    },
+
+    // TODO: Call getServices() method when index.vue is created
+    // Call getServices() method when component is created
+    created() {
+        this.getServices();
     },
 };
 </script>
