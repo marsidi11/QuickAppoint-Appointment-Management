@@ -20,7 +20,7 @@ function handleError(error) {
 
 const apiService = {
 	
-    async getAllBookings(page) { 
+    async getAllAppointments(page) { 
 
         if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');

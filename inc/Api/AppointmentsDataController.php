@@ -7,6 +7,9 @@ namespace Inc\Api;
 /**
  * Custom REST API controller for handling appointments data. 
  * Endpoints for getting and posting all appointments (ordered by date and startTime), getting a single appointment and creating a new appointment.
+ * Also:
+ *      Post services id and appointment id to the mapping table.
+ *      Get services id and appointment id from the mapping table.
  */
 
  // TODO: Add validation for all the appointment data
@@ -73,13 +76,22 @@ class AppointmentsDataController extends RestController
         
         // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
-        $table_name = $wpdb->prefix . 'am_bookings';
+        $appointments_table = $wpdb->prefix . 'am_bookings';
+        $services_table = $wpdb->prefix . 'am_services';
+        $mapping_table = $wpdb->prefix . 'am_mapping';
 
         $page = $request->get_param('page');
         $items_per_page = 10;
         $offset = ($page - 1) * $items_per_page;
 
-        $query = "SELECT * FROM $table_name ORDER BY date ASC, startTime ASC LIMIT $items_per_page OFFSET $offset";
+        $query = "SELECT a.*, GROUP_CONCAT(s.name SEPARATOR ', ') as service_names
+            FROM $appointments_table a
+            LEFT JOIN $mapping_table m ON a.id = m.appointment_id
+            LEFT JOIN $services_table s ON m.service_id = s.id
+            GROUP BY a.id
+            ORDER BY a.date ASC, a.startTime ASC
+            LIMIT $items_per_page OFFSET $offset
+        ";
 
         $bookings = $wpdb->get_results($query);
 
@@ -111,7 +123,7 @@ class AppointmentsDataController extends RestController
     {
         if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
         {
-            return new WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
         }
 
         // Get the booking data from the request
@@ -120,29 +132,28 @@ class AppointmentsDataController extends RestController
         // Validate the appointment data
         if (!isset($booking_data['name']) || !isset($booking_data['date'])) 
         {
-            return new WP_Error('invalid_request', 'Invalid booking data', array('status' => 400));
+            return new \WP_Error('invalid_request', 'Invalid booking data', array('status' => 400));
         }
 
         // Check for valid name (only letters and whitespace)
         if (!preg_match("/^[a-zA-Z ]*$/", $booking_data['name'])) 
         {
-            return new WP_Error('invalid_name', 'Name can only contain letters and whitespace', array('status' => 400));
+            return new \WP_Error('invalid_name', 'Name can only contain letters and whitespace', array('status' => 400));
         }
 
         // Check for valid date (YYYY-MM-DD format)
         if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $booking_data['date'])) 
         {
-            return new WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
+            return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
         }
 
-        // TODO: Update the code to post services to the table
         // Insert the apppointment data into the database
         global $wpdb;
-        $table_name = $wpdb->prefix . 'am_bookings';
+        $appointments_table = $wpdb->prefix . 'am_bookings';
         $mapping_table = $wpdb->prefix . 'am_mapping';
 
 
-        $result = $wpdb->insert($table_name, array
+        $result = $wpdb->insert($appointments_table, array
         (
             'name' => sanitize_text_field($booking_data['name']),
             'surname' => sanitize_text_field($booking_data['surname']),
@@ -175,10 +186,9 @@ class AppointmentsDataController extends RestController
                 return new \WP_Error('db_insert_error', 'Could not insert appointment into the database', array('status' => 500));
             }
         }
-        
+
 
         return new \WP_REST_Response('Appointment created successfully', 201);
-
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: Style button and error message -->
-    <button @click="loadMore" v-if="!loading">Load More</button>
+    <button @click="loadMore" v-if="!loading" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Load More</button>
     <div v-if="loading">Loading...</div>
     <div v-if="errorMessage">{{ errorMessage }}</div>
 
@@ -23,10 +23,10 @@ export default {
     },
 
     methods: {
-        async getAllBookings() {
+        async getAllAppointments() {
             try {
                 this.loading = true;
-                const response = await apiService.getAllBookings(this.page);
+                const response = await apiService.getAllAppointments(this.page);
                 console.log("Get All Appointments: ", JSON.stringify(response, null, 2));
                 this.$emit('updateBookings', response);
 
@@ -44,7 +44,7 @@ export default {
 
         loadMore() {
             this.page++;
-            this.getAllBookings();
+            this.getAllAppointments();
         },
 
 
@@ -84,7 +84,7 @@ export default {
     },
 
     created() {
-        this.getAllBookings();
+        this.getAllAppointments();
     },
     
 };

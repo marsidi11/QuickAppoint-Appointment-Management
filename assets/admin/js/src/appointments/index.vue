@@ -15,7 +15,7 @@
             <td class="px-6 py-4">{{ user.surname }}</td>
             <td class="px-6 py-4">{{ user.phone }}</td>
             <td class="px-6 py-4">{{ user.email }}</td>
-            <td class="px-6 py-4">{{ user.services }}</td>
+            <td class="px-6 py-4">{{ user.service_names }}</td>
             <td class="px-6 py-4">{{ user.date }}</td>
             <td class="px-6 py-4">{{ user.startTime }}</td>
             <td class="px-6 py-4">{{ user.endTime }}</td>
@@ -24,7 +24,7 @@
       </table>
     </div>
 
-    <GetAllAppointments @updateBookings="handleUpdateBookings" />
+    <GetAllAppointments @updateBookings="handleUpdateAppointments" />
 
   </template>
 
@@ -47,8 +47,8 @@ export default {
 	},
 
 	methods: {
-		handleUpdateBookings(newBookings) {
-			this.users = [...this.users, ...newBookings];
+		handleUpdateAppointments(newAppointments) {
+			this.users = [...this.users, ...newAppointments];
 		},
 	},
 };
