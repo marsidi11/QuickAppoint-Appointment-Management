@@ -72,7 +72,7 @@ class ServicesDataController extends RestController
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_services';
 
-        $query = "SELECT * FROM $table_name";
+        $query = "SELECT id, name, description, FLOOR(TIME_TO_SEC(duration)/60) as duration, price FROM $table_name";
 
         $bookings = $wpdb->get_results($query);
 
@@ -98,13 +98,19 @@ class ServicesDataController extends RestController
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_services';
 
+        // Convert the [duration] to the right format
+        $minutes = $booking_data['duration'];
+        $hours = floor($minutes / 60);
+        $minutes = ($minutes % 60);
+        $time = sprintf("%02d:%02d:00", $hours, $minutes);
+
         $result = $wpdb->insert($table_name, array
         (
             'name' => sanitize_text_field($booking_data['name']),
 
             'description' => sanitize_text_field($booking_data['description']),
 
-            'duration' => $booking_data['duration'],
+            'duration' => $time,
 
             'price' => $booking_data['price'],
         ));

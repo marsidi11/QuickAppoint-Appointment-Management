@@ -84,6 +84,7 @@ class AppointmentsDataController extends RestController
         $items_per_page = 10;
         $offset = ($page - 1) * $items_per_page;
 
+        // Get all appointments from the database, and join service names from the mapping table
         $query = "SELECT a.*, GROUP_CONCAT(s.name SEPARATOR ', ') as service_names
             FROM $appointments_table a
             LEFT JOIN $mapping_table m ON a.id = m.appointment_id

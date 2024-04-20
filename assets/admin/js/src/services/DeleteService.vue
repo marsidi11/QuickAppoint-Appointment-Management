@@ -1,6 +1,6 @@
 <template>
 
-    <button @click="deleteService()" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+    <button @click="deleteService()" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
         Delete
     </button>
     <div v-if="errorMessage">{{ errorMessage }}</div>
@@ -10,6 +10,7 @@
 <script>
 import apiService from './apiService.js';
 
+// TODO: What if service is deleted by mistake? How to recover it? What will show for past appointments?
 export default {
     name: 'DeleteService',
 

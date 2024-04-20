@@ -21,7 +21,7 @@
 
           <td class="px-6 py-4 font-medium text-gray-800">{{ service.name }}</td>
           <td class="px-6 py-4 text-gray-800">{{ service.description }}</td>
-          <td class="px-6 py-4 text-gray-800">{{ service.duration }}</td>
+          <td class="px-6 py-4 text-gray-800">{{ service.duration }} minutes</td>
           <td class="px-6 py-4 text-gray-800">{{ service.price }}</td>
 
           <td class="px-6 py-4 text-sm font-medium">
@@ -38,7 +38,7 @@
             <input type="text" v-model="serviceData.description" placeholder="Enter service description">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="text" v-model="serviceData.duration" placeholder="Enter service duration">
+            <input type="text" v-model="serviceData.duration" placeholder="Enter service duration (minutes)">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
             <input type="text" v-model="serviceData.price" placeholder="Enter service price">
