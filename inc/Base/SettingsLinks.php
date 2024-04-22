@@ -14,7 +14,7 @@ Class SettingsLinks extends BaseController {
     }
 
     public function settings_link( $links ) {
-            $settings_link = '<a href="admin.php?page=booking-management-settings">Settings</a>';
+            $settings_link = '<a href="admin.php?page=booking_management-settings">Settings</a>';
             array_push($links, $settings_link);
             return $links;
         }

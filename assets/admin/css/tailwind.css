@@ -4,6 +4,10 @@
 
 /* Admin Dashboard Style */
 
+.wrap-am {
+    @apply mr-5;
+}
+
 .wrap-am > h1 {
     @apply my-5 text-3xl font-bold dark:text-white;
 }

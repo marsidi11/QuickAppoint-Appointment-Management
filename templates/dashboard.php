@@ -21,7 +21,7 @@
         <div id="tab-3" class="tab-pane">
             <form method="post" action="options.php">
                 <?php
-                settings_fields('booking_management_option_group');
+                settings_fields('am_options_data');
                 do_settings_sections('booking_management');
                 submit_button();
                 ?>

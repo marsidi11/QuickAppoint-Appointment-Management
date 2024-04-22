@@ -911,6 +911,10 @@ video {
 
 /* Admin Dashboard Style */
 
+.wrap-am {
+  margin-right: 1.25rem;
+}
+
 .wrap-am > h1 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;

@@ -22,7 +22,7 @@ class AppointmentsDataController extends RestController
 
     protected function get_namespace() 
     {
-        return 'booking-management/v1';
+        return 'booking_management/v1';
     }
 
     protected function get_base() 

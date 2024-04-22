@@ -8,7 +8,7 @@
  * Description: This plugin allows you to manage bookings on your WordPress site.
  * Version: 1.0.0
  * Author: Marsid Zyberi
- * Plugin URI: https://marketingon.al/plugins/booking-management
+ * Plugin URI: https://marketingon.al/plugins/booking_management
  */
 
 // Check the script is being executed within the WordPress environment

@@ -48,7 +48,7 @@ const apiService = {
 		}
 
 		try {
-			const response = await axios.get(`/wp-json/booking-management/v1/bookings?id=${bookingId}`, {
+			const response = await axios.get(`/wp-json/booking_management/v1/bookings?id=${bookingId}`, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},

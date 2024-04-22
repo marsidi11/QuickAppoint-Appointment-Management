@@ -7,8 +7,8 @@
             <div class="service-box" :class="{ 'selected-service': selectedServices.includes(service.id) }">
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
-                <p>{{ service.duration }}</p>
-                <p>{{ service.price }}</p>
+                <p>{{ service.duration }} minutes</p>
+                <p>${{ service.price }}</p>
             </div>
         </div>
 

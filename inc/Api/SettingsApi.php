@@ -4,7 +4,9 @@
  */
 namespace Inc\Api;
 
-// SettingsApi class for creating admin pages, subpages, settings, sections and fields
+/**
+ * SettingsApi is the base class for creating admin pages, subpages, settings, sections and fields
+ */
 class SettingsApi 
 {
     // Declare the admin pages and subpages
@@ -132,12 +134,13 @@ class SettingsApi
         {
             register_setting( $setting["option_group"], $setting["option_name"], ( isset( $setting["callback"] ) ? $setting["callback"] : '' ) );
         }
+
         // add settings section
         foreach ( $this->sections as $section ) 
         {
             add_settings_section( $section["id"], $section["title"], ( isset( $section["callback"] ) ? $section["callback"] : '' ), $section["page"] ) ;
-
         }
+
         // add settings field
         foreach ( $this->fields as $field ) 
         {
