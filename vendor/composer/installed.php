@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'user/booking_management',
+        'name' => 'user/appointment_management',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'user/booking_management' => array(
+        'user/appointment_management' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

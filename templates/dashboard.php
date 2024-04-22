@@ -22,7 +22,7 @@
             <form method="post" action="options.php">
                 <?php
                 settings_fields('am_options_data');
-                do_settings_sections('booking_management');
+                do_settings_sections('appointment_management');
                 submit_button();
                 ?>
             </form>

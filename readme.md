@@ -1,14 +1,14 @@
-# Booking Management
+# Appointment Management
 
 ## Description
 
-Booking Management is a WordPress plugin that allows you to efficiently manage bookings for your website. With this plugin, you can easily handle reservations, appointments, and scheduling for various services or events. Streamline your booking process and provide a seamless experience for your users. 
+Appointment Management is a WordPress plugin that allows you to efficiently manage appointments for your website. With this plugin, you can easily handle reservations, appointments, and scheduling for various services or events. Streamline your appointment process and provide a seamless experience for your users. 
 
 ## Features
 
-- Feature 1: Easily manage bookings for your website.
+- Feature 1: Easily manage appointments for your website.
 - Feature 2: Handle reservations, appointments, and scheduling for various services or events.
-- Feature 3: Streamline your booking process and provide a seamless experience for your users.
+- Feature 3: Streamline your appointment process and provide a seamless experience for your users.
 
 ## Installation
 

@@ -22,7 +22,7 @@ function handleError(error) {
 const apiService = {
 
 	// Create Appointment
-	async createBooking(bookingData) {
+	async createAppointment(appointmentData) {
 
 		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');
@@ -30,7 +30,7 @@ const apiService = {
 		}
 
 		try {
-			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', bookingData, {
+			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},

@@ -12,7 +12,7 @@ import apiService from './apiService.js';
 export default {
     name: 'GetAllAppointments',
 
-    props: ['bookingId', 'bookingData'],
+    props: ['appointmentId', 'appointmentData'],
 
     data() {
         return {
@@ -28,7 +28,7 @@ export default {
                 this.loading = true;
                 const response = await apiService.getAllAppointments(this.page);
                 console.log("Get All Appointments: ", JSON.stringify(response, null, 2));
-                this.$emit('updateBookings', response);
+                this.$emit('updateAppointments', response);
 
                 if (response.length === 0) {
                     this.errorMessage = 'No more appointments to load';
@@ -48,13 +48,13 @@ export default {
         },
 
 
-        // async getBooking() {
+        // async getAppointment() {
         //     try {
         //         this.loading = true;
-        //         const response = await apiService.getBooking(this.bookingId);
+        //         const response = await apiService.getAppointment(this.appointmentId);
 
-        //         this.$emit('booking-retrieved', response);
-        //         console.log("Get Booking: " + response);
+        //         this.$emit('appointment-retrieved', response);
+        //         console.log("Get Appointment: " + response);
 
         //     } catch (error) {
         //         this.errorMessage = error;
@@ -64,15 +64,15 @@ export default {
         //     }
         // },
 
-        // async createBooking() {
+        // async createAppointment() {
         //     try {
         //         this.$emit('submit');
         //         this.loading = true;
-        //         console.log(this.bookingData);
+        //         console.log(this.appointmentData);
 
-        //         const response = await apiService.createBooking(this.bookingData);
-        //         this.errorMessage = 'Booking created successfully';
-        //         console.log("Create Booking: " + response);
+        //         const response = await apiService.createAppointment(this.appointmentData);
+        //         this.errorMessage = 'Appointment created successfully';
+        //         console.log("Create Appointment: " + response);
 
         //     } catch (error) {
         //         this.errorMessage = error;

@@ -11,7 +11,7 @@
 
 		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
 
-		<CreateAppointment v-if="showCalendarUserDataComponent" :booking-data="bookingData" />
+		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" />
 
 	</div>
 </template>
@@ -65,7 +65,7 @@ export default {
 			return generateCalendar(this.currentDate);
 		},
 
-		bookingData() {
+		appointmentData() {
 			return {
 				name: this.userData.name,
 				surname: this.userData.surname,

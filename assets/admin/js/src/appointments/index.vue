@@ -24,7 +24,7 @@
       </table>
     </div>
 
-    <GetAllAppointments @updateBookings="handleUpdateAppointments" />
+    <GetAllAppointments @updateAppointments="handleUpdateAppointments" />
 
   </template>
 

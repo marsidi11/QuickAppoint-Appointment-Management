@@ -1,6 +1,6 @@
 {
-    "name": "user/booking_management",
-    "description": "Booking Management",
+    "name": "user/appointment_management",
+    "description": "Appointment Management",
     "type": "project",
     "license": "GPL",
     "authors": [

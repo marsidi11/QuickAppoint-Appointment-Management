@@ -40,7 +40,7 @@ const apiService = {
 		}
     },
 
-	async getBooking(bookingId) {
+	async getAppointment(appointmentId) {
 
 		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');
@@ -48,7 +48,7 @@ const apiService = {
 		}
 
 		try {
-			const response = await axios.get(`/wp-json/booking_management/v1/bookings?id=${bookingId}`, {
+			const response = await axios.get(`/wp-json/appointment_management/v1/appointments?id=${appointmentId}`, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},
@@ -60,7 +60,7 @@ const apiService = {
 		}
 	},
 
-	async createBooking(bookingData) {
+	async createAppointment(appointmentData) {
 
 		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
 			console.log('Nonce is not set');
@@ -68,7 +68,7 @@ const apiService = {
 		}
         // TODO : Check for better way to get the api url
 		try {
-			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', bookingData, {
+			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
 				headers: {
 					'X-WP-Nonce': window.wpApiSettings.nonce,
 				},

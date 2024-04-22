@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 
 // If uninstall is not called from WordPress, exit.

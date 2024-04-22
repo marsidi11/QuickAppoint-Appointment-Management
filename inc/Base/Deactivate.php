@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 
 namespace Inc\Base;

@@ -2,13 +2,13 @@
 
 /**
  * 
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  * 
- * Plugin Name: Booking Management
- * Description: This plugin allows you to manage bookings on your WordPress site.
+ * Plugin Name: Appointments Management
+ * Description: This plugin allows you to manage appointments on your WordPress site.
  * Version: 1.0.0
  * Author: Marsid Zyberi
- * Plugin URI: https://marketingon.al/plugins/booking_management
+ * Plugin URI: https://marketingon.al/plugins/appointment_management
  */
 
 // Check the script is being executed within the WordPress environment
@@ -26,16 +26,16 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) )
 
 
 // Activation and deactivation hooks
-function activate_booking_management() 
+function activate_appointment_management() 
 {
     Inc\Base\Activate::activate();
 }
-function deactivate_booking_management() 
+function deactivate_appointment_management() 
 {
     Inc\Base\Deactivate::deactivate();
 }
-register_activation_hook( __FILE__, 'activate_booking_management' ); // Activation
-register_deactivation_hook( __FILE__, 'deactivate_booking_management' ); // Deactivation
+register_activation_hook( __FILE__, 'activate_appointment_management' ); // Activation
+register_deactivation_hook( __FILE__, 'deactivate_appointment_management' ); // Deactivation
 
 
 // Initialize the core classes of the plugin

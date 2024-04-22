@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 namespace Inc\Pages;
 
@@ -43,10 +43,10 @@ class Admin extends BaseController
     {
         $this->pages = array(
             array(
-                'page_title' => 'Booking Management', 
-                'menu_title' => 'Booking', 
+                'page_title' => 'Appointment Management', 
+                'menu_title' => 'Appointment', 
                 'capability' => 'manage_options', 
-                'menu_slug' => 'booking_management', 
+                'menu_slug' => 'appointment_management', 
                 'callback' => array( $this->callbacks, 'adminDashboard' ), // Callback to the dashboard page
                 'icon_url' => $this->plugin_url . 'assets/img/admin_icon.png', 
                 'position' => 2
@@ -58,19 +58,19 @@ class Admin extends BaseController
     {
         $this->subpages = array(
             array(
-                'parent_slug' => 'booking_management', 
+                'parent_slug' => 'appointment_management', 
                 'page_title' => 'Settings', 
                 'menu_title' => 'Settings', 
                 'capability' => 'manage_options', 
-                'menu_slug' => 'booking_management_settings', 
+                'menu_slug' => 'appointment_management_settings', 
                 'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
             ),
             array(
-                'parent_slug' => 'booking_management', 
+                'parent_slug' => 'appointment_management', 
                 'page_title' => 'Custom Submenu', 
                 'menu_title' => 'Custom Submenu', 
                 'capability' => 'manage_options', 
-                'menu_slug' => 'booking_management_submenu', 
+                'menu_slug' => 'appointment_management_submenu', 
                 'callback' => function() { echo '<h1>Custom Submenu</h1>'; }
             )
         );
@@ -83,13 +83,13 @@ class Admin extends BaseController
 
             // Example Options Settings Page
             array(
-                'option_group' => 'booking_management_option_group',
+                'option_group' => 'appointment_management_option_group',
                 'option_name' => 'text_example',
-                'callback' => array( $this->callbacks, 'bookingManagementOptionsGroup' 
+                'callback' => array( $this->callbacks, 'appointmentManagementOptionsGroup' 
                 )
             ),
             array(
-                'option_group' => 'booking_management_option_group',
+                'option_group' => 'appointment_management_option_group',
                 'option_name' => 'first_name'
             ),
 
@@ -118,10 +118,10 @@ class Admin extends BaseController
 
             // Example Sections
             array(
-                'id' => 'booking_management_admin_index',
+                'id' => 'appointment_management_admin_index',
                 'title' => 'Settings Example',
-                'callback' => array( $this->callbacks, 'bookingManagementAdminSection' ),
-                'page' => 'booking_management_settings'
+                'callback' => array( $this->callbacks, 'appointmentManagementAdminSection' ),
+                'page' => 'appointment_management_settings'
             ),
 
             // Start Time and End Time sections
@@ -129,7 +129,7 @@ class Admin extends BaseController
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
                 'callback' => array( $this->callbacks, 'amAdminSection' ),
-                'page' => 'booking_management'
+                'page' => 'appointment_management'
             )
         );
 
@@ -146,9 +146,9 @@ class Admin extends BaseController
             array(
                 'id' => 'text_example',
                 'title' => 'Text Example',
-                'callback' => array( $this->callbacks, 'bookingManagementTextExample' ),
-                'page' => 'booking_management_settings',
-                'section' => 'booking_management_admin_index',
+                'callback' => array( $this->callbacks, 'appointmentManagementTextExample' ),
+                'page' => 'appointment_management_settings',
+                'section' => 'appointment_management_admin_index',
                 'args' => array(
                     'label_for' => 'text_example',
                     'class' => 'example-class'
@@ -157,9 +157,9 @@ class Admin extends BaseController
             array(
                 'id' => 'first_name',
                 'title' => 'First Name',
-                'callback' => array( $this->callbacks, 'bookingManagementFirstName' ),
-                'page' => 'booking_management_settings',
-                'section' => 'booking_management_admin_index',
+                'callback' => array( $this->callbacks, 'appointmentManagementFirstName' ),
+                'page' => 'appointment_management_settings',
+                'section' => 'appointment_management_admin_index',
                 'args' => array(
                     'label_for' => 'first_name',
                     'class' => 'example-class'
@@ -171,7 +171,7 @@ class Admin extends BaseController
                 'id' => 'start_time',
                 'title' => 'Start Time',
                 'callback' => array( $this->callbacks, 'amStartTime' ),
-                'page' => 'booking_management',
+                'page' => 'appointment_management',
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'start_time',
@@ -182,7 +182,7 @@ class Admin extends BaseController
                 'id' => 'end_time',
                 'title' => 'End Time',
                 'callback' => array( $this->callbacks, 'amEndTime' ),
-                'page' => 'booking_management',
+                'page' => 'appointment_management',
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'end_time',

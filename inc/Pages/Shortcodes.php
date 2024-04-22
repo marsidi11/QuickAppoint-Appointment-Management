@@ -1,22 +1,22 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 namespace Inc\Pages;
 
 use Inc\Base\BaseController;
 
 /**
- * It creates the shortcode [booking_formm] and displays the calendar.php template
+ * It creates the shortcode [appointment_formm] and displays the calendar.php template
  */
 class Shortcodes extends BaseController 
 {
     public function register() 
     {
-        add_shortcode( 'booking_formm', array( $this, 'booking_form' ) );
+        add_shortcode( 'appointment_formm', array( $this, 'appointment_form' ) );
     }
     
-    public function booking_form() 
+    public function appointment_form() 
     {
         ob_start(); 
         require_once( $this->plugin_path . 'templates/calendar.php' );

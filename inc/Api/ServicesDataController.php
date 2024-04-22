@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 namespace Inc\Api;
 
@@ -19,7 +19,7 @@ class ServicesDataController extends RestController
 
     protected function get_namespace() 
     {
-        return 'booking_management/v1';
+        return 'appointment_management/v1';
     }
 
     protected function get_base() 
@@ -74,9 +74,9 @@ class ServicesDataController extends RestController
 
         $query = "SELECT id, name, description, FLOOR(TIME_TO_SEC(duration)/60) as duration, price FROM $table_name";
 
-        $bookings = $wpdb->get_results($query);
+        $appointments = $wpdb->get_results($query);
 
-        return new \WP_REST_Response($bookings, 200);
+        return new \WP_REST_Response($appointments, 200);
     }
 
     public function post_service_data(\WP_REST_Request $request) 
@@ -86,12 +86,12 @@ class ServicesDataController extends RestController
             return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
         }
 
-        $booking_data = $request->get_json_params();
+        $appointment_data = $request->get_json_params();
 
         // Validate the appointment data
-        if (!isset($booking_data['name']) || !isset($booking_data['price']) || !isset($booking_data['duration'])) 
+        if (!isset($appointment_data['name']) || !isset($appointment_data['price']) || !isset($appointment_data['duration'])) 
         {
-            return new WP_Error('invalid_request', 'Invalid booking data', array('status' => 400));
+            return new WP_Error('invalid_request', 'Invalid appointment data', array('status' => 400));
         }
 
         // Insert the services data into the database
@@ -99,20 +99,20 @@ class ServicesDataController extends RestController
         $table_name = $wpdb->prefix . 'am_services';
 
         // Convert the [duration] to the right format
-        $minutes = $booking_data['duration'];
+        $minutes = $appointment_data['duration'];
         $hours = floor($minutes / 60);
         $minutes = ($minutes % 60);
         $time = sprintf("%02d:%02d:00", $hours, $minutes);
 
         $result = $wpdb->insert($table_name, array
         (
-            'name' => sanitize_text_field($booking_data['name']),
+            'name' => sanitize_text_field($appointment_data['name']),
 
-            'description' => sanitize_text_field($booking_data['description']),
+            'description' => sanitize_text_field($appointment_data['description']),
 
             'duration' => $time,
 
-            'price' => $booking_data['price'],
+            'price' => $appointment_data['price'],
         ));
 
         if ($result === false) 

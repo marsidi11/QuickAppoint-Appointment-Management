@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 namespace Inc\Api;
 
@@ -22,7 +22,7 @@ class AppointmentsDataController extends RestController
 
     protected function get_namespace() 
     {
-        return 'booking_management/v1';
+        return 'appointment_management/v1';
     }
 
     protected function get_base() 
@@ -65,7 +65,7 @@ class AppointmentsDataController extends RestController
 
     }
 
-    // TODO: Add custom endpoints to order bookings by date, by name, booked date, etc.
+    // TODO: Add custom endpoints to order appointments by date, by name, booked date, etc.
     // TODO: Show only upcoming appointments
     public function get_all_appointments(\WP_REST_Request $request) 
     {
@@ -76,7 +76,7 @@ class AppointmentsDataController extends RestController
         
         // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
-        $appointments_table = $wpdb->prefix . 'am_bookings';
+        $appointments_table = $wpdb->prefix . 'am_appointments';
         $services_table = $wpdb->prefix . 'am_services';
         $mapping_table = $wpdb->prefix . 'am_mapping';
 
@@ -94,29 +94,29 @@ class AppointmentsDataController extends RestController
             LIMIT $items_per_page OFFSET $offset
         ";
 
-        $bookings = $wpdb->get_results($query);
+        $appointments = $wpdb->get_results($query);
 
-        return new \WP_REST_Response($bookings, 200);
+        return new \WP_REST_Response($appointments, 200);
     }
 
 
     public function get_single_appointment(\WP_REST_Request $request) 
     {
-        // Get the booking ID from the request
-        $booking_id = $request->get_param('id');
+        // Get the appointment ID from the request
+        $appointment_id = $request->get_param('id');
 
-        // Get the booking data from the database
+        // Get the appointment data from the database
         global $wpdb;
-        $table_name = $wpdb->prefix . 'am_bookings';
-        $booking = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $booking_id");
+        $table_name = $wpdb->prefix . 'am_appointments';
+        $appointment = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $appointment_id");
 
-        // Check if the booking exists
-        if ($booking === null) 
+        // Check if the appointment exists
+        if ($appointment === null) 
         {
-            return new \WP_Error('not_found', 'Booking not found', array('status' => 404));
+            return new \WP_Error('not_found', 'Appointment not found', array('status' => 404));
         }
 
-        return new \WP_REST_Response($booking, 200);
+        return new \WP_REST_Response($appointment, 200);
     }
     
 
@@ -127,42 +127,42 @@ class AppointmentsDataController extends RestController
             return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
         }
 
-        // Get the booking data from the request
-        $booking_data = $request->get_json_params();
+        // Get the appointment data from the request
+        $appointment_data = $request->get_json_params();
 
         // Validate the appointment data
-        if (!isset($booking_data['name']) || !isset($booking_data['date'])) 
+        if (!isset($appointment_data['name']) || !isset($appointment_data['date'])) 
         {
-            return new \WP_Error('invalid_request', 'Invalid booking data', array('status' => 400));
+            return new \WP_Error('invalid_request', 'Invalid appointment data', array('status' => 400));
         }
 
         // Check for valid name (only letters and whitespace)
-        if (!preg_match("/^[a-zA-Z ]*$/", $booking_data['name'])) 
+        if (!preg_match("/^[a-zA-Z ]*$/", $appointment_data['name'])) 
         {
             return new \WP_Error('invalid_name', 'Name can only contain letters and whitespace', array('status' => 400));
         }
 
         // Check for valid date (YYYY-MM-DD format)
-        if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $booking_data['date'])) 
+        if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $appointment_data['date'])) 
         {
             return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
         }
 
         // Insert the apppointment data into the database
         global $wpdb;
-        $appointments_table = $wpdb->prefix . 'am_bookings';
+        $appointments_table = $wpdb->prefix . 'am_appointments';
         $mapping_table = $wpdb->prefix . 'am_mapping';
 
 
         $result = $wpdb->insert($appointments_table, array
         (
-            'name' => sanitize_text_field($booking_data['name']),
-            'surname' => sanitize_text_field($booking_data['surname']),
-            'phone' => sanitize_text_field($booking_data['phone']),
-            'email' => sanitize_email($booking_data['email']),
-            'date' => $booking_data['date'],
-            'startTime' => $booking_data['startTime'],
-            'endTime' => $booking_data['endTime']
+            'name' => sanitize_text_field($appointment_data['name']),
+            'surname' => sanitize_text_field($appointment_data['surname']),
+            'phone' => sanitize_text_field($appointment_data['phone']),
+            'email' => sanitize_email($appointment_data['email']),
+            'date' => $appointment_data['date'],
+            'startTime' => $appointment_data['startTime'],
+            'endTime' => $appointment_data['endTime']
         ));
 
         if ($result === false) 
@@ -170,11 +170,11 @@ class AppointmentsDataController extends RestController
             return new \WP_Error('db_insert_error', 'Could not insert appointment into the database', array('status' => 500));
         }
 
-        // Get the ID of the inserted booking
+        // Get the ID of the inserted appointment
         $appointment_id = $wpdb->insert_id;
 
         // Insert the services id and appointment id into the mapping table
-        foreach ($booking_data['service_id'] as $service_id) {
+        foreach ($appointment_data['service_id'] as $service_id) {
             $mapping_result = $wpdb->insert(
                 $mapping_table,
                 array(

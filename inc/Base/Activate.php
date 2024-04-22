@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 
 namespace Inc\Base;
@@ -10,7 +10,7 @@ class Activate {
     {
       global $wpdb;
       $charset_collate = $wpdb->get_charset_collate();
-      $appointments_table_name = $wpdb->prefix . 'am_bookings';
+      $appointments_table_name = $wpdb->prefix . 'am_appointments';
       $services_table_name = $wpdb->prefix . 'am_services';
       $mapping_table_name = $wpdb->prefix . 'am_mapping';
 
@@ -44,7 +44,7 @@ class Activate {
          id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
          appointment_id mediumint(9) NOT NULL,
          service_id mediumint(9) NOT NULL,
-         UNIQUE KEY unique_booking_service (appointment_id, service_id)
+         UNIQUE KEY unique_appointment_service (appointment_id, service_id)
       ) $charset_collate;";
 
 

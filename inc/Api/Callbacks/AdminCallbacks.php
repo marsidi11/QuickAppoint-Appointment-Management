@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BookingManagementPlugin
+ * @package AppointmentManagementPlugin
  */
 namespace Inc\Api\Callbacks;
 
@@ -12,10 +12,10 @@ use Inc\Base\BaseController;
  * Methods:
  * - adminDashboard: Returns the dashboard page.
  * - adminSettings: Returns the settings page.
- * - bookingManagementOptionsGroup: Returns the input as is. This can be used as a callback for register_setting.
- * - bookingManagementAdminSection: Echoes a string for the admin section.
- * - bookingManagementTextExample: Echoes an input field for a text example option.
- * - bookingManagementFirstName: Echoes an input field for a first name option.
+ * - appointmentManagementOptionsGroup: Returns the input as is. This can be used as a callback for register_setting.
+ * - appointmentManagementAdminSection: Echoes a string for the admin section.
+ * - appointmentManagementTextExample: Echoes an input field for a text example option.
+ * - appointmentManagementFirstName: Echoes an input field for a first name option.
  * 
  * Each method is intended to be used as a callback function in the WordPress settings API.
  */
@@ -34,7 +34,7 @@ class AdminCallbacks extends BaseController
     }
 
     // Register Custom Fields Options
-    public function bookingManagementOptionsGroup( $input ) 
+    public function appointmentManagementOptionsGroup( $input ) 
     {
         return $input;
     }
@@ -44,7 +44,7 @@ class AdminCallbacks extends BaseController
         return $input;
     }
 
-    public function bookingManagementAdminSection() 
+    public function appointmentManagementAdminSection() 
     {
         echo 'Check this example section!';
     }
@@ -55,13 +55,13 @@ class AdminCallbacks extends BaseController
     }
 
     // Example callback functions
-    public function bookingManagementTextExample() 
+    public function appointmentManagementTextExample() 
     {
         $value = esc_attr( get_option( 'text_example' ) );
         echo '<input type="text" class="regular-text" name="text_example" value="' . $value . '" placeholder="Write something here!">';
     }
 
-    public function bookingManagementFirstName() 
+    public function appointmentManagementFirstName() 
     {
         $value = esc_attr( get_option( 'first_name' ) );
         echo '<input type="text" class="regular-text" name="first_name" value="' . $value . '" placeholder="Write your first name here!">';
