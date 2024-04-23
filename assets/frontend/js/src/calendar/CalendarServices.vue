@@ -4,7 +4,7 @@
         <h2 class="calendar-services-header">Select a Service:</h2>
 
         <div v-for="service in services" :key="service.id" @click="selectService(service)">
-            <div class="service-box" :class="{ 'selected-service': selectedServices.includes(service.id) }">
+            <div class="service-box" :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
                 <p>{{ service.duration }} minutes</p>
@@ -47,11 +47,15 @@ export default {
 
         // Get selected services
         selectService(service) {
-            const index = this.selectedServices.indexOf(service.id);
+            const index = this.selectedServices.findIndex(selectedService => selectedService.id === service.id);
+            
             if (index > -1) {
                 this.selectedServices.splice(index, 1); // Remove the service ID from the array if it's already selected
             } else {
-                this.selectedServices.push(service.id); // Add the service ID to the array if it's not already selected
+                this.selectedServices.push({ 
+                    id: service.id, 
+                    duration: service.duration 
+                }); // Add the service ID and Duration to the array if it's not already selected
             }
             this.$emit('servicesSelected', this.selectedServices); // Emit the array of selected service IDs
         },

@@ -42,12 +42,15 @@ export default {
                 this.$emit('submit');
                 this.loading = true;
                 console.log(this.appointmentData);
+                
                 const response = await apiService.createAppointment(this.appointmentData);
-                // Handle the successful response, e.g., show a success message or update the component's data
+
                 this.errorMessage = 'Appointment created successfully';
                 console.log("Create Appointment: " + response);
+
             } catch (error) {
                 this.errorMessage = error;
+
             } finally {
                 this.loading = false;
             }

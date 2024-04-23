@@ -175,7 +175,7 @@ class Admin extends BaseController
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'open_time',
-                    'class' => 'example-class'
+                    'class' => 'select-time'
                 )
             ),
             array(
@@ -186,7 +186,7 @@ class Admin extends BaseController
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'close_time',
-                    'class' => 'example-class'
+                    'class' => 'select-time'
                 )
             )
         );

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { generateCalendar } from './CalendarUtils.js'; 
+import { generateCalendar, calculateEndTime } from './CalendarUtils.js'; 
 import CalendarHeader from './CalendarHeader.vue';
 import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
@@ -66,15 +66,20 @@ export default {
 		},
 
 		appointmentData() {
+			const service_ids = this.selectedServices.map(service => service.id);
+			const service_durations = this.selectedServices.map(service => service.duration);
+
+			const end_time = calculateEndTime(this.selectedTime, this.selectedDate, service_durations);
+
 			return {
 				name: this.userData.name,
 				surname: this.userData.surname,
 				phone: this.userData.phone,
 				email: this.userData.email,
 				date: this.selectedDate.toISOString().slice(0,10),
-				service_id: this.selectedServices,
+				service_id: service_ids,
 				startTime: `${this.selectedTime}:00`,
-				endTime: `${this.selectedTime}:00`,
+				endTime: end_time,
 			};
 		},
 	},
@@ -99,7 +104,7 @@ export default {
 		showCalendarTime(services) {
 			this.showCalendarTimeComponent = true;
 			this.selectedServices = services;
-			console.log("Service: " + this.selectedServices);
+			console.log("Services Data Passed: " + JSON.stringify(this.selectedServices, null, 2));
 		},
 
 		// Show the CalendarUserData component and Submit button when the time is selected

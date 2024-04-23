@@ -47,6 +47,7 @@ export function generateCalendar(currentDate) {
     return weeks;
 }
 
+
 // Check if the date is the current day
 export function isCurrentDay(date) {
     const today = new Date();
@@ -57,12 +58,14 @@ export function isCurrentDay(date) {
     );
 }
 
+
 // Check if a date is before today
 export function isPastDate(date) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return new Date(date).setHours(0, 0, 0, 0) < today;
 }
+
 
 // Check if the date is within the next x days from today
 export function isDateWithinNextXDays(date, x) {
@@ -77,6 +80,7 @@ export function isDateWithinNextXDays(date, x) {
     return date >= today && date <= maxDate;
 }
 
+
 // When the users clicks a date
 export function dayClicked(date) {
     console.log(date);
@@ -90,7 +94,34 @@ export function dayClicked(date) {
     }
 }
 
+
 export function isDateWithinAllowedRange(date) {
     // Check if the date is within the allowed range (today to the next 14 days)
     return isDateWithinNextXDays(date, 14);
+}
+
+
+// Calculate Duration of Appointment
+export function calculateEndTime(startTime, selectedDate, serviceDurations) {
+    // Parse the start time
+    const [startHours, startMinutes] = startTime.split(':').map(Number);
+
+    // Create a Date object for the start time
+    const startDateTime = new Date(selectedDate);
+    startDateTime.setHours(startHours);
+    startDateTime.setMinutes(startMinutes);
+    startDateTime.setSeconds(0);
+
+    // Calculate the total duration in minutes
+    const totalDurationMinutes = serviceDurations.reduce((sum, duration) => sum + Number(duration), 0);
+    
+    // Add the total duration minutes to the start time
+    const endDateTime = new Date(startDateTime.getTime() + totalDurationMinutes * 60000);
+
+    // Format the end time in 24-hour format
+    const endHours = String(endDateTime.getHours()).padStart(2, '0');
+    const endMinutes = String(endDateTime.getMinutes()).padStart(2, '0');
+    const formattedEndTime = `${endHours}:${endMinutes}:00`;
+
+    return formattedEndTime;
 }
