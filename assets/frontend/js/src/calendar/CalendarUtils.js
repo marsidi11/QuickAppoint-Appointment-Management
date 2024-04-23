@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * CalendarUtils.js
  * Functions for index.vue
@@ -102,26 +104,18 @@ export function isDateWithinAllowedRange(date) {
 
 
 // Calculate Duration of Appointment
-export function calculateEndTime(startTime, selectedDate, serviceDurations) {
-    // Parse the start time
-    const [startHours, startMinutes] = startTime.split(':').map(Number);
-
-    // Create a Date object for the start time
-    const startDateTime = new Date(selectedDate);
-    startDateTime.setHours(startHours);
-    startDateTime.setMinutes(startMinutes);
-    startDateTime.setSeconds(0);
+export function calculateEndTime(startTime, serviceDurations) {
+    // Create a moment object for the start time
+    const startMoment = moment(startTime, 'HH:mm');
 
     // Calculate the total duration in minutes
     const totalDurationMinutes = serviceDurations.reduce((sum, duration) => sum + Number(duration), 0);
-    
-    // Add the total duration minutes to the start time
-    const endDateTime = new Date(startDateTime.getTime() + totalDurationMinutes * 60000);
+
+    // Create a new moment object for the end time
+    const endMoment = moment(startMoment).add(totalDurationMinutes, 'minutes');
 
     // Format the end time in 24-hour format
-    const endHours = String(endDateTime.getHours()).padStart(2, '0');
-    const endMinutes = String(endDateTime.getMinutes()).padStart(2, '0');
-    const formattedEndTime = `${endHours}:${endMinutes}:00`;
+    const formattedEndTime = endMoment.format('HH:mm:ss');
 
     return formattedEndTime;
 }

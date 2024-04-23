@@ -69,7 +69,7 @@ export default {
 			const service_ids = this.selectedServices.map(service => service.id);
 			const service_durations = this.selectedServices.map(service => service.duration);
 
-			const end_time = calculateEndTime(this.selectedTime, this.selectedDate, service_durations);
+			const end_time = calculateEndTime(this.selectedTime, service_durations);
 
 			return {
 				name: this.userData.name,
