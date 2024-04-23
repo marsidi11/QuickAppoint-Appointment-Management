@@ -7,37 +7,28 @@ import moment from 'moment';
 
 // Generate Calendar
 export function generateCalendar(currentDate) {
-    const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const date = moment(currentDate).startOf('month');
     const days = [];
-    const firstDayOfMonth = (date.getDay() + 6) % 7;
+    const firstDayOfMonth = (date.day() + 6) % 7;
 
     // Add days from the previous month to the current calendar
     for (let i = firstDayOfMonth; i > 0; i--) {
-        const prevMonthDay = new Date(date);
-        prevMonthDay.setDate(prevMonthDay.getDate() - i);
-        days.unshift({ date: prevMonthDay });
+        days.unshift({ date: moment(date).subtract(i, 'days').toDate() });
     }
 
     // Add days of the current month
-    while (date.getMonth() === currentDate.getMonth()) {
-        days.push({ date: new Date(date) });
-        date.setDate(date.getDate() + 1);
+    while (date.month() === currentDate.getMonth()) {
+        days.push({ date: moment(date).toDate() });
+        date.add(1, 'days');
     }
 
     // Calculate the number of days to add from the next month
-    const lastDayOfMonth = days[days.length - 1].date.getDay();
-    let daysToAdd = 0;
-    
-    // If the last day of the month is not Sunday, add days from the next month
-    if (lastDayOfMonth !== 0) {
-        daysToAdd = 7 - lastDayOfMonth;
-    }
+    const lastDayOfMonth = moment(days[days.length - 1].date).day();
+    const daysToAdd = lastDayOfMonth !== 0 ? 7 - lastDayOfMonth : 0;
 
     // Add days from the next month to the current calendar
     for (let i = 1; i <= daysToAdd; i++) {
-        const nextMonthDay = new Date(days[days.length - 1].date);
-        nextMonthDay.setDate(nextMonthDay.getDate() + 1);
-        days.push({ date: nextMonthDay });
+        days.push({ date: moment(days[days.length - 1].date).add(i, 'days').toDate() });
     }
 
     // Group days into weeks
@@ -49,73 +40,39 @@ export function generateCalendar(currentDate) {
     return weeks;
 }
 
-
-// Check if the date is the current day
 export function isCurrentDay(date) {
-    const today = new Date();
-    return (
-        date.getDate() === today.getDate() &&
-        date.getMonth() === today.getMonth() &&
-        date.getFullYear() === today.getFullYear()
-    );
+    return moment().isSame(date, 'day');
 }
 
-
-// Check if a date is before today
 export function isPastDate(date) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return new Date(date).setHours(0, 0, 0, 0) < today;
+    return moment(date).isBefore(moment(), 'day');
 }
 
 
 // Check if the date is within the next x days from today
 export function isDateWithinNextXDays(date, x) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000
-
-    const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + x);
-
-    date = new Date(date);
-    date.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000
-
-    return date >= today && date <= maxDate;
+    const today = moment().startOf('day');
+    const maxDate = moment(today).add(x, 'days');
+    date = moment(date).startOf('day');
+    return date.isSameOrAfter(today) && date.isSameOrBefore(maxDate);
 }
 
 
-// When the users clicks a date
-export function dayClicked(date) {
-    console.log(date);
-    // TODO: Get numberOfDays option from the backend
-    let numberOfDays = 14; 
-    
-    // Check if the date is within the allowed range (today to the next number of days)
-    if (isDateWithinNextXDays(date, numberOfDays)) {
-        this.selectedDate = date;
-        // Optionally, you can emit an event or call a method to communicate with the PHP backend
-        this.$emit('dateSelected', date);
-    }
-}
-
-
+// Check if the date is within the allowed range (today to the next 14 days)
 export function isDateWithinAllowedRange(date) {
-    // Check if the date is within the allowed range (today to the next 14 days)
     return isDateWithinNextXDays(date, 14);
 }
 
 
 // Calculate End Time (Appointment Duration)
 export function calculateEndTime(startTime, serviceDurations) {
-    // Create a moment object for the start time
+
     const startMoment = moment(startTime, 'HH:mm');
 
     // Calculate the total duration in minutes
     const totalDurationMinutes = serviceDurations.reduce((sum, duration) => sum + Number(duration), 0);
 
-    // Create a new moment object for the end time
-    const endMoment = moment(startMoment).add(totalDurationMinutes, 'minutes');
-
-    // Format the end time in 24-hour format
+    const endMoment = startMoment.add(totalDurationMinutes, 'minutes');
     const formattedEndTime = endMoment.format('HH:mm:ss');
 
     return formattedEndTime;

@@ -118,10 +118,6 @@ export default {
 		storeUserData(userData) {
 			this.userData = userData;
 		},
-	},
-
-	mounted() {
-		console.log(window.yourPluginData);
 	}
 }
 </script>

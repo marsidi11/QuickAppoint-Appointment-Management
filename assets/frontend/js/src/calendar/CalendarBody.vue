@@ -11,14 +11,7 @@
                 class="calendar-day"
                 v-for="(day, dayIndex) in week"
                 :key="`${index}-${dayIndex}`"
-                :class="{
-                    'current-day': isCurrentDay(day.date),
-                    'prev-month-day': day.date.getMonth() < currentDate.getMonth(),
-                    'next-month-day': day.date.getMonth() > currentDate.getMonth(),
-                    'past-day': isPastDate(day.date),
-                    'clickable-day': !isPastDate(day.date) && isDateWithinAllowedRange(day.date),
-                    'selected-day': selectedDate && day.date.getTime() === selectedDate.getTime(),
-                }"
+                :class="dayClasses(day)"
                 @click="dayClicked(day.date)"
             >
                 {{ day.date.getDate() }}
@@ -30,7 +23,7 @@
 </template>
 
 <script>
-import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked } from './CalendarUtils.js';
+import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked, isDateWithinNextXDays } from './CalendarUtils.js';
 
 export default {
     name: 'CalendarBody',
@@ -59,7 +52,31 @@ export default {
         isCurrentDay,
         isPastDate,
         isDateWithinAllowedRange,
-        dayClicked,
+
+        dayClasses(day) {
+            return {
+                'current-day': this.isCurrentDay(day.date),
+                'prev-month-day': day.date.getMonth() < this.currentDate.getMonth(),
+                'next-month-day': day.date.getMonth() > this.currentDate.getMonth(),
+                'past-day': this.isPastDate(day.date),
+                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date) && day.date.getMonth() === this.currentDate.getMonth(),
+                'selected-day': this.selectedDate && day.date.getTime() === this.selectedDate.getTime(),
+            };
+        },
+
+        dayClicked(date) {
+            // TODO: Get numberOfDays option from the backend
+            let numberOfDays = 14;
+
+            if (isPastDate(date)) {
+                return null;
+            }
+            if (!isDateWithinNextXDays(date, numberOfDays)) {
+                return null;
+            }
+            this.selectedDate = date;
+            this.$emit('dateSelected', date);
+        }
     }
 }
 </script>
