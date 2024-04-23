@@ -17,6 +17,7 @@
                     'next-month-day': day.date.getMonth() > currentDate.getMonth(),
                     'past-day': isPastDate(day.date),
                     'clickable-day': !isPastDate(day.date) && isDateWithinAllowedRange(day.date),
+                    'selected-day': selectedDate && day.date.getTime() === selectedDate.getTime(),
                 }"
                 @click="dayClicked(day.date)"
             >

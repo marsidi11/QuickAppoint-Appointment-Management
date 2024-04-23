@@ -37,14 +37,26 @@
     @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14; 
 } */
 
+.clickable-day {
+    @apply cursor-pointer rounded-full sm:w-10 md:w-12 lg:w-14;
+}
+
+.clickable-day:hover {
+    @apply bg-blue-300 text-white
+}
+
+.selected-day {
+    @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14; 
+}
+
+.selected-day:hover {
+    @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14;
+}
+
 .prev-month-day, 
 .next-month-day,
 .past-day {
     @apply w-12 text-center text-gray-400 font-semibold;
-}
-
-.clickable-day {
-    @apply cursor-pointer hover:bg-blue-300 rounded-full sm:w-10 md:w-12 lg:w-14;
 }
 
 /* Frontend Calendar Services Style */
@@ -87,6 +99,13 @@
     @apply bg-gray-200 p-4 rounded-lg cursor-pointer text-center border border-gray-200 font-semibold transition-all duration-300 ease-in-out hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-500; 
 }
 
+.selected-time {
+    @apply bg-blue-500 text-white; 
+}
+
+.selected-time:hover {
+    @apply bg-blue-500 text-white;
+}
 
 /* Frontend Calendar User Data Style */
 

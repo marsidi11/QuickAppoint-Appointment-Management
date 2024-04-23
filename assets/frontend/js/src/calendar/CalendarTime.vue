@@ -7,7 +7,14 @@
         <div class="calendar-time-body">
             
             <div class="calendar-time-row" v-for="time in times" :key="time" @click="selectTime(time)">
-                <div class="calendar-time-item">{{ time }}</div>
+
+                <div 
+                    class="calendar-time-item"
+                    :class="{ 'selected-time': time === selectedTime }"
+                >
+                    {{ time }}
+                </div>
+
             </div>
 
         </div>

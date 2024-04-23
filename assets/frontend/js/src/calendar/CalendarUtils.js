@@ -86,7 +86,8 @@ export function isDateWithinNextXDays(date, x) {
 // When the users clicks a date
 export function dayClicked(date) {
     console.log(date);
-    let numberOfDays = 14;
+    // TODO: Get numberOfDays option from the backend
+    let numberOfDays = 14; 
     
     // Check if the date is within the allowed range (today to the next number of days)
     if (isDateWithinNextXDays(date, numberOfDays)) {
@@ -103,7 +104,7 @@ export function isDateWithinAllowedRange(date) {
 }
 
 
-// Calculate Duration of Appointment
+// Calculate End Time (Appointment Duration)
 export function calculateEndTime(startTime, serviceDurations) {
     // Create a moment object for the start time
     const startMoment = moment(startTime, 'HH:mm');
