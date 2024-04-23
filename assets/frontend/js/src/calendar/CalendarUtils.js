@@ -1,5 +1,6 @@
 /**
  * CalendarUtils.js
+ * Functions for index.vue
  */
 
 // Generate Calendar

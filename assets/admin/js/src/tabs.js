@@ -1,3 +1,6 @@
+/*
+* JavaScript Function to Switch Tabs in the Admin Panel Dashboard
+*/
 window.addEventListener('load', function()  {
 
     //tabs variables

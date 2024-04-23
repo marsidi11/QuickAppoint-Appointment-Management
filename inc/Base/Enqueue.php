@@ -49,6 +49,7 @@ class Enqueue extends BaseController
                 'nonce' => $nonce,
                 'apiUrlAppointments' => esc_url_raw( rest_url('appointment_management/v1/appointments') ),
                 'apiUrlServices' => esc_url_raw( rest_url('appointment_management/v1/services') ),
+                'apiUrlOptions' => esc_url_raw( rest_url('appointment_management/v1/options') ),
             );
         wp_localize_script('appointment_management-frontend-script', 'wpApiSettings', $data);
 

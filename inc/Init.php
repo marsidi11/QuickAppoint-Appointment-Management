@@ -22,6 +22,7 @@ final class Init {
             Pages\Shortcodes::class,
             Api\AppointmentsDataController::class,
             Api\ServicesDataController::class,
+            Api\CustomOptionsDataController::class,
         ];
     }
 

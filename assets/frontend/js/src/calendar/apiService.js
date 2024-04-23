@@ -61,6 +61,48 @@ const apiService = {
 			throw handleError(error);
 		}
 	},
+
+	// Get Open Time
+	async getOpenTime() {
+
+		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
+		try {
+			const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/open-time', {
+				headers: {
+					'X-WP-Nonce': window.wpApiSettings.nonce,
+				},
+			});
+			return response.data;
+
+		} catch (error) {
+			throw handleError(error);
+		}
+	},
+
+	// Get Close Time
+	async getCloseTime() {
+
+		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+			console.log('Nonce is not set');
+			return;
+		}
+
+		try {
+			const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/close-time', {
+				headers: {
+					'X-WP-Nonce': window.wpApiSettings.nonce,
+				},
+			});
+			return response.data;
+
+		} catch (error) {
+			throw handleError(error);
+		}
+	}
 };
 
 export default apiService;

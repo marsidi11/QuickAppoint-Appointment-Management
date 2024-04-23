@@ -93,16 +93,16 @@ class Admin extends BaseController
                 'option_name' => 'first_name'
             ),
 
-            // Start Time and End Time Options Dashboard Page
+            // Open Time and Close Time Options Dashboard Page
             array(
                 'option_group' => 'am_options_data',
-                'option_name' => 'start_time',
+                'option_name' => 'open_time',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             ),
             array(
                 'option_group' => 'am_options_data',
-                'option_name' => 'end_time',
+                'option_name' => 'close_time',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             )
@@ -124,7 +124,7 @@ class Admin extends BaseController
                 'page' => 'appointment_management_settings'
             ),
 
-            // Start Time and End Time sections
+            // Open Time and Close Time sections
             array(
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
@@ -166,26 +166,26 @@ class Admin extends BaseController
                 )
             ),
 
-            // Start Time and End Time Fields
+            // Open Time and Close Time Fields
             array(
-                'id' => 'start_time',
-                'title' => 'Start Time',
-                'callback' => array( $this->callbacks, 'amStartTime' ),
+                'id' => 'open_time',
+                'title' => 'Open Time',
+                'callback' => array( $this->callbacks, 'amOpenTime' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
                 'args' => array(
-                    'label_for' => 'start_time',
+                    'label_for' => 'open_time',
                     'class' => 'example-class'
                 )
             ),
             array(
-                'id' => 'end_time',
-                'title' => 'End Time',
-                'callback' => array( $this->callbacks, 'amEndTime' ),
+                'id' => 'close_time',
+                'title' => 'Close Time',
+                'callback' => array( $this->callbacks, 'amCloseTime' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
                 'args' => array(
-                    'label_for' => 'end_time',
+                    'label_for' => 'close_time',
                     'class' => 'example-class'
                 )
             )

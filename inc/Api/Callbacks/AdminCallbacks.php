@@ -68,15 +68,15 @@ class AdminCallbacks extends BaseController
     }
 
     // Settings callback functions
-    public function amStartTime() 
+    public function amOpenTime() 
     {
-        $value = esc_attr( get_option( 'start_time', '09:00' ) );
-        echo '<input type="time" class="regular-text" name="start_time" value="' . $value . '" placeholder="Select start time">';
+        $value = esc_attr( get_option( 'open_time', '09:00' ) );
+        echo '<input type="time" class="regular-text" name="open_time" value="' . $value . '" placeholder="Select start time">';
     }
 
-    public function amEndTime() 
+    public function amCloseTime() 
     {
-        $value = esc_attr( get_option( 'end_time', '17:00' ) );
-        echo '<input type="time" class="regular-text" name="end_time" value="' . $value . '" placeholder="Select end time">';
+        $value = esc_attr( get_option( 'close_time', '17:00' ) );
+        echo '<input type="time" class="regular-text" name="close_time" value="' . $value . '" placeholder="Select close time">';
     }
 }

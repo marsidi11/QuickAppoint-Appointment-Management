@@ -66,7 +66,7 @@ const apiService = {
 			console.log('Nonce is not set');
 			return;
 		}
-        // TODO : Check for better way to get the api url
+
 		try {
 			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
 				headers: {
