@@ -3,7 +3,7 @@
 
 		<CalendarHeader :currentMonth="currentMonth" @prev-month="prevMonth" @next-month="nextMonth" />
 
-		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices" />
+		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices"  @changeToNextMonth="nextMonth" @changeToPrevMonth="prevMonth" />
 
 		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @servicesSelected="showCalendarTime" />
 

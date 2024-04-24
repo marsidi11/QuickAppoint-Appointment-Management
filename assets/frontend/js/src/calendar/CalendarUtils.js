@@ -12,8 +12,8 @@ export function generateCalendar(currentDate) {
     const firstDayOfMonth = (date.day() + 6) % 7;
 
     // Add days from the previous month to the current calendar
-    for (let i = firstDayOfMonth; i > 0; i--) {
-        days.unshift({ date: moment(date).subtract(i, 'days').toDate() });
+    for (let i = 0; i < firstDayOfMonth; i++) {
+        days.unshift({ date: moment(date).subtract(i + 1, 'days').toDate() });
     }
 
     // Add days of the current month
