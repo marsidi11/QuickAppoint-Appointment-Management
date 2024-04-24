@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked, isDateWithinNextXDays } from './CalendarUtils.js';
-import { getDatesRange } from './apiService';
+import { isCurrentDay, isPastDate, isDateWithinAllowedRange, isOpenDay, dayClicked, isDateWithinNextXDays } from './CalendarUtils.js';
+import { getDatesRange, getOpenDays } from './apiService';
 
 export default {
     name: 'CalendarBody',
@@ -33,6 +33,7 @@ export default {
         return {
             selectedDate: null,
             datesRange: null, 
+            openDays: [],
         };
     },
 
@@ -54,6 +55,7 @@ export default {
         isCurrentDay,
         isPastDate,
         isDateWithinAllowedRange,
+        isOpenDay,
 
         async fetchDatesRange() {
             try {
@@ -66,19 +68,29 @@ export default {
             }
         },
 
+        async fetchOpenDays() {
+            try {
+                const response = await getOpenDays();
+                console.log("Get Open Days: ", JSON.stringify(response, null, 2));
+                this.openDays = response; // Set openDays to response (days when the business is open)
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
+        },
+
         dayClasses(day) {
             return {
                 'current-day': this.isCurrentDay(day.date),
                 'prev-month-day': day.date.getMonth() < this.currentDate.getMonth(),
                 'next-month-day': day.date.getMonth() > this.currentDate.getMonth(),
                 'past-day': this.isPastDate(day.date),
-                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date, this.datesRange) && day.date.getMonth() === this.currentDate.getMonth(),
+                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date, this.datesRange) && day.date.getMonth() === this.currentDate.getMonth() && this.isOpenDay(day.date, this.openDays),
                 'selected-day': this.selectedDate && day.date.getTime() === this.selectedDate.getTime(),
             };
         },
 
         dayClicked(date) {
-            // TODO: Get numberOfDays option from the backend
             let numberOfDays = this.datesRange;
 
             if (isPastDate(date)) {
@@ -87,14 +99,18 @@ export default {
             if (!isDateWithinNextXDays(date, numberOfDays)) {
                 return null;
             }
+            if (!isOpenDay(date, this.openDays)) {
+                return null;
+            }
             this.selectedDate = date;
             this.$emit('dateSelected', date);
         }
     },
 
-    // TODO: Call fetchDatesRange() method when index.vue is created
+    // TODO: Call methods when index.vue is created
     created() {
         this.fetchDatesRange();
+        this.fetchOpenDays();
     }
 }
 </script>

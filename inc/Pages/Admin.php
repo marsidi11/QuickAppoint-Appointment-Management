@@ -181,7 +181,7 @@ class Admin extends BaseController
             // Open Time, Close Time, Allowed Dates Range - Fields
             array(
                 'id' => 'open_time',
-                'title' => 'Open Time',
+                'title' => __('Open Time', 'appointment-management'),
                 'callback' => array( $this->callbacks, 'amOpenTime' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
@@ -192,7 +192,7 @@ class Admin extends BaseController
             ),
             array(
                 'id' => 'close_time',
-                'title' => 'Close Time',
+                'title' => __('Close Time', 'appointment-management'),
                 'callback' => array( $this->callbacks, 'amCloseTime' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
@@ -203,7 +203,7 @@ class Admin extends BaseController
             ),
             array(
                 'id' => 'dates_range',
-                'title' => 'Allowed Bookings Date Range',
+                'title' => __('Allowed Bookings Date Range', 'appointment-management'),
                 'callback' => array( $this->callbacks, 'amDatesRange' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
@@ -214,7 +214,7 @@ class Admin extends BaseController
             ),
             array(
                 'id' => 'open_days',
-                'title' => 'Open Days',
+                'title' => __('Open Days', 'appointment-management'),
                 'callback' => array( $this->callbacks, 'amOpenDays' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',

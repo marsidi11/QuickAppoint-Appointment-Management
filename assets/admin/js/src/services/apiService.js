@@ -18,15 +18,21 @@ function handleError(error) {
 	}
 }
 
+// Check if API Settings are set
+function checkApiSettings() {
+	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+		console.log('Nonce is not set');
+		return false;
+	}
+	return true;
+}
+
 // API service module
 const apiService = {
 
 	async createService(serviceData) {
 
-		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+		if (!checkApiSettings()) return;
 
 		try {
 			const response = await axios.post(window.wpApiSettings.apiUrlServices + '/create', serviceData, {
@@ -42,10 +48,7 @@ const apiService = {
 
 	async getServices() { 
 
-        if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+        if (!checkApiSettings()) return;
 
         try {
 			const response = await axios.get(window.wpApiSettings.apiUrlServices, {
@@ -62,10 +65,7 @@ const apiService = {
 
 	async deleteService(serviceId) {
 
-		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+		if (!checkApiSettings()) return;
 
 		try {
 			const response = await axios.delete(window.wpApiSettings.apiUrlServices + '/delete/' + serviceId, {

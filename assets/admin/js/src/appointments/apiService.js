@@ -18,14 +18,20 @@ function handleError(error) {
 	}
 }
 
+// Check if API Settings are set
+function checkApiSettings() {
+	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+		console.log('Nonce is not set');
+		return false;
+	}
+	return true;
+}
+
 const apiService = {
 	
     async getAllAppointments(page) { 
 
-        if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+        if (!checkApiSettings()) return;
 
         try {
 			const response = await axios.get(`${window.wpApiSettings.apiUrlAppointments}?page=${page}`, {
@@ -42,10 +48,7 @@ const apiService = {
 
 	async getAppointment(appointmentId) {
 
-		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+		if (!checkApiSettings()) return;
 
 		try {
 			const response = await axios.get(`/wp-json/appointment_management/v1/appointments?id=${appointmentId}`, {
@@ -62,10 +65,7 @@ const apiService = {
 
 	async createAppointment(appointmentData) {
 
-		if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-			console.log('Nonce is not set');
-			return;
-		}
+		if (!checkApiSettings()) return;
 
 		try {
 			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {

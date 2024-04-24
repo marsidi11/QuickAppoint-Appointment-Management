@@ -66,6 +66,12 @@ export function isDateWithinAllowedRange(date, x) {
     return isDateWithinNextXDays(date, x);
 }
 
+// Check if the day is set open by admin
+export function isOpenDay(currentDate, openDays) {
+    const currentDay = moment(currentDate).format('dddd');
+    const lowercaseDaysArray = openDays.map(day => day.toLowerCase());
+    return lowercaseDaysArray.includes(currentDay.toLowerCase());
+}
 
 // Calculate End Time (Appointment Duration)
 export function calculateEndTime(startTime, serviceDurations) {

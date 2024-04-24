@@ -90,16 +90,17 @@ class AdminCallbacks extends BaseController
     {
         $value = get_option('open_days', array());
         $days = array(
-            'monday'    => __('Monday', 'your-textdomain'),
-            'tuesday'   => __('Tuesday', 'your-textdomain'),
-            'wednesday' => __('Wednesday', 'your-textdomain'),
-            'thursday'  => __('Thursday', 'your-textdomain'),
-            'friday'    => __('Friday', 'your-textdomain'),
-            'saturday'  => __('Saturday', 'your-textdomain'),
-            'sunday'    => __('Sunday', 'your-textdomain'),
+            'monday'    => __('Monday', 'appointment-management'),
+            'tuesday'   => __('Tuesday', 'appointment-management'),
+            'wednesday' => __('Wednesday', 'appointment-management'),
+            'thursday'  => __('Thursday', 'appointment-management'),
+            'friday'    => __('Friday', 'appointment-management'),
+            'saturday'  => __('Saturday', 'appointment-management'),
+            'sunday'    => __('Sunday', 'appointment-management'),
         );
 
-        foreach ($days as $day_value => $day_label) {
+        foreach ($days as $day_value => $day_label) 
+        {
             $checked = in_array($day_value, $value) ? 'checked="checked"' : '';
             echo '<label><input type="checkbox" name="open_days[]" value="' . esc_attr($day_value) . '" ' . $checked . '> ' . esc_html($day_label) . '</label><br>';
         }

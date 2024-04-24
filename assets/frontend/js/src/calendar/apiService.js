@@ -4,6 +4,7 @@
 import axios from 'axios';
 
 // Helper function to handle errors
+// TODO: Add more error handling for all apiService functions
 function handleError(error) {
 	console.error('Error:', error);
 
@@ -21,13 +22,19 @@ function handleError(error) {
 	}
 }
 
+// Check if API Settings are set
+function checkApiSettings() {
+	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+		console.log('Nonce is not set');
+		return false;
+	}
+	return true;
+}
+
 // Create Appointment
 export async function createAppointment(appointmentData) {
 
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-		console.log('Nonce is not set');
-		return;
-	}
+	if (!checkApiSettings()) return;
 
 	try {
 		const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
@@ -44,10 +51,7 @@ export async function createAppointment(appointmentData) {
 // Get Services
 export async function getServices() {
 
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-		console.log('Nonce is not set');
-		return;
-	}
+	if (!checkApiSettings()) return;
 
 	try {
 		const response = await axios.get(window.wpApiSettings.apiUrlServices, {
@@ -65,10 +69,7 @@ export async function getServices() {
 // Get Open Time
 export async function getOpenTime() {
 
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-		console.log('Nonce is not set');
-		return;
-	}
+	if (!checkApiSettings()) return;
 
 	try {
 		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/open-time', {
@@ -86,10 +87,7 @@ export async function getOpenTime() {
 // Get Close Time
 export async function getCloseTime() {
 
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-		console.log('Nonce is not set');
-		return;
-	}
+	if (!checkApiSettings()) return;
 
 	try {
 		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/close-time', {
@@ -107,13 +105,28 @@ export async function getCloseTime() {
 // Get Dates Range To Allow Bookings
 export async function getDatesRange() {
 
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
-		console.log('Nonce is not set');
-		return;
-	}
+	if (!checkApiSettings()) return;
 
 	try {
 		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/dates-range', {
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings.nonce,
+			},
+		});
+		return response.data;
+
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
+// Get Open Days
+export async function getOpenDays() {
+
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/open-days', {
 			headers: {
 				'X-WP-Nonce': window.wpApiSettings.nonce,
 			},
