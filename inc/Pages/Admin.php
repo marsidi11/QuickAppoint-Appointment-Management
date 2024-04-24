@@ -93,7 +93,7 @@ class Admin extends BaseController
                 'option_name' => 'first_name'
             ),
 
-            // Open Time, Close Time, Allowed Dates Range - Options Dashboard Page
+            // Open Time, Close Time, Allowed Dates Range, Open Days - Options Dashboard Page
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'open_time',
@@ -109,6 +109,12 @@ class Admin extends BaseController
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'dates_range',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
+            ),
+            array(
+                'option_group' => 'am_options_data',
+                'option_name' => 'open_days',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             )
@@ -130,7 +136,7 @@ class Admin extends BaseController
                 'page' => 'appointment_management_settings'
             ),
 
-            // Open Time, Close Time, Allowed Dates Range - Sections
+            // Open Time, Close Time, Allowed Dates Range, Open Days - Sections
             array(
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
@@ -203,6 +209,17 @@ class Admin extends BaseController
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'dates_range',
+                    'class' => 'select-allowed-dates'
+                )
+            ),
+            array(
+                'id' => 'open_days',
+                'title' => 'Open Days',
+                'callback' => array( $this->callbacks, 'amOpenDays' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'open_days',
                     'class' => 'select-allowed-dates'
                 )
             )
