@@ -30,15 +30,15 @@
 }
 
 .calendar-day {
-    @apply w-12 p-2 text-center text-gray-500 font-semibold sm:w-10 md:w-12 lg:w-14 cursor-default;
+    @apply w-12 p-2 text-center text-gray-400 font-semibold sm:w-10 md:w-12 lg:w-14 cursor-default;
 }
 
-/* .current-day {
-    @apply bg-blue-500 text-white rounded-full sm:w-10 md:w-12 lg:w-14; 
-} */
-
 .clickable-day {
-    @apply cursor-pointer rounded-full sm:w-10 md:w-12 lg:w-14;
+    @apply cursor-pointer text-gray-600 rounded-full sm:w-10 md:w-12 lg:w-14;
+}
+
+.current-day {
+    @apply text-green-600 font-bold; 
 }
 
 .clickable-day:hover {

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import apiService from './apiService';
+import { getOpenTime, getCloseTime } from './apiService';
 
 export default {
     name: 'CalendarTime',
@@ -39,9 +39,9 @@ export default {
     methods: {
 
         // Get Open Time
-        async getOpenTime() {
+        async fetchOpenTime() {
             try {
-                const response = await apiService.getOpenTime();
+                const response = await getOpenTime();
                 console.log("Get Open Time: ", JSON.stringify(response, null, 2));
                 return response;
 
@@ -51,9 +51,9 @@ export default {
         },
 
         // Get Close Time
-        async getCloseTime() {
+        async fetchCloseTime() {
             try {
-                const response = await apiService.getCloseTime();
+                const response = await getCloseTime();
                 console.log("Get Close Time: ", JSON.stringify(response, null, 2));
                 return response;
 
@@ -64,8 +64,8 @@ export default {
 
         // Generate Times from Open Time to Close Time
         async generateTimes() {
-            const openTimeString = await this.getOpenTime();
-            const closeTimeString = await this.getCloseTime();
+            const openTimeString = await this.fetchOpenTime();
+            const closeTimeString = await this.fetchCloseTime();
 
             const openTimeParts = openTimeString.split(':').map(Number);
             const closeTimeParts = closeTimeString.split(':').map(Number);
@@ -88,7 +88,6 @@ export default {
     },
 
     // TODO: Call generateTimes() method when index.vue is created
-    // Call generateTimes() method when component is created
     created() {
         this.generateTimes();
     },

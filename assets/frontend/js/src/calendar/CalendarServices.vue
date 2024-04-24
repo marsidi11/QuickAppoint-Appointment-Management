@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import apiService from './apiService.js';
+import { getServices } from './apiService.js';
 
 export default {
     name: 'CalendarServices',
@@ -34,9 +34,9 @@ export default {
     methods: {
 
         // Display services on frontend
-        async getServices() {
+        async fetchServices() {
             try {
-                const response = await apiService.getServices();
+                const response = await getServices();
                 console.log("Get All Services: ", JSON.stringify(response, null, 2));
                 this.services = response;
 
@@ -62,10 +62,10 @@ export default {
         
     },
 
-    // TODO: Call getServices() method when index.vue is created
-    // Call getServices() method when component is created
+    // TODO: Call fetchServices() method when index.vue is created
+    // Call fetchServices() method when component is created
     created() {
-        this.getServices();
+        this.fetchServices();
     },
 };
 </script>

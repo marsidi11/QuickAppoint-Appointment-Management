@@ -93,7 +93,7 @@ class Admin extends BaseController
                 'option_name' => 'first_name'
             ),
 
-            // Open Time and Close Time Options Dashboard Page
+            // Open Time, Close Time, Allowed Dates Range - Options Dashboard Page
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'open_time',
@@ -103,6 +103,12 @@ class Admin extends BaseController
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'close_time',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
+            ),
+            array(
+                'option_group' => 'am_options_data',
+                'option_name' => 'dates_range',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             )
@@ -124,7 +130,7 @@ class Admin extends BaseController
                 'page' => 'appointment_management_settings'
             ),
 
-            // Open Time and Close Time sections
+            // Open Time, Close Time, Allowed Dates Range - Sections
             array(
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
@@ -166,7 +172,7 @@ class Admin extends BaseController
                 )
             ),
 
-            // Open Time and Close Time Fields
+            // Open Time, Close Time, Allowed Dates Range - Fields
             array(
                 'id' => 'open_time',
                 'title' => 'Open Time',
@@ -187,6 +193,17 @@ class Admin extends BaseController
                 'args' => array(
                     'label_for' => 'close_time',
                     'class' => 'select-time'
+                )
+            ),
+            array(
+                'id' => 'dates_range',
+                'title' => 'Allowed Bookings Date Range',
+                'callback' => array( $this->callbacks, 'amDatesRange' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'dates_range',
+                    'class' => 'select-allowed-dates'
                 )
             )
         );

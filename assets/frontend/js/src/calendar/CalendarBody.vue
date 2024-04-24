@@ -24,6 +24,7 @@
 
 <script>
 import { isCurrentDay, isPastDate, isDateWithinAllowedRange, dayClicked, isDateWithinNextXDays } from './CalendarUtils.js';
+import { getDatesRange } from './apiService';
 
 export default {
     name: 'CalendarBody',
@@ -31,6 +32,7 @@ export default {
     data() {
         return {
             selectedDate: null,
+            datesRange: null, 
         };
     },
 
@@ -53,20 +55,31 @@ export default {
         isPastDate,
         isDateWithinAllowedRange,
 
+        async fetchDatesRange() {
+            try {
+                const response = await getDatesRange();
+                console.log("Get Dates Range: ", JSON.stringify(response, null, 2));
+                this.datesRange = response; // Set datesRange to response (allowed next x booking days)
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
+        },
+
         dayClasses(day) {
             return {
                 'current-day': this.isCurrentDay(day.date),
                 'prev-month-day': day.date.getMonth() < this.currentDate.getMonth(),
                 'next-month-day': day.date.getMonth() > this.currentDate.getMonth(),
                 'past-day': this.isPastDate(day.date),
-                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date) && day.date.getMonth() === this.currentDate.getMonth(),
+                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date, this.datesRange) && day.date.getMonth() === this.currentDate.getMonth(),
                 'selected-day': this.selectedDate && day.date.getTime() === this.selectedDate.getTime(),
             };
         },
 
         dayClicked(date) {
             // TODO: Get numberOfDays option from the backend
-            let numberOfDays = 14;
+            let numberOfDays = this.datesRange;
 
             if (isPastDate(date)) {
                 return null;
@@ -77,6 +90,11 @@ export default {
             this.selectedDate = date;
             this.$emit('dateSelected', date);
         }
+    },
+
+    // TODO: Call fetchDatesRange() method when index.vue is created
+    created() {
+        this.fetchDatesRange();
     }
 }
 </script>

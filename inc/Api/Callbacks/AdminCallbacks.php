@@ -79,4 +79,10 @@ class AdminCallbacks extends BaseController
         $value = esc_attr( get_option( 'close_time', '17:00' ) );
         echo '<input type="time" class="regular-text" name="close_time" value="' . $value . '" placeholder="Select close time">';
     }
+
+    public function amDatesRange() 
+    {
+        $value = esc_attr( get_option( 'dates_range', '21' ) );
+        echo '<input type="text" class="regular-text" name="dates_range" value="' . $value . '" placeholder="Dates Range to Allow Bookings">';
+    }
 }

@@ -23,12 +23,15 @@ export function generateCalendar(currentDate) {
     }
 
     // Calculate the number of days to add from the next month
-    const lastDayOfMonth = moment(days[days.length - 1].date).day();
-    const daysToAdd = lastDayOfMonth !== 0 ? 7 - lastDayOfMonth : 0;
+    const lastDayOfMonth = moment(days[days.length - 1].date);
+    let daysToAdd = 0;
+    if (lastDayOfMonth.day() !== 0) { // If the last day of the month is not a Sunday
+        daysToAdd = 7 - lastDayOfMonth.day();
+    }
 
     // Add days from the next month to the current calendar
     for (let i = 1; i <= daysToAdd; i++) {
-        days.push({ date: moment(days[days.length - 1].date).add(i, 'days').toDate() });
+        days.push({ date: lastDayOfMonth.clone().add(i, 'days').toDate() });
     }
 
     // Group days into weeks
@@ -59,8 +62,8 @@ export function isDateWithinNextXDays(date, x) {
 
 
 // Check if the date is within the allowed range (today to the next 14 days)
-export function isDateWithinAllowedRange(date) {
-    return isDateWithinNextXDays(date, 14);
+export function isDateWithinAllowedRange(date, x) {
+    return isDateWithinNextXDays(date, x);
 }
 
 
