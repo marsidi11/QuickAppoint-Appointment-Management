@@ -123,7 +123,7 @@ class ServicesDataController extends RestController
         return new \WP_REST_Response('Service created successfully', 201);
         
     }
-
+    // TODO: When a service is deleted, all appointments that have that service should are also be deleted. Find a way to fix this.
     public function delete_service_data(\WP_REST_Request $request) 
     {
         if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 

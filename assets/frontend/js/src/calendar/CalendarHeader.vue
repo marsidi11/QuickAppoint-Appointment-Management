@@ -1,4 +1,5 @@
 <template>
+    <button class="reset-month" @click="resetMonth">View Current Date</button>
     <div class="calendar-header">
         <button class="prev-month-icon" @click="prevMonth">&lt;</button>
         <h2 class="current-month">{{ currentMonth }}</h2>
@@ -16,6 +17,9 @@ export default {
         }
     },
     methods: {
+        resetMonth() {
+            this.$emit('reset-month');
+        },
         prevMonth() {
             this.$emit('prev-month');
         },

@@ -1,7 +1,7 @@
 <template>
 	<div class="calendar-container">
 
-		<CalendarHeader :currentMonth="currentMonth" @prev-month="prevMonth" @next-month="nextMonth" />
+		<CalendarHeader :currentMonth="currentMonth" @reset-month="resetMonth" @prev-month="prevMonth" @next-month="nextMonth" />
 
 		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices"  @changeToNextMonth="nextMonth" @changeToPrevMonth="prevMonth" />
 
@@ -85,6 +85,10 @@ export default {
 	},
 
 	methods: {
+		resetMonth() {
+			this.currentDate = new Date();
+		},
+
 		prevMonth() {
 			this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1);
 		},

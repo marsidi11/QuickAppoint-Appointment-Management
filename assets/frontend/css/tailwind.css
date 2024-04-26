@@ -8,6 +8,12 @@
     @apply bg-gray-300 p-4 sm:p-6 md:p-8 lg:p-10 rounded-md shadow-md;
 }
 
+/* Frontend Calendar Header Style */
+
+.reset-month {
+    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 mb-4 px-4 rounded transition-colors duration-300 block mx-auto;
+}
+
 .calendar-header {
     @apply flex items-center justify-between mb-4 sm:flex-row;
 }
