@@ -1,9 +1,9 @@
 <template>
 	<div class="calendar-container">
 
-		<CalendarHeader :currentMonth="currentMonth" @reset-month="resetMonth" @prev-month="prevMonth" @next-month="nextMonth" />
+		<CalendarHeader v-if="showCalendarHeaderComponent" :currentMonth="currentMonth" @reset-month="resetMonth" @prev-month="prevMonth" @next-month="nextMonth" />
 
-		<CalendarBody :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices"  @changeToNextMonth="nextMonth" @changeToPrevMonth="prevMonth" />
+		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices"  @next-month="nextMonth" @prev-month="prevMonth" />
 
 		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @servicesSelected="showCalendarTime" />
 
@@ -43,6 +43,8 @@ export default {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
 
+			showCalendarHeaderComponent: true,
+			showCalendarBodyComponent: true,
 			showCalendarServicesComponent: false,
 			showCalendarTimeComponent: false,
 			showCalendarUserDataComponent: false,

@@ -20,6 +20,11 @@
         </div>
 
     </div>
+    
+    <div class="calendar-nav">
+        <button class="nav-next">Next</button>
+    </div>
+
 </template>
 
 <script>
@@ -104,18 +109,18 @@ export default {
             }
             // TODO: When user clicks on a allwed date, and the date is the next month, the calendar should change to the next month
             this.selectedDate = date;
-            this.$emit('dateSelected', date);
+            this.$emit('date-selected', date);
 
             // If the selected date is in the next month, emit an event
             if (date.getMonth() > this.currentDate.getMonth() ||
                 (date.getMonth() === 0 && this.currentDate.getMonth() === 11)) { // handle December to January transition
-                this.$emit('changeToNextMonth');
+                this.$emit('next-month');
             }
 
             // If the selected date is in the previous month, emit an event
             if (date.getMonth() < this.currentDate.getMonth() ||
                 (date.getMonth() === 11 && this.currentDate.getMonth() === 0)) { // handle January to December transition
-                this.$emit('changeToPrevMonth');
+                this.$emit('prev-month');
             }
         }
     },

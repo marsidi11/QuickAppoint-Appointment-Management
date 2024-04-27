@@ -1,5 +1,8 @@
 <template>
-    <button class="button-appointment" @click="createAppointment">Submit</button>
+    <div class="calendar-nav">
+        <button class="nav-previous">Go Back</button>
+        <button class="button-appointment" @click="createAppointment">Submit</button>
+    </div>
     <div v-if="loading" class="loading-message">Loading...</div>
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 </template>

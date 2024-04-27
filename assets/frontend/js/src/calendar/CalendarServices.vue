@@ -15,6 +15,12 @@
         <div v-if="errorMessage">{{ errorMessage }}</div>
         
     </div>
+
+    <div class="calendar-nav">
+        <button class="nav-previous">Go Back</button>
+        <button class="nav-next">Next</button>
+    </div>
+
 </template>
 
 <script>

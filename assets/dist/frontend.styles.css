@@ -574,8 +574,16 @@ video {
   margin-inline-end: 0.5rem;
 }
 
+.mr-auto {
+  margin-right: auto;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
 }
 
 .mt-4 {
@@ -1485,7 +1493,38 @@ video {
   }
 }
 
-/* Submit Button */
+/* Navigation Buttons */
+
+.calendar-nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-previous,
+.nav-next {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
+.nav-previous {
+  margin-right: auto;
+}
+
+.nav-previous:hover {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+
+.nav-next:hover {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity));
+}
 
 .button-appointment {
   margin-top: 1.25rem;
