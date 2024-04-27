@@ -22,8 +22,9 @@
     </div>
     
     <div class="calendar-nav">
-        <button class="nav-next">Next</button>
+        <button class="nav-next" @click="nextClicked">Next</button>
     </div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 </template>
 
@@ -39,6 +40,7 @@ export default {
             selectedDate: null,
             datesRange: null, 
             openDays: [],
+            errorMessage: null,
         };
     },
 
@@ -122,7 +124,15 @@ export default {
                 (date.getMonth() === 11 && this.currentDate.getMonth() === 0)) { // handle January to December transition
                 this.$emit('prev-month');
             }
-        }
+        },
+
+        nextClicked() { // Emit an event when the Next button is clicked
+            if (this.selectedDate !== null) {
+                this.$emit('next-clicked');
+            } else {
+                this.errorMessage = 'Please select a date';
+            }
+        },
     },
 
     // TODO: Call methods when index.vue is created

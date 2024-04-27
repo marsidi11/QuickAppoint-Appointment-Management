@@ -3,15 +3,15 @@
 
 		<CalendarHeader v-if="showCalendarHeaderComponent" :currentMonth="currentMonth" @reset-month="resetMonth" @prev-month="prevMonth" @next-month="nextMonth" />
 
-		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="showCalendarServices"  @next-month="nextMonth" @prev-month="prevMonth" />
+		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="storeDate"  @next-month="nextMonth" @prev-month="prevMonth" @next-clicked="nextCalendarBody" />
 
-		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @servicesSelected="showCalendarTime" />
+		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="storeServices" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />
 
-		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="showCalendarUserData" />
+		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="storeTime" @prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
 
 		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
 
-		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" />
+		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" @prev-clicked="prevCalendarUserData" />
 
 	</div>
 </template>
@@ -99,31 +99,58 @@ export default {
 			this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1);
 		},
 
-		// Show the CalendarServices component when a date is selected
-		showCalendarServices(date) {
-			this.showCalendarServicesComponent = true;
+		
+		storeDate(date) { // Save the selected date from CalendarBody component
 			this.selectedDate = date;
-			console.log("Date: " + this.selectedDate);
+			console.log("Date Data Passed: " + this.selectedDate);
 		},
 
-		// Show the CalendarTime component when a service is selected
-		showCalendarTime(services) {
-			this.showCalendarTimeComponent = true;
+		storeServices(services) { // Save the selected services from CalendarServices component
 			this.selectedServices = services;
 			console.log("Services Data Passed: " + JSON.stringify(this.selectedServices, null, 2));
 		},
 
-		// Show the CalendarUserData component and Submit button when the time is selected
-		showCalendarUserData(time) {
-			this.showCalendarUserDataComponent = true;
+		storeTime(time) { // Save the selected time from CalendarTime component
 			this.selectedTime = time;
-			console.log("Time: " + this.selectedTime);
+			console.log("Time Data Passed: " + this.selectedTime);
 		},
 
-		// Store the user data emitted from the CalendarUserData component
-		storeUserData(userData) {
+		storeUserData(userData) { // Store the user data emitted from the CalendarUserData component
 			this.userData = userData;
 		},
+
+		nextCalendarBody() {
+			this.showCalendarHeaderComponent = false;
+			this.showCalendarBodyComponent = false;
+			this.showCalendarServicesComponent = true;
+		},
+
+		prevCalendarServices() {
+			this.showCalendarServicesComponent = false;
+			this.showCalendarHeaderComponent = true;
+			this.showCalendarBodyComponent = true;
+		},
+
+		nextCalendarServices() {
+			this.showCalendarServicesComponent = false;
+			this.showCalendarTimeComponent = true;
+		},
+
+		prevCalendarTime() {
+			this.showCalendarTimeComponent = false;
+			this.showCalendarServicesComponent = true;
+		},
+
+		nextCalendarTime() {
+			this.showCalendarTimeComponent = false;
+			this.showCalendarUserDataComponent = true;
+		},
+
+		prevCalendarUserData() {
+			this.showCalendarUserDataComponent = false;
+			this.showCalendarTimeComponent = true;
+		},
+		
 	}
 }
 </script>

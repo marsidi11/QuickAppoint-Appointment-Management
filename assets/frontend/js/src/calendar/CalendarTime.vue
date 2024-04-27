@@ -22,9 +22,10 @@
     </div>
 
     <div class="calendar-nav">
-        <button class="nav-previous">Go Back</button>
-        <button class="nav-next">Next</button>
+        <button class="nav-previous" @click="$emit('prev-clicked')">Go Back</button>
+        <button class="nav-next" @click="nextClicked">Next</button>
     </div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 </template>
 
@@ -38,6 +39,7 @@ export default {
         return {
             times: [],
             selectedTime: null,
+            errorMessage: null,
         };
     },
 
@@ -89,6 +91,14 @@ export default {
         selectTime(time) {
             this.selectedTime = time;
             this.$emit('time-selected', time);
+        },
+
+        nextClicked() {
+            if (this.selectedTime !== null) {
+                this.$emit('next-clicked');
+            } else {
+                this.errorMessage = 'Please select a time';
+            }
         },
     },
 

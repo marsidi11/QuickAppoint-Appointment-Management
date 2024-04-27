@@ -11,15 +11,14 @@
                 <p>${{ service.price }}</p>
             </div>
         </div>
-
-        <div v-if="errorMessage">{{ errorMessage }}</div>
-        
+                
     </div>
 
     <div class="calendar-nav">
-        <button class="nav-previous">Go Back</button>
-        <button class="nav-next">Next</button>
+        <button class="nav-previous" @click="$emit('prev-clicked')">Go Back</button>
+        <button class="nav-next" @click="nextClicked">Next</button>
     </div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 </template>
 
@@ -63,7 +62,15 @@ export default {
                     duration: service.duration 
                 }); // Add the service ID and Duration to the array if it's not already selected
             }
-            this.$emit('servicesSelected', this.selectedServices); // Emit the array of selected service IDs
+            this.$emit('services-selected', this.selectedServices); // Emit the array of selected service IDs
+        },
+
+        nextClicked() {
+            if (this.selectedServices.length > 0) {
+                this.$emit('next-clicked');
+            } else {
+                this.errorMessage = 'Please select at least one service';
+            }
         },
         
     },

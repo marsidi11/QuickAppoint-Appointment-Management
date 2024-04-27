@@ -1,6 +1,6 @@
 <template>
     <div class="calendar-nav">
-        <button class="nav-previous">Go Back</button>
+        <button class="nav-previous" @click="$emit('prev-clicked')">Go Back</button>
         <button class="button-appointment" @click="createAppointment">Submit</button>
     </div>
     <div v-if="loading" class="loading-message">Loading...</div>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import apiService from './apiService.js';
+import { createAppointment } from './apiService.js';
 
 export default {
     name: 'CreateAppointment',
@@ -46,7 +46,7 @@ export default {
                 this.loading = true;
                 console.log(this.appointmentData);
                 
-                const response = await apiService.createAppointment(this.appointmentData);
+                const response = await createAppointment(this.appointmentData);
 
                 this.errorMessage = 'Appointment created successfully';
                 console.log("Create Appointment: " + response);
