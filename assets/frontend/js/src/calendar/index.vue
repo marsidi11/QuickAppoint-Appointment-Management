@@ -1,19 +1,30 @@
 <template>
 	<div class="calendar-container">
+	<div class="calendar-section">
 
-		<CalendarHeader v-if="showCalendarHeaderComponent" :currentMonth="currentMonth" @reset-month="resetMonth" @prev-month="prevMonth" @next-month="nextMonth" />
+		<CalendarHeader v-if="showCalendarHeaderComponent" :currentMonth="currentMonth" @reset-month="resetMonth"
+			@prev-month="prevMonth" @next-month="nextMonth" />
 
-		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="storeDate"  @next-month="nextMonth" @prev-month="prevMonth" @next-clicked="nextCalendarBody" />
+		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek"
+			:calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth"
+			@next-clicked="nextCalendarBody" />
 
-		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="storeServices" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />
+		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate"
+			@services-selected="storeServices" @prev-clicked="prevCalendarServices"
+			@next-clicked="nextCalendarServices" />
 
-		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="storeTime" @prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
+		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="storeTime"
+			@prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
 
-		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
+		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime"
+			@update-user-data="storeUserData" />
 
-		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" @prev-clicked="prevCalendarUserData" />
-
+		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData"
+			@prev-clicked="prevCalendarUserData" />
+	
 	</div>
+	</div>
+
 </template>
 
 <script>

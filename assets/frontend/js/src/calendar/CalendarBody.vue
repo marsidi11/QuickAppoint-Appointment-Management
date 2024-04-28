@@ -2,7 +2,7 @@
     <div class="calendar-body">
 
         <div class="calendar-week">
-            <div class="calendar-day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
+            <div class="calendar-day-name" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
         </div>
 
         <div class="calendar-week" v-for="(week, index) in calendar" :key="index">

@@ -3,6 +3,7 @@
 
         <h2 class="calendar-services-header">Select a Service:</h2>
 
+        <div class="services-list">
         <div v-for="service in services" :key="service.id" @click="selectService(service)">
             <div class="service-box" :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
                 <h3>{{ service.name }}</h3>
@@ -10,6 +11,7 @@
                 <p>{{ service.duration }} minutes</p>
                 <p>${{ service.price }}</p>
             </div>
+        </div>
         </div>
                 
     </div>
