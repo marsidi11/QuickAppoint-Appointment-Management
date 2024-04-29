@@ -33,7 +33,6 @@
 
 /* Frontend Calendar Body Style */
 
-
 .calendar-body {
     @apply transition-all duration-300 ease-in-out;
 } 
@@ -47,19 +46,27 @@
 }
 
 .calendar-day {
-    @apply w-12 text-center text-gray-400 font-semibold cursor-default p-2;
+    @apply w-12 text-center text-gray-400 font-semibold cursor-default p-2 rounded-full;
 } 
 
 .clickable-day {
-    @apply cursor-pointer text-gray-600 rounded-full;
+    @apply cursor-pointer text-gray-600;
+}
+
+.clickable-day:hover {
+    @apply bg-blue-300 text-white;
+}
+
+.clickable-day.next-month-day {
+    @apply text-gray-400 font-semibold cursor-pointer;
+}
+
+.clickable-day.next-month-day:hover {
+    @apply bg-blue-300 text-white;
 }
 
 .current-day {
     @apply text-green-600 font-bold; 
-}
-
-.clickable-day:hover {
-    @apply bg-blue-300 text-white
 }
 
 .selected-day {
@@ -70,10 +77,8 @@
     @apply bg-blue-500 text-white rounded-full;
 }
 
-.prev-month-day, 
-.next-month-day,
 .past-day {
-    @apply w-12 text-center text-gray-400 font-semibold;
+    @apply bg-gray-200 opacity-50;
 }
 
 /* Frontend Calendar Services Style */
@@ -83,11 +88,11 @@
 }
 
 .calendar-services-header {
-    @apply bg-slate-500 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
 }
 
 .services-list {
-    @apply max-h-[290px] overflow-y-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+    @apply max-h-[290px] overflow-y-auto grid gap-4;
 }
 
 .service-box {
@@ -105,7 +110,7 @@
   }
   
 .calendar-time-header {
-    @apply bg-slate-500 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
 }
   
 .calendar-time-body {
@@ -131,11 +136,11 @@
 /* Frontend Calendar User Data Style */
 
 .input-form {
-    @apply bg-slate-400 p-4 rounded-lg mt-4 transition-all duration-300 ease-in-out;
+    @apply bg-slate-200 p-4 rounded-lg mt-4 transition-all duration-300 ease-in-out;
 }
 
 .form-title {
-    @apply bg-slate-500 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
 }
 
 .form-group {

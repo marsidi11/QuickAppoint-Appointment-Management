@@ -92,7 +92,7 @@ export default {
                 'prev-month-day': day.date.getMonth() < this.currentDate.getMonth(),
                 'next-month-day': day.date.getMonth() > this.currentDate.getMonth(),
                 'past-day': this.isPastDate(day.date),
-                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date, this.datesRange) && day.date.getMonth() === this.currentDate.getMonth() && this.isOpenDay(day.date, this.openDays),
+                'clickable-day': !this.isPastDate(day.date) && this.isDateWithinAllowedRange(day.date, this.datesRange) && this.isOpenDay(day.date, this.openDays),
                 'selected-day': this.selectedDate && day.date.getTime() === this.selectedDate.getTime(),
             };
         },

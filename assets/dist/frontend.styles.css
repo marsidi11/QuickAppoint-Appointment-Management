@@ -639,6 +639,10 @@ video {
   cursor: pointer;
 }
 
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -766,14 +770,14 @@ video {
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
-.bg-slate-400 {
+.bg-slate-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
-.bg-slate-500 {
+.bg-slate-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
 .bg-white {
@@ -1141,6 +1145,7 @@ video {
 .calendar-day {
   width: 3rem;
   cursor: default;
+  border-radius: 9999px;
   padding: 0.5rem;
   text-align: center;
   font-weight: 600;
@@ -1150,15 +1155,8 @@ video {
 
 .clickable-day {
   cursor: pointer;
-  border-radius: 9999px;
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
-}
-
-.current-day {
-  font-weight: 700;
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 
 .clickable-day:hover {
@@ -1166,6 +1164,26 @@ video {
   background-color: rgb(147 197 253 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.clickable-day.next-month-day {
+  cursor: pointer;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.clickable-day.next-month-day:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.current-day {
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 
 .selected-day {
@@ -1184,14 +1202,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.prev-month-day, 
-.next-month-day,
 .past-day {
-  width: 3rem;
-  text-align: center;
-  font-weight: 600;
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  opacity: 0.5;
 }
 
 /* Frontend Calendar Services Style */
@@ -1209,7 +1223,7 @@ video {
   margin-bottom: 1rem;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
   padding: 1rem;
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1223,24 +1237,6 @@ video {
   max-height: 290px;
   gap: 1rem;
   overflow-y: auto;
-}
-
-@media (min-width: 640px) {
-  .services-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .services-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .services-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 .service-box {
@@ -1278,7 +1274,7 @@ video {
   margin-bottom: 1rem;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
   padding: 1rem;
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1378,7 +1374,7 @@ video {
   margin-top: 1rem;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
   padding: 1rem;
   transition-property: all;
   transition-duration: 300ms;
@@ -1389,7 +1385,7 @@ video {
   margin-bottom: 1rem;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
   padding: 1rem;
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1663,10 +1659,6 @@ video {
     width: auto;
   }
 
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .sm\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1707,6 +1699,10 @@ video {
 
   .xl\:w-\[800px\] {
     width: 800px;
+  }
+
+  .xl\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 

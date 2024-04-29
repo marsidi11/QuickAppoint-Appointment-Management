@@ -611,8 +611,16 @@ video {
   display: none;
 }
 
+.h-5\/6 {
+  height: 83.333333%;
+}
+
 .h-screen {
   height: 100vh;
+}
+
+.max-h-\[290px\] {
+  max-height: 290px;
 }
 
 .w-12 {
@@ -629,6 +637,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .grid-cols-2 {
@@ -678,6 +690,10 @@ video {
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded {
@@ -754,14 +770,14 @@ video {
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
-.bg-slate-400 {
+.bg-slate-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
-.bg-slate-500 {
+.bg-slate-300 {
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
 .bg-white {
@@ -1165,12 +1181,12 @@ video {
 }
 
 @media (min-width: 640px) {
-  .sm\:h-4\/6 {
-    height: 66.666667%;
+  .sm\:h-\[400px\] {
+    height: 400px;
   }
 
-  .sm\:w-10\/12 {
-    width: 83.333333%;
+  .sm\:w-\[500px\] {
+    width: 500px;
   }
 
   .sm\:w-auto {
@@ -1183,22 +1199,54 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:h-5\/6 {
-    height: 83.333333%;
+  .md\:h-\[400px\] {
+    height: 400px;
   }
 
-  .md\:w-9\/12 {
-    width: 75%;
+  .md\:w-\[600px\] {
+    width: 600px;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
-  .lg\:h-5\/6 {
-    height: 83.333333%;
+  .lg\:h-\[500px\] {
+    height: 500px;
   }
 
-  .lg\:w-7\/12 {
-    width: 58.333333%;
+  .lg\:w-\[700px\] {
+    width: 700px;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:h-\[500px\] {
+    height: 500px;
+  }
+
+  .xl\:w-\[800px\] {
+    width: 800px;
+  }
+
+  .xl\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .\32xl\:h-\[700px\] {
+    height: 700px;
+  }
+
+  .\32xl\:w-\[900px\] {
+    width: 900px;
   }
 }
 
