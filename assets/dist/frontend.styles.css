@@ -611,6 +611,10 @@ video {
   display: none;
 }
 
+.h-5\/6 {
+  height: 83.333333%;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -682,6 +686,10 @@ video {
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded {
@@ -969,6 +977,7 @@ video {
 .calendar-container {
   display: flex;
   height: 100vh;
+  width: 100%;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
@@ -980,7 +989,8 @@ video {
 .calendar-section {
   margin-left: auto;
   margin-right: auto;
-  overflow: hidden;
+  width: 100%;
+  overflow: auto;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -992,22 +1002,36 @@ video {
 
 @media (min-width: 640px) {
   .calendar-section {
-    height: 66.666667%;
-    width: 83.333333%;
+    height: 400px;
+    width: 500px;
   }
 }
 
 @media (min-width: 768px) {
   .calendar-section {
-    height: 83.333333%;
-    width: 75%;
+    height: 400px;
+    width: 600px;
   }
 }
 
 @media (min-width: 1024px) {
   .calendar-section {
-    height: 83.333333%;
-    width: 58.333333%;
+    height: 500px;
+    width: 700px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .calendar-section {
+    height: 500px;
+    width: 800px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .calendar-section {
+    height: 700px;
+    width: 900px;
   }
 }
 
@@ -1195,12 +1219,33 @@ video {
 }
 
 .services-list {
+  display: grid;
   max-height: 290px;
+  gap: 1rem;
   overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+  .services-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .services-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .service-box {
   margin-top: 1rem;
+  height: 83.333333%;
   cursor: pointer;
   border-radius: 0.5rem;
   border-width: 4px;
@@ -1606,16 +1651,20 @@ video {
 }
 
 @media (min-width: 640px) {
-  .sm\:h-4\/6 {
-    height: 66.666667%;
+  .sm\:h-\[400px\] {
+    height: 400px;
   }
 
-  .sm\:w-10\/12 {
-    width: 83.333333%;
+  .sm\:w-\[500px\] {
+    width: 500px;
   }
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sm\:grid-cols-3 {
@@ -1624,22 +1673,50 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:h-5\/6 {
-    height: 83.333333%;
+  .md\:h-\[400px\] {
+    height: 400px;
   }
 
-  .md\:w-9\/12 {
-    width: 75%;
+  .md\:w-\[600px\] {
+    width: 600px;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
-  .lg\:h-5\/6 {
-    height: 83.333333%;
+  .lg\:h-\[500px\] {
+    height: 500px;
   }
 
-  .lg\:w-7\/12 {
-    width: 58.333333%;
+  .lg\:w-\[700px\] {
+    width: 700px;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:h-\[500px\] {
+    height: 500px;
+  }
+
+  .xl\:w-\[800px\] {
+    width: 800px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .\32xl\:h-\[700px\] {
+    height: 700px;
+  }
+
+  .\32xl\:w-\[900px\] {
+    width: 900px;
   }
 }
 

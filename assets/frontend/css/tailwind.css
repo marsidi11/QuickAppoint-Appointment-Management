@@ -5,11 +5,11 @@
 /* Frontend Calendar Style */
 
 .calendar-container {
-    @apply bg-gray-200 flex items-center justify-center h-screen p-2 rounded;
+    @apply bg-gray-200 flex items-center justify-center h-screen w-full p-2 rounded;
 }
 
 .calendar-section {
-    @apply lg:w-7/12 md:w-9/12 sm:w-10/12 lg:h-5/6 md:h-5/6 sm:h-4/6 mx-auto p-4 bg-white shadow-lg rounded-lg overflow-hidden;
+    @apply bg-white w-full sm:w-[500px] md:w-[600px] lg:w-[700px] xl:w-[800px] 2xl:w-[900px] sm:h-[400px] md:h-[400px] lg:h-[500px] xl:h-[500px] 2xl:h-[700px] mx-auto p-4 shadow-lg rounded-lg overflow-auto;
 }
 
 /* Frontend Calendar Header Style */
@@ -87,11 +87,11 @@
 }
 
 .services-list {
-    @apply max-h-[290px] overflow-y-auto;
+    @apply max-h-[290px] overflow-y-auto grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
 }
 
 .service-box {
-    @apply bg-white p-4 rounded-lg border-4 mt-4 cursor-pointer transition-all duration-300 ease-in-out;
+    @apply bg-white h-5/6 p-4 rounded-lg border-4 mt-4 cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 .selected-service {
