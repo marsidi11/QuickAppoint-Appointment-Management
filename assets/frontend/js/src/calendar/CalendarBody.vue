@@ -1,24 +1,28 @@
 <template>
-    <div class="calendar-body">
-
-        <div class="calendar-week">
-            <div class="calendar-day-name" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
+    <div class="calendar-wrapper">
+        <button class="reset-month" @click="resetMonth">View Current Date</button>
+        <div class="calendar-header">
+            <button class="prev-month-icon" @click="prevMonth">&lt;</button>
+            <h2 class="current-month">{{ currentMonth }}</h2>
+            <button class="next-month-icon" @click="nextMonth">&gt;</button>
         </div>
 
-        <div class="calendar-week" v-for="(week, index) in calendar" :key="index">
-
-            <div
-                class="calendar-day"
-                v-for="(day, dayIndex) in week"
-                :key="`${index}-${dayIndex}`"
-                :class="dayClasses(day)"
-                @click="dayClicked(day.date)"
-            >
-                {{ day.date.getDate() }}
+        <div class="calendar-body">
+            <div class="calendar-week">
+                <div class="calendar-day-name" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
             </div>
-            
+            <div class="calendar-week" v-for="(week, index) in calendar" :key="index">
+                <div
+                    class="calendar-day"
+                    v-for="(day, dayIndex) in week"
+                    :key="`${index}-${dayIndex}`"
+                    :class="dayClasses(day)"
+                    @click="dayClicked(day.date)"
+                >
+                    {{ day.date.getDate() }}
+                </div>
+            </div>
         </div>
-
     </div>
     
     <div class="calendar-nav">
@@ -56,6 +60,10 @@ export default {
         calendar: {
             type: Array,
             required: true
+        },
+        currentMonth: {
+            type: String,
+            required: true
         }
     },
     methods: {
@@ -63,6 +71,16 @@ export default {
         isPastDate,
         isDateWithinAllowedRange,
         isOpenDay,
+
+        resetMonth() {
+            this.$emit('reset-month');
+        },
+        prevMonth() {
+            this.$emit('prev-month');
+        },
+        nextMonth() {
+            this.$emit('next-month');
+        },
 
         async fetchDatesRange() {
             try {

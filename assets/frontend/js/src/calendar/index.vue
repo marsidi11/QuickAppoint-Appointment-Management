@@ -2,11 +2,8 @@
 	<div class="calendar-container">
 	<div class="calendar-section">
 
-		<CalendarHeader v-if="showCalendarHeaderComponent" :currentMonth="currentMonth" @reset-month="resetMonth"
-			@prev-month="prevMonth" @next-month="nextMonth" />
-
-		<CalendarBody v-if="showCalendarBodyComponent" :currentDate="currentDate" :daysOfWeek="daysOfWeek"
-			:calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth"
+		<CalendarBody v-if="showCalendarBodyComponent" :currentMonth="currentMonth" :currentDate="currentDate" :daysOfWeek="daysOfWeek"
+			:calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth" @reset-month="resetMonth"
 			@next-clicked="nextCalendarBody" />
 
 		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate"
@@ -29,7 +26,6 @@
 
 <script>
 import { generateCalendar, calculateEndTime } from './CalendarUtils.js'; 
-import CalendarHeader from './CalendarHeader.vue';
 import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
 import CalendarTime from './CalendarTime.vue';
@@ -41,7 +37,6 @@ export default {
 	name: 'CalendarComponent',
 
 	components: {
-		CalendarHeader,
 		CalendarBody,
 		CalendarServices,
 		CalendarTime,
@@ -54,7 +49,6 @@ export default {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
 
-			showCalendarHeaderComponent: true,
 			showCalendarBodyComponent: true,
 			showCalendarServicesComponent: false,
 			showCalendarTimeComponent: false,
@@ -131,14 +125,12 @@ export default {
 		},
 
 		nextCalendarBody() {
-			this.showCalendarHeaderComponent = false;
 			this.showCalendarBodyComponent = false;
 			this.showCalendarServicesComponent = true;
 		},
 
 		prevCalendarServices() {
 			this.showCalendarServicesComponent = false;
-			this.showCalendarHeaderComponent = true;
 			this.showCalendarBodyComponent = true;
 		},
 

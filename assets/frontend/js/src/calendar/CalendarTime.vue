@@ -4,14 +4,18 @@
 
         <h2 class="calendar-time-header">Select a Time</h2>
 
+        <div v-if="loading" class='flex space-x-2 justify-center items-center bg-white dark:invert'>
+            <span class='sr-only'>Loading...</span>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+        </div>
+
         <div class="calendar-time-body">
-            
+
             <div class="calendar-time-row" v-for="time in times" :key="time" @click="selectTime(time)">
 
-                <div 
-                    class="calendar-time-item"
-                    :class="{ 'selected-time': time === selectedTime }"
-                >
+                <div class="calendar-time-item" :class="{ 'selected-time': time === selectedTime }">
                     {{ time }}
                 </div>
 
@@ -40,6 +44,7 @@ export default {
             times: [],
             selectedTime: null,
             errorMessage: null,
+            loading: false,
         };
     },
 
@@ -48,12 +53,15 @@ export default {
         // Get Open Time
         async fetchOpenTime() {
             try {
+                this.loading = true;
                 const response = await getOpenTime();
                 console.log("Get Open Time: ", JSON.stringify(response, null, 2));
                 return response;
 
             } catch (error) {
                 this.errorMessage = error;
+            } finally {
+                this.loading = false;
             }
         },
 

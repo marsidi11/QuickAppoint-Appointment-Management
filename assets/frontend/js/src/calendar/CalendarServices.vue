@@ -3,17 +3,26 @@
 
         <h2 class="calendar-services-header">Select a Service:</h2>
 
+        <div v-if="loading" class='flex space-x-2 justify-center items-center bg-white dark:invert'>
+            <span class='sr-only'>Loading...</span>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+            <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+        </div>
+
         <div :class="['services-list', gridColumnsClass]">
-        <div v-for="service in services" :key="service.id" @click="selectService(service)">
-            <div class="service-box" :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
-                <h3>{{ service.name }}</h3>
-                <p>{{ service.description }}</p>
-                <p>{{ service.duration }} minutes</p>
-                <p>${{ service.price }}</p>
+
+            <div v-for="service in services" :key="service.id" @click="selectService(service)">
+                <div class="service-box"
+                    :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
+                    <p>{{ service.duration }} minutes</p>
+                    <p>${{ service.price }}</p>
+                </div>
             </div>
         </div>
-        </div>
-                
+
     </div>
 
     <div class="calendar-nav">
@@ -35,6 +44,7 @@ export default {
             services: [],
             selectedServices: [],
             errorMessage: null,
+            loading: false,
         };
     },
 
@@ -43,12 +53,15 @@ export default {
         // Display services on frontend
         async fetchServices() {
             try {
+                this.loading = true;
                 const response = await getServices();
                 console.log("Get All Services: ", JSON.stringify(response, null, 2));
                 this.services = response;
 
             } catch (error) {
                 this.errorMessage = error;
+            } finally {
+                this.loading = false;
             }
         },
 

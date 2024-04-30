@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <button class="reset-month" @click="resetMonth">View Current Date</button>
     <div class="calendar-header">
         <button class="prev-month-icon" @click="prevMonth">&lt;</button>
@@ -28,4 +28,4 @@ export default {
         }
     }
 }
-</script>
+</script> -->
