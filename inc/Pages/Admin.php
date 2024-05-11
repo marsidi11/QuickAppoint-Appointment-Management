@@ -57,22 +57,14 @@ class Admin extends BaseController
     public function setSubpages() 
     {
         $this->subpages = array(
-            array(
-                'parent_slug' => 'appointment_management', 
-                'page_title' => 'Settings', 
-                'menu_title' => 'Settings', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'appointment_management_settings', 
-                'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
-            ),
-            array(
-                'parent_slug' => 'appointment_management', 
-                'page_title' => 'Custom Submenu', 
-                'menu_title' => 'Custom Submenu', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'appointment_management_submenu', 
-                'callback' => function() { echo '<h1>Custom Submenu</h1>'; }
-            )
+            // array(
+            //     'parent_slug' => 'appointment_management', 
+            //     'page_title' => 'Settings', 
+            //     'menu_title' => 'Settings', 
+            //     'capability' => 'manage_options', 
+            //     'menu_slug' => 'appointment_management_settings', 
+            //     'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
+            // )
         );
     }
 
@@ -93,7 +85,7 @@ class Admin extends BaseController
                 'option_name' => 'first_name'
             ),
 
-            // Open Time, Close Time, Allowed Dates Range, Open Days - Options Dashboard Page
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Options Dashboard Page
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'open_time',
@@ -108,6 +100,12 @@ class Admin extends BaseController
             ),
             array(
                 'option_group' => 'am_options_data',
+                'option_name' => 'time_slot_duration',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
+            ),
+            array(
+                'option_group' => 'am_options_data',
                 'option_name' => 'dates_range',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
@@ -115,6 +113,18 @@ class Admin extends BaseController
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'open_days',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
+            ),
+            array(
+                'option_group' => 'am_options_data',
+                'option_name' => 'break_start',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
+            ),
+            array(
+                'option_group' => 'am_options_data',
+                'option_name' => 'break_end',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             )
@@ -136,7 +146,7 @@ class Admin extends BaseController
                 'page' => 'appointment_management_settings'
             ),
 
-            // Open Time, Close Time, Allowed Dates Range, Open Days - Sections
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Sections
             array(
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
@@ -178,7 +188,7 @@ class Admin extends BaseController
                 )
             ),
 
-            // Open Time, Close Time, Allowed Dates Range - Fields
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Fields
             array(
                 'id' => 'open_time',
                 'title' => __('Open Time', 'appointment-management'),
@@ -202,6 +212,17 @@ class Admin extends BaseController
                 )
             ),
             array(
+                'id' => 'time_slot_duration',
+                'title' => __('Time Slot Duration (every x minutes)', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amTimeSlotDuration' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'time_slot_duration',
+                    'class' => 'select-time'
+                )
+            ),
+            array(
                 'id' => 'dates_range',
                 'title' => __('Allowed Bookings Date Range', 'appointment-management'),
                 'callback' => array( $this->callbacks, 'amDatesRange' ),
@@ -221,6 +242,28 @@ class Admin extends BaseController
                 'args' => array(
                     'label_for' => 'open_days',
                     'class' => 'select-allowed-dates'
+                )
+            ),
+            array(
+                'id' => 'break_start',
+                'title' => __('Break Start', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amBreakStart' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'break_start',
+                    'class' => 'select-time'
+                )
+            ),
+            array(
+                'id' => 'break_end',
+                'title' => __('Break End', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amBreakEnd' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'break_end',
+                    'class' => 'select-time'
                 )
             )
         );

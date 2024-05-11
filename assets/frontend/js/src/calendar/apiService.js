@@ -102,6 +102,24 @@ export async function getCloseTime() {
 	}
 }
 
+// Get Time Slot Duration (split time slots in x minutes 30 default)
+export async function getTimeSlotDuration() {
+
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/time-slot-duration', {
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings.nonce,
+			},
+		});
+		return response.data;
+
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
 // Get Dates Range To Allow Bookings
 export async function getDatesRange() {
 
@@ -131,6 +149,54 @@ export async function getOpenDays() {
 				'X-WP-Nonce': window.wpApiSettings.nonce,
 			},
 		});
+		return response.data;
+
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
+// Get Break Start Time
+export async function getBreakStart() {
+
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/break-start', {
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings.nonce,
+			},
+		});
+
+		if (response.data.code === 'no_value') {
+            // throw new Error(response.data.message);
+			return null;
+        }
+
+		return response.data;
+
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
+// Get Break End Time
+export async function getBreakEnd() {
+
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/break-end', {
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings.nonce,
+			},
+		});
+
+		if (response.data.code === 'no_value') {
+            // throw new Error(response.data.message);
+            return null;
+        }
+
 		return response.data;
 
 	} catch (error) {

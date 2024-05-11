@@ -4,12 +4,7 @@
 
         <h2 class="calendar-time-header">Select a Time</h2>
 
-        <div v-if="loading" class='flex space-x-2 justify-center items-center bg-white dark:invert'>
-            <span class='sr-only'>Loading...</span>
-            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-            <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-            <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
-        </div>
+        <div v-if="loading" class="loading-style-2"></div>
 
         <div class="calendar-time-body">
 
@@ -34,7 +29,7 @@
 </template>
 
 <script>
-import { getOpenTime, getCloseTime } from './apiService';
+import { getOpenTime, getCloseTime, getTimeSlotDuration, getBreakStart, getBreakEnd } from './apiService';
 
 export default {
     name: 'CalendarTime',
@@ -60,8 +55,6 @@ export default {
 
             } catch (error) {
                 this.errorMessage = error;
-            } finally {
-                this.loading = false;
             }
         },
 
@@ -77,20 +70,90 @@ export default {
             }
         },
 
+        // Get Time Slot Duration
+        async fetchTimeSlotDuration() {
+            try {
+                const response = await getTimeSlotDuration();
+                console.log("Get Time Slot Duration: ", JSON.stringify(response, null, 2));
+                return response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
+        },
+
+        // Get Break Start Time
+        async fetchBreakStart() {
+            try {
+                const response = await getBreakStart();
+                console.log("Get Break Start Time: ", JSON.stringify(response, null, 2));
+
+                if (response === null) {
+                    return 0;
+                }
+
+                return response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
+        },
+
+        // Get Break End Time
+        async fetchBreakEnd() {
+            try {
+                const response = await getBreakEnd();
+                console.log("Get Break End Time: ", JSON.stringify(response, null, 2));
+
+                if (response === null) {
+                    return 0;
+                }
+                
+                return response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            } finally {
+                this.loading = false;
+            }
+        },
+
         // Generate Times from Open Time to Close Time
         async generateTimes() {
             const openTimeString = await this.fetchOpenTime();
             const closeTimeString = await this.fetchCloseTime();
+            const timeSlotDuration = parseInt(await this.fetchTimeSlotDuration());
+            const breakStartTimeString = await this.fetchBreakStart();
+            const breakEndTimeString = await this.fetchBreakEnd();
 
             const openTimeParts = openTimeString.split(':').map(Number);
             const closeTimeParts = closeTimeString.split(':').map(Number);
+            const breakStartParts = breakStartTimeString ? breakStartTimeString.split(':').map(Number) : null;
+            const breakEndParts = breakEndTimeString ? breakEndTimeString.split(':').map(Number) : null;
 
             const times = [];
 
-            for (let hour = openTimeParts[0]; hour < closeTimeParts[0]; hour++) {
-                times.push(`${hour.toString().padStart(2, '0')}:00`);
+            let currentMinutes = openTimeParts[0] * 60 + openTimeParts[1];
+            const closeMinutes = closeTimeParts[0] * 60 + closeTimeParts[1];
+            const breakStartMinutes = breakStartParts ? breakStartParts[0] * 60 + breakStartParts[1] : null;
+            const breakEndMinutes = breakEndParts ? breakEndParts[0] * 60 + breakEndParts[1] : null;
+
+            while (currentMinutes < closeMinutes) {
+                const endOfTimeSlot = currentMinutes + timeSlotDuration;
+
+                if (breakStartMinutes !== null && breakEndMinutes !== null) {
+                    if (currentMinutes < breakEndMinutes && endOfTimeSlot > breakStartMinutes) {
+                        currentMinutes = breakEndMinutes;
+                        continue;
+                    }
+                }
+
+                const hours = Math.floor(currentMinutes / 60).toString().padStart(2, '0');
+                const minutes = (currentMinutes % 60).toString().padStart(2, '0');
+                times.push(`${hours}:${minutes}`);
+                currentMinutes += timeSlotDuration;
             }
-            
+
             console.log("Times: ", times);
             this.times = times;
         },

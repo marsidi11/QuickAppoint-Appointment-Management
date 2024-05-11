@@ -117,7 +117,7 @@
 }
   
 .calendar-time-body {
-    @apply bg-white p-4 rounded-lg shadow-md grid grid-cols-2 gap-4 my-4 sm:grid-cols-3 md:grid-cols-4; 
+    @apply bg-white p-4 rounded-lg grid grid-cols-2 gap-4 my-4 sm:grid-cols-3 md:grid-cols-4; 
 }
 
 .calendar-time-row {
@@ -186,4 +186,18 @@
 
 .error-message {
     @apply text-red-600 text-sm font-semibold text-center mt-2;
+}
+
+/* Loading */
+
+.loading-style-1 {
+    @apply w-12 h-12 rounded-full animate-spin border-2 border-solid border-blue-500 border-t-transparent;
+    @apply absolute m-auto;
+    @apply inset-0;
+}
+
+.loading-style-2 {
+    @apply w-12 h-12 rounded-full animate-spin absolute border-4 border-dashed border-blue-500 border-t-transparent;
+    @apply absolute m-auto;
+    @apply inset-0;
 }

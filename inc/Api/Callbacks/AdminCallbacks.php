@@ -73,11 +73,17 @@ class AdminCallbacks extends BaseController
         $value = esc_attr( get_option( 'open_time', '09:00' ) );
         echo '<input type="time" class="regular-text" name="open_time" value="' . $value . '" placeholder="Select start time">';
     }
-
+    // TODO: Check if close time is later than open time
     public function amCloseTime() 
     {
         $value = esc_attr( get_option( 'close_time', '17:00' ) );
         echo '<input type="time" class="regular-text" name="close_time" value="' . $value . '" placeholder="Select close time">';
+    }
+
+    public function amTimeSlotDuration() 
+    {
+        $value = esc_attr( get_option( 'time_slot_duration', '30' ) );
+        echo '<input type="text" class="regular-text" name="time_slot_duration" value="' . $value . '" placeholder="Time Slot Duration">';
     }
 
     public function amDatesRange() 
@@ -104,5 +110,17 @@ class AdminCallbacks extends BaseController
             $checked = in_array($day_value, $value) ? 'checked="checked"' : '';
             echo '<label><input type="checkbox" name="open_days[]" value="' . esc_attr($day_value) . '" ' . $checked . '> ' . esc_html($day_label) . '</label><br>';
         }
+    }
+
+    public function amBreakStart() 
+    {
+        $value = esc_attr( get_option( 'break_start') );
+        echo '<input type="time" class="regular-text" name="break_start" value="' . $value . '" placeholder="Select start time">';
+    }
+    // Check if break end time is later than break start time
+    public function amBreakEnd() 
+    {
+        $value = esc_attr( get_option( 'break_end') );
+        echo '<input type="time" class="regular-text" name="break_end" value="' . $value . '" placeholder="Select close time">';
     }
 }
