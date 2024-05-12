@@ -2,22 +2,15 @@
 	<div class="calendar-container">
 	<div class="calendar-section">
 
-		<CalendarBody v-if="showCalendarBodyComponent" :currentMonth="currentMonth" :currentDate="currentDate" :daysOfWeek="daysOfWeek"
-			:calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth" @reset-month="resetMonth"
-			@next-clicked="nextCalendarBody" />
+		<CalendarBody v-if="showCalendarBodyComponent" :currentMonth="currentMonth" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth" @reset-month="resetMonth" @next-clicked="nextCalendarBody" />
 
-		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate"
-			@services-selected="storeServices" @prev-clicked="prevCalendarServices"
-			@next-clicked="nextCalendarServices" />
+		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="storeServices" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />
 
-		<CalendarTime v-if="showCalendarTimeComponent" :selected-services="selectedServices" @time-selected="storeTime"
-			@prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
+		<CalendarTime v-if="showCalendarTimeComponent" :selected-date="selectedDate" :selected-services="selectedServices" @time-selected="storeTime" @prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
 
-		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime"
-			@update-user-data="storeUserData" />
+		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
 
-		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData"
-			@prev-clicked="prevCalendarUserData" />
+		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" @prev-clicked="prevCalendarUserData" />
 	
 	</div>
 	</div>
@@ -83,7 +76,7 @@ export default {
 				surname: this.userData.surname,
 				phone: this.userData.phone,
 				email: this.userData.email,
-				date: this.selectedDate.toISOString().slice(0,10),
+				date: `${this.selectedDate.getFullYear()}-${("0" + (this.selectedDate.getMonth() + 1)).slice(-2)}-${("0" + this.selectedDate.getDate()).slice(-2)}`,
 				service_id: service_ids,
 				startTime: `${this.selectedTime}:00`,
 				endTime: end_time,

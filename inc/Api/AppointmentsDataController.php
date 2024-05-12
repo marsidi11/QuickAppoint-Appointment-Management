@@ -63,6 +63,24 @@ class AppointmentsDataController extends RestController
             }
         ));
 
+        // Route to get appointments time in a specific date
+        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/reserved-time-slots', array(
+            'methods' => 'GET',
+            'callback' => array($this, 'get_reserved_time_slots'),
+            'permission_callback' => function () 
+            {
+                return true; // Allow all users to create appointments
+            },
+            'args' => array(
+                'date' => array(
+                    'required' => true,
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
+                    },
+                ),
+            ),
+        ));
+
     }
 
     // TODO: Add custom endpoints to order appointments by date, by name, booked date, etc.
@@ -188,8 +206,21 @@ class AppointmentsDataController extends RestController
             }
         }
 
-
         return new \WP_REST_Response('Appointment created successfully', 201);
+    }
+
+    public function get_reserved_time_slots(\WP_REST_Request $request)
+    {
+        // Get the date from the request
+        $date = $request->get_param('date');
+
+        // Get the reserved time slots from the database
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'am_appointments';
+        $query = $wpdb->prepare("SELECT startTime, endTime FROM $table_name WHERE date = %s", $date);
+        $reserved_time_slots = $wpdb->get_results($query);
+
+        return new \WP_REST_Response($reserved_time_slots, 200);
     }
 }
 ?>

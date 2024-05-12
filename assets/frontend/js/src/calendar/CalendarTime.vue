@@ -29,10 +29,28 @@
 </template>
 
 <script>
-import { getOpenTime, getCloseTime, getTimeSlotDuration, getBreakStart, getBreakEnd } from './apiService';
+import { getOpenTime, getCloseTime, getTimeSlotDuration, getBreakStart, getBreakEnd, getReservedTimeSlots } from './apiService';
 
 export default {
     name: 'CalendarTime',
+
+    props: {
+        selectedDate: {
+            type: Date,
+            required: true
+        },
+    },
+
+    computed: {
+        formattedSelectedDate() {
+            const date = new Date(this.selectedDate);
+            const year = date.getFullYear();
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const day = ("0" + date.getDate()).slice(-2); 
+
+            return `${year}-${month}-${day}`;
+        }
+    },
 
     data() {
         return {
@@ -108,7 +126,7 @@ export default {
                 if (response === null) {
                     return 0;
                 }
-                
+        
                 return response;
 
             } catch (error) {
@@ -118,13 +136,32 @@ export default {
             }
         },
 
+        async fetchReservedTimeSlots() {
+            try {
+                const response = await getReservedTimeSlots(this.formattedSelectedDate);
+                console.log("Get Reserved Time Slots: ", JSON.stringify(response, null, 2));
+
+                if (response.length === 0) {
+                    return [];
+                }
+
+                return response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            }
+        },
+
         // Generate Times from Open Time to Close Time
+        // TODO: Check if total time of services selected is lower than slot duration so in it can be displayed in those cases
         async generateTimes() {
             const openTimeString = await this.fetchOpenTime();
             const closeTimeString = await this.fetchCloseTime();
             const timeSlotDuration = parseInt(await this.fetchTimeSlotDuration());
             const breakStartTimeString = await this.fetchBreakStart();
             const breakEndTimeString = await this.fetchBreakEnd();
+            const reservedTimeSlots = await this.fetchReservedTimeSlots();
+
 
             const openTimeParts = openTimeString.split(':').map(Number);
             const closeTimeParts = closeTimeString.split(':').map(Number);
@@ -148,9 +185,22 @@ export default {
                     }
                 }
 
-                const hours = Math.floor(currentMinutes / 60).toString().padStart(2, '0');
-                const minutes = (currentMinutes % 60).toString().padStart(2, '0');
-                times.push(`${hours}:${minutes}`);
+                // Check if the current time slot is reserved
+                const isReserved = reservedTimeSlots.some(slot => {
+                    const start = slot.startTime.split(':').map(Number);
+                    const end = slot.endTime.split(':').map(Number);
+                    const startMinutes = start[0] * 60 + start[1];
+                    const endMinutes = end[0] * 60 + end[1];
+                    return currentMinutes < endMinutes && endOfTimeSlot > startMinutes;
+                });
+
+                // If the current time slot is not reserved, add it to the list
+                if (!isReserved) {
+                    const hours = Math.floor(currentMinutes / 60).toString().padStart(2, '0');
+                    const minutes = (currentMinutes % 60).toString().padStart(2, '0');
+                    times.push(`${hours}:${minutes}`);
+                }
+
                 currentMinutes += timeSlotDuration;
             }
 

@@ -203,3 +203,24 @@ export async function getBreakEnd() {
 		throw handleError(error);
 	}
 }
+
+// Get Reserved Time Slots
+export async function getReservedTimeSlots(date) {
+
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(window.wpApiSettings.apiUrlAppointments + '/reserved-time-slots', {
+			params: {
+				date: date,
+			},
+			headers: {
+				'X-WP-Nonce': window.wpApiSettings.nonce,
+			},
+		});
+		return response.data;
+
+	} catch (error) {
+		throw handleError(error);
+	}
+}
