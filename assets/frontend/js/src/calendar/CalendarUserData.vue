@@ -3,6 +3,8 @@
 
         <h2 class="form-title">Your Information</h2>
 
+        <!-- TODO: Show the price here, also add the price to database, show here also the duration, from what time to what time -->
+
         <form @submit.prevent="submitForm" class="form">
             
 

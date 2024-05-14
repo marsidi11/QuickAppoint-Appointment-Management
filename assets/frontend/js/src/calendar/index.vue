@@ -1,7 +1,7 @@
 <template>
 	<div class="calendar-container">
 	<div class="calendar-section">
-
+		
 		<CalendarBody v-if="showCalendarBodyComponent" :currentMonth="currentMonth" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth" @reset-month="resetMonth" @next-clicked="nextCalendarBody" />
 
 		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="storeServices" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />

@@ -43,6 +43,21 @@ export default {
         };
     },
 
+    computed: {
+        gridColumnsClass() {
+            switch (this.services.length) {
+                case 1:
+                    return 'grid-cols-1';
+                case 2:
+                    return 'grid-cols-2';
+                case 3:
+                    return 'grid-cols-2 md:grid-cols-3';
+                default:
+                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+            }
+        }
+    },
+
     methods: {
 
         // Display services on frontend
@@ -83,21 +98,6 @@ export default {
             }
         },
         
-    },
-
-    computed: {
-        gridColumnsClass() {
-            switch (this.services.length) {
-                case 1:
-                    return 'grid-cols-1';
-                case 2:
-                    return 'grid-cols-2';
-                case 3:
-                    return 'grid-cols-2 md:grid-cols-3';
-                default:
-                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
-            }
-        }
     },
 
     // TODO: Call fetchServices() method when index.vue is created

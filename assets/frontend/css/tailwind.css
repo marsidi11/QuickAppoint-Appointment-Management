@@ -87,11 +87,11 @@
 /* Frontend Calendar Services Style */
 
 .calendar-services {
-    @apply p-4 rounded-lg mt-4 transition-all duration-300 ease-in-out;
+    @apply rounded-lg transition-all duration-300 ease-in-out;
 }
 
 .calendar-services-header {
-    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply text-xl font-semibold text-center;
 }
 
 .services-list {
@@ -99,51 +99,55 @@
 }
 
 .service-box {
-    @apply bg-white h-5/6 p-4 rounded-lg border-4 mt-4 cursor-pointer transition-all duration-300 ease-in-out;
+    @apply bg-white h-5/6 p-4 rounded-lg border-4 border-gray-200 mt-4 cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 .selected-service {
-    @apply border-4 border-indigo-600
+    @apply border-4 border-indigo-600;
 }
 
 /* Frontend Calendar Time Style */
 
 .calendar-time {
-    @apply p-4 rounded-lg mt-4 transition-all duration-300 ease-in-out; 
+    @apply rounded-lg transition-all duration-300 ease-in-out; 
   }
   
 .calendar-time-header {
-    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply text-xl font-semibold text-center;
 }
   
 .calendar-time-body {
-    @apply bg-white p-4 rounded-lg grid grid-cols-2 gap-4 my-4 sm:grid-cols-3 md:grid-cols-4; 
+    @apply bg-white p-4 rounded-lg grid gap-4; 
 }
 
 .calendar-time-row {
-    @apply flex flex-col items-center justify-between;
+    @apply flex flex-col items-center justify-evenly;
 }
     
 .calendar-time-item {
-    @apply bg-gray-200 p-4 rounded-lg cursor-pointer text-center border border-gray-200 font-semibold transition-all duration-300 ease-in-out hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-500; 
+    @apply bg-white p-4 w-full max-w-xs rounded-lg cursor-pointer text-center border-4 border-gray-200 font-semibold transition-all duration-300 ease-in-out active:bg-gray-400 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-500; 
+}
+
+.calendar-time-item:hover {
+    @apply bg-indigo-300 border-indigo-300;
 }
 
 .selected-time {
-    @apply bg-blue-500 text-white; 
+    @apply bg-indigo-600 text-white border-indigo-600; 
 }
 
 .selected-time:hover {
-    @apply bg-blue-500 text-white;
+    @apply bg-indigo-600 text-white border-indigo-600;
 }
 
 /* Frontend Calendar User Data Style */
 
 .input-form {
-    @apply bg-slate-200 p-4 rounded-lg mt-4 transition-all duration-300 ease-in-out;
+    @apply bg-slate-200 p-4 rounded-lg transition-all duration-300 ease-in-out;
 }
 
 .form-title {
-    @apply bg-slate-300 p-4 rounded-lg mb-4 text-white text-2xl font-bold;
+    @apply text-xl font-semibold text-center;
 }
 
 .form-group {
@@ -167,15 +171,14 @@
   
 .nav-previous,
 .nav-next {
-    @apply text-gray-800 font-bold py-1 px-4 hover:bg-slate-300;
+    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-white bg-gray-500 rounded-lg hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-400 dark:hover:bg-gray-600 dark:focus:ring-gray-700;
 }
-  
+
 .nav-previous {
-    @apply hover:text-red-700 mr-auto;
+    @apply mr-auto;
 }
   
 .nav-next {
-    @apply hover:text-green-700;
 }
 
 .button-appointment {

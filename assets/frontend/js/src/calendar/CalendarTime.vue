@@ -6,7 +6,7 @@
 
         <div v-if="loading" class="loading-style-2"></div>
 
-        <div class="calendar-time-body">
+        <div :class="['calendar-time-body', gridColumnsClass]">
 
             <div class="calendar-time-row" v-for="time in times" :key="time" @click="selectTime(time)">
 
@@ -41,6 +41,15 @@ export default {
         },
     },
 
+    data() {
+        return {
+            times: [],
+            selectedTime: null,
+            errorMessage: null,
+            loading: false,
+        };
+    },
+
     computed: {
         formattedSelectedDate() {
             const date = new Date(this.selectedDate);
@@ -49,16 +58,20 @@ export default {
             const day = ("0" + date.getDate()).slice(-2); 
 
             return `${year}-${month}-${day}`;
-        }
-    },
+        },
 
-    data() {
-        return {
-            times: [],
-            selectedTime: null,
-            errorMessage: null,
-            loading: false,
-        };
+        gridColumnsClass() {
+            switch (this.times.length) {
+                case 1:
+                    return 'grid-cols-1';
+                case 2:
+                    return 'grid-cols-2';
+                case 3:
+                    return 'grid-cols-2 md:grid-cols-3';
+                default:
+                    return 'grid-cols-4 xl:grid-cols-5';
+            }
+        }
     },
 
     methods: {
@@ -109,7 +122,6 @@ export default {
                 if (response === null) {
                     return 0;
                 }
-
                 return response;
 
             } catch (error) {
@@ -126,7 +138,22 @@ export default {
                 if (response === null) {
                     return 0;
                 }
-        
+                return response;
+
+            } catch (error) {
+                this.errorMessage = error;
+            } 
+        },
+
+        // Get Reserved Time Slots
+        async fetchReservedTimeSlots() {
+            try {
+                const response = await getReservedTimeSlots(this.formattedSelectedDate);
+                console.log("Get Reserved Time Slots: ", JSON.stringify(response, null, 2));
+
+                if (response.length === 0) {
+                    return [];
+                }
                 return response;
 
             } catch (error) {
@@ -136,23 +163,7 @@ export default {
             }
         },
 
-        async fetchReservedTimeSlots() {
-            try {
-                const response = await getReservedTimeSlots(this.formattedSelectedDate);
-                console.log("Get Reserved Time Slots: ", JSON.stringify(response, null, 2));
-
-                if (response.length === 0) {
-                    return [];
-                }
-
-                return response;
-
-            } catch (error) {
-                this.errorMessage = error;
-            }
-        },
-
-        // Generate Times from Open Time to Close Time
+        // Generate Times from Open Time to Close Time, excluding reserved time slots and break time
         // TODO: Check if total time of services selected is lower than slot duration so in it can be displayed in those cases
         async generateTimes() {
             const openTimeString = await this.fetchOpenTime();
