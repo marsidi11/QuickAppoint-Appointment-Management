@@ -1,7 +1,7 @@
 <template>
     <div class="calendar-services">
 
-        <h2 class="calendar-services-header">Select a Service:</h2>
+        <h2 class="calendar-services-header">Select a Service</h2>
 
         <div v-if="loading" class="loading-style-1"></div>
 
