@@ -1,6 +1,6 @@
 <template>
     <div class="calendar-wrapper">
-        <button class="reset-month" @click="resetMonth">View Current Date</button>
+        <button class="reset-month" @click="resetMonth">Current Month</button>
         <div class="calendar-header">
             <!-- TODO: Make button not clickable if it is the current month -->
             <button class="prev-month-icon" @click="prevMonth">&lt;</button>

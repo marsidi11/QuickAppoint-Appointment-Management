@@ -7,13 +7,13 @@
 
         <div :class="['services-list', gridColumnsClass]">
 
-            <div v-for="service in services" :key="service.id" @click="selectService(service)">
+            <div class="services-container" v-for="service in services" :key="service.id" @click="selectService(service)">
                 <div class="service-box"
                     :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
-                    <h3>{{ service.name }}</h3>
-                    <p>{{ service.description }}</p>
-                    <p>{{ service.duration }} minutes</p>
-                    <p>${{ service.price }}</p>
+                    <h3 class="service-name">{{ service.name }}</h3>
+                    <p class="service-description">{{ service.description }}</p>
+                    <p class="service-duration">{{ service.duration }} minutes</p>
+                    <p class="service-price">${{ service.price }}</p>
                 </div>
             </div>
         </div>
