@@ -556,6 +556,10 @@ video {
   float: left;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -616,6 +620,10 @@ video {
 
 .max-h-\[290px\] {
   max-height: 290px;
+}
+
+.w-11 {
+  width: 2.75rem;
 }
 
 .w-12 {
@@ -698,6 +706,10 @@ video {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .gap-x-2 {
@@ -969,6 +981,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.opacity-50 {
+  opacity: 0.5;
+}
+
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -1042,14 +1058,14 @@ video {
 
 @media (min-width: 640px) {
   .calendar-section {
-    height: 25rem;
+    height: 33rem;
     width: 31.25rem;
   }
 }
 
 @media (min-width: 768px) {
   .calendar-section {
-    height: 25rem;
+    height: 31rem;
     width: 37.5rem;
   }
 }
@@ -1098,7 +1114,7 @@ video {
 .calendar-services,
 .calendar-time,
 .input-form {
-    height: 25rem;
+    height: 26rem;
   }
 }
 
@@ -1210,20 +1226,33 @@ video {
 /* Frontend Calendar Body Style */
 
 .calendar-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@media (min-width: 768px) {
+  .calendar-body {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
 .calendar-week {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.5rem;
   padding: 0.5rem;
 }
 
 .calendar-day-name {
-  width: 3rem;
+  margin: auto;
+  width: 2.75rem;
   cursor: default;
   text-align: center;
   font-weight: 600;
@@ -1231,8 +1260,15 @@ video {
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
+@media (min-width: 768px) {
+  .calendar-day-name {
+    width: 3rem;
+  }
+}
+
 .calendar-day {
-  width: 3rem;
+  margin: auto;
+  width: 2.75rem;
   cursor: default;
   border-radius: 9999px;
   --tw-bg-opacity: 1;
@@ -1243,6 +1279,12 @@ video {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
   opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .calendar-day {
+    width: 3rem;
+  }
 }
 
 .clickable-day {
@@ -1301,6 +1343,9 @@ video {
 /* Frontend Calendar Services Style */
 
 .calendar-services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-radius: 0.5rem;
   transition-property: all;
   transition-duration: 300ms;
@@ -1323,8 +1368,10 @@ video {
 }
 
 .services-list {
+  margin: auto;
   display: grid;
   max-height: 290px;
+  width: 100%;
   gap: 1rem;
   overflow-y: auto;
 }
@@ -1421,10 +1468,20 @@ video {
 /* Frontend Calendar Time Style */
 
 .calendar-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-radius: 0.5rem;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .calendar-time {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .calendar-time > .calendar-time-header {
@@ -1435,12 +1492,13 @@ video {
 }
 
 .calendar-time-body {
+  margin: auto;
   display: grid;
+  width: 100%;
   gap: 1rem;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  padding: 1rem;
 }
 
 .calendar-time-row {
@@ -1512,10 +1570,20 @@ video {
 /* Frontend Calendar User Data Style */
 
 .input-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-radius: 0.5rem;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .input-form {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .input-form > .form-title {
@@ -1523,6 +1591,11 @@ video {
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 600;
+}
+
+.input-form > .form {
+  margin: auto;
+  width: 100%;
 }
 
 .form-group {
@@ -1862,12 +1935,12 @@ video {
 }
 
 @media (min-width: 640px) {
-  .sm\:h-\[25rem\] {
-    height: 25rem;
-  }
-
   .sm\:h-\[28em\] {
     height: 28em;
+  }
+
+  .sm\:h-\[33rem\] {
+    height: 33rem;
   }
 
   .sm\:w-\[31\.25rem\] {
@@ -1876,8 +1949,16 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:h-\[25rem\] {
-    height: 25rem;
+  .md\:h-\[26rem\] {
+    height: 26rem;
+  }
+
+  .md\:h-\[31rem\] {
+    height: 31rem;
+  }
+
+  .md\:w-12 {
+    width: 3rem;
   }
 
   .md\:w-\[37\.5rem\] {
@@ -1905,6 +1986,14 @@ video {
 
   .lg\:w-\[44rem\] {
     width: 44rem;
+  }
+
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-4 {
