@@ -12,6 +12,11 @@ namespace Inc\Api;
 
 class CustomOptionsDataController extends RestController 
 {
+    const DEFAULT_OPEN_TIME = '09:00';
+    const DEFAULT_CLOSE_TIME = '17:00';
+    const DEFAULT_TIME_SLOT_DURATION = '30';
+    const DEFAULT_DATES_RANGE = '21';
+
     public function register()
     {
         add_action('rest_api_init', array($this, 'register_routes'));
@@ -29,122 +34,88 @@ class CustomOptionsDataController extends RestController
 
     public function register_routes()
     {
-        // Route to get open time
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/open-time', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_open_time'),
-            'permission_callback' => function () 
-            {
-                return true; // Allow all users to get services
-            }
-        ));
+        $permission_callback = function () {
+            return true; // Allow all users to get custom options data
+        };
 
-        // Route to get close time
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/close-time', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_close_time'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
+        $routes = [
+            'open-time' => 'get_open_time',
+            'close-time' => 'get_close_time',
+            'time-slot-duration' => 'get_time_slot_duration',
+            'dates-range' => 'get_dates_range',
+            'open-days' => 'get_open_days',
+            'break-start' => 'get_break_start',
+            'break-end' => 'get_break_end'
+        ];
 
-        // Route to get time slot duration
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/time-slot-duration', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_time_slot_duration'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
+        foreach ($routes as $route => $method) {
+            \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/' . $route, array(
+                'methods' => 'GET',
+                'callback' => array($this, $method),
+                'permission_callback' => $permission_callback,
+                'args' => [
+                    'context' => [
+                        'default' => 'view',
+                    ],
+                ],
+            ));
+        }
+    }
 
-        // Route to get dates range allowed to accept bookings
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/dates-range', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_dates_range'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
-
-        // Route to get open days
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/open-days', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_open_days'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
-
-        // Route to get break start
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/break-start', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_break_start'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
-
-        // Route to get break end
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/break-end', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_break_end'),
-            'permission_callback' => function () 
-            {
-                return true; 
-            }
-        ));
+    private function validate_nonce($request)
+    {
+        $nonce = $request->get_header('X_WP_Nonce');
+        if (!wp_verify_nonce($nonce, 'wp_rest')) {
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+        return true;
     }
 
     public function get_open_time(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
-        return get_option('open_time', '09:00');
+        return get_option('open_time', self::DEFAULT_OPEN_TIME);
     }
 
     public function get_close_time(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
-        return get_option('close_time', '17:00');
+        return get_option('close_time', self::DEFAULT_CLOSE_TIME);
     }
 
     public function get_time_slot_duration(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
-        return get_option('time_slot_duration', '30');
+        return get_option('time_slot_duration', self::DEFAULT_TIME_SLOT_DURATION);
     }
 
     public function get_dates_range(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
-        return get_option('dates_range', '21');
+        return get_option('dates_range', self::DEFAULT_DATES_RANGE);
     }
 
     public function get_open_days(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         return get_option('open_days', array());
@@ -152,9 +123,9 @@ class CustomOptionsDataController extends RestController
 
     public function get_break_start(\WP_REST_Request $request)
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         $break_start = get_option('break_start');
@@ -168,9 +139,9 @@ class CustomOptionsDataController extends RestController
 
     public function get_break_end(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         $break_end = get_option('break_end');
