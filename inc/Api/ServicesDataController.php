@@ -62,11 +62,20 @@ class ServicesDataController extends RestController
 
     }
 
+    private function validate_nonce($request)
+    {
+        $nonce = $request->get_header('X_WP_Nonce');
+        if (!wp_verify_nonce($nonce, 'wp_rest')) {
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+        return true;
+    }
+
     public function get_all_services(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
         
         global $wpdb;
@@ -81,9 +90,9 @@ class ServicesDataController extends RestController
 
     public function post_service_data(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         $appointment_data = $request->get_json_params();
@@ -126,9 +135,9 @@ class ServicesDataController extends RestController
     // TODO: When a service is deleted, all appointments that have that service should are also be deleted. Find a way to fix this.
     public function delete_service_data(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         $service_id = $request['id'];

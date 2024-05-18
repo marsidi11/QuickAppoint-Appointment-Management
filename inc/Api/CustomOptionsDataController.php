@@ -16,6 +16,7 @@ class CustomOptionsDataController extends RestController
     const DEFAULT_CLOSE_TIME = '17:00';
     const DEFAULT_TIME_SLOT_DURATION = '30';
     const DEFAULT_DATES_RANGE = '21';
+    const DEFAULT_CURRENCY_SYMBOL = '$';
 
     public function register()
     {
@@ -45,7 +46,8 @@ class CustomOptionsDataController extends RestController
             'dates-range' => 'get_dates_range',
             'open-days' => 'get_open_days',
             'break-start' => 'get_break_start',
-            'break-end' => 'get_break_end'
+            'break-end' => 'get_break_end',
+            'currency-symbol' => 'get_currency_symbol',
         ];
 
         foreach ($routes as $route => $method) {
@@ -151,5 +153,15 @@ class CustomOptionsDataController extends RestController
         }
 
         return $break_end;
+    }
+
+    public function get_currency_symbol(\WP_REST_Request $request) 
+    {
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
+        }
+
+        return get_option('currency_symbol', self::DEFAULT_CURRENCY_SYMBOL);
     }
 }

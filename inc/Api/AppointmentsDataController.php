@@ -83,13 +83,22 @@ class AppointmentsDataController extends RestController
 
     }
 
+    private function validate_nonce($request)
+    {
+        $nonce = $request->get_header('X_WP_Nonce');
+        if (!wp_verify_nonce($nonce, 'wp_rest')) {
+            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        }
+        return true;
+    }
+
     // TODO: Add custom endpoints to order appointments by date, by name, booked date, etc.
     // TODO: Show only upcoming appointments
     public function get_all_appointments(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
         
         // Order the appointments by date and start time, and limit the number of appointments returned
@@ -142,9 +151,9 @@ class AppointmentsDataController extends RestController
 
     public function post_appointment_data(\WP_REST_Request $request) 
     {
-        if (!wp_verify_nonce($request->get_header('X_WP_Nonce'), 'wp_rest')) 
-        {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
         // Get the appointment data from the request
