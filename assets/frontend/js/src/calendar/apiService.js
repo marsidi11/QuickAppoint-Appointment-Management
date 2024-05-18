@@ -31,196 +31,130 @@ function checkApiSettings() {
 	return true;
 }
 
-// Create Appointment
+// Helper function to get headers
+function getHeaders() {
+	return {
+		'X-WP-Nonce': window.wpApiSettings.nonce,
+	};
+}
+
+// Helper function to make GET requests
+async function apiGet(url, params = {}) {
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.get(url, {
+			headers: getHeaders(),
+			params: params,
+		});
+		return response.data;
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
+// Helper function to make POST requests
+async function apiPost(url, data) {
+	if (!checkApiSettings()) return;
+
+	try {
+		const response = await axios.post(url, data, {
+			headers: getHeaders(),
+		});
+		return response.data;
+	} catch (error) {
+		throw handleError(error);
+	}
+}
+
+/**
+ * Create Appointment
+ * @param {Object} appointmentData - The appointment data
+ * @returns {Promise<Object>}
+ */
 export async function createAppointment(appointmentData) {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiPost(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData);
 }
 
-// Get Services
+/**
+ * Get Services
+ * @returns {Promise<Object>}
+ */
 export async function getServices() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlServices, {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlServices);
 }
 
-// Get Open Time
+/**
+ * Get Open Time
+ * @returns {Promise<Object>}
+ */
 export async function getOpenTime() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/open-time', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/open-time');
 }
 
-// Get Close Time
+/**
+ * Get Close Time
+ * @returns {Promise<Object>}
+ */
 export async function getCloseTime() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/close-time', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/close-time');
 }
 
-// Get Time Slot Duration (split time slots in x minutes 30 default)
+/**
+ * Get Time Slot Duration
+ * @returns {Promise<Object>}
+ */
 export async function getTimeSlotDuration() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/time-slot-duration', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/time-slot-duration');
 }
 
-// Get Dates Range To Allow Bookings
+/**
+ * Get Dates Range To Allow Bookings
+ * @returns {Promise<Object>}
+ */
 export async function getDatesRange() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/dates-range', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/dates-range');
 }
 
-// Get Open Days
+/**
+ * Get Open Days
+ * @returns {Promise<Object>}
+ */
 export async function getOpenDays() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/open-days', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/open-days');
 }
 
-// Get Break Start Time
+/**
+ * Get Break Start Time
+ * @returns {Promise<Object>}
+ */
 export async function getBreakStart() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/break-start', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-
-		if (response.data.code === 'no_value') {
-            // throw new Error(response.data.message);
-			return null;
-        }
-
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	const response = await apiGet(window.wpApiSettings.apiUrlOptions + '/break-start');
+	return response.code === 'no_value' ? null : response;
 }
 
-// Get Break End Time
+/**
+ * Get Break End Time
+ * @returns {Promise<Object>}
+ */
 export async function getBreakEnd() {
-
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlOptions + '/break-end', {
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-
-		if (response.data.code === 'no_value') {
-            // throw new Error(response.data.message);
-            return null;
-        }
-
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+	const response = await apiGet(window.wpApiSettings.apiUrlOptions + '/break-end');
+	return response.code === 'no_value' ? null : response;
 }
 
-// Get Reserved Time Slots
+/**
+ * Get Reserved Time Slots
+ * @param {string} date - The date to get reserved time slots for
+ * @returns {Promise<Object>}
+ */
 export async function getReservedTimeSlots(date) {
+	return apiGet(window.wpApiSettings.apiUrlAppointments + '/reserved-time-slots', { date });
+}
 
-	if (!checkApiSettings()) return;
-
-	try {
-		const response = await axios.get(window.wpApiSettings.apiUrlAppointments + '/reserved-time-slots', {
-			params: {
-				date: date,
-			},
-			headers: {
-				'X-WP-Nonce': window.wpApiSettings.nonce,
-			},
-		});
-		return response.data;
-
-	} catch (error) {
-		throw handleError(error);
-	}
+/**
+ * Get Currency Symbol
+ * @returns {Promise<Object>}
+ */
+export async function getCurrencySymbol() {
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/currency-symbol');
 }

@@ -9,7 +9,7 @@
             <p>Date: {{ confirmationData.date }}</p>
             <p>Start Time: {{ confirmationData.startTime }}</p>
             <p>End Time: {{ confirmationData.endTime }}</p>
-            <p>Total Price: {{ confirmationData.totalPrice }}</p>
+            <p>Total Price: {{ currencySymbol }}{{ confirmationData.totalPrice }}</p>
         </div>
 
         <form @submit.prevent="submitForm" class="form">
@@ -44,7 +44,13 @@
 export default {
     name: 'CalendarUserData',
 
-    props: ['confirmationData'],
+    props: {
+        confirmationData: Object,
+        currencySymbol: {
+            type: String,
+            default: '$', 
+        },
+    },
 
     data() {
         return {

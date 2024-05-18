@@ -13,7 +13,7 @@
                     <h3 class="service-name">{{ service.name }}</h3>
                     <p class="service-description">{{ service.description }}</p>
                     <p class="service-duration">{{ service.duration }} minutes</p>
-                    <p class="service-price">${{ service.price }}</p>
+                    <p class="service-price">{{ currencySymbol }}{{ service.price }}</p>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getServices } from './apiService.js';
+import { getServices, getCurrencySymbol } from './apiService.js';
 
 export default {
     name: 'CalendarServices',
@@ -40,33 +40,27 @@ export default {
             selectedServices: [],
             errorMessage: null,
             loading: false,
+            currencySymbol: '$', // Default currency symbol
         };
     },
 
     computed: {
         gridColumnsClass() {
-            switch (this.services.length) {
-                case 1:
-                    return 'grid-cols-1';
-                case 2:
-                    return 'grid-cols-2';
-                case 3:
-                    return 'grid-cols-2 md:grid-cols-3';
-                case 4:
-                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-2';
-                case 5:
-                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3';
-                case 6:
-                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3';
-                default:
-                    return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
-            }
-        }
+            const classes = [
+                'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+                'grid-cols-1',
+                'grid-cols-2',
+                'grid-cols-2 md:grid-cols-3',
+                'grid-cols-2 md:grid-cols-3 lg:grid-cols-2',
+                'grid-cols-2 md:grid-cols-3 lg:grid-cols-3',
+            ];
+            return classes[Math.min(this.services.length, 5)];
+        },
     },
 
     methods: {
 
-        // Display services on frontend
+        // Get services on frontend
         async fetchServices() {
             try {
                 this.loading = true;
@@ -76,25 +70,40 @@ export default {
 
             } catch (error) {
                 this.errorMessage = error;
+            }
+        },
+
+        // Get currency symbol
+        async fetchCurrencySymbol() {
+            try {
+                this.loading = true;
+                const response = await getCurrencySymbol();
+                console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
+                if (response) {
+                    this.currencySymbol = response;
+                }
+                this.$emit('currency-symbol', this.currencySymbol);
+
+            } catch (error) {
+                this.errorMessage = error;
             } finally {
                 this.loading = false;
             }
         },
 
-        // Get selected services
+        isSelected(service) {
+            return this.selectedServices.some(selectedService => selectedService.id === service.id);
+        },
+
+        // Save selected services
         selectService(service) {
             const index = this.selectedServices.findIndex(selectedService => selectedService.id === service.id);
-            
             if (index > -1) {
-                this.selectedServices.splice(index, 1); // Remove the service ID from the array if it's already selected
+                this.selectedServices.splice(index, 1); // Remove the service if already selected
             } else {
-                this.selectedServices.push({ 
-                    id: service.id, 
-                    duration: service.duration,
-                    price: service.price
-                }); // Add the service ID and Duration to the array if it's not already selected
+                this.selectedServices.push(service); // Add the service if not selected
             }
-            this.$emit('services-selected', this.selectedServices); // Emit the array of selected service IDs
+            this.$emit('selected-services', this.selectedServices); // Emit the selected services
         },
 
         nextClicked() {
@@ -111,6 +120,7 @@ export default {
     // Call fetchServices() method when component is created
     created() {
         this.fetchServices();
+        this.fetchCurrencySymbol();
     },
 };
 </script>

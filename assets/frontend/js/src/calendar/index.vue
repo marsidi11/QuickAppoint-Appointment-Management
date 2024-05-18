@@ -4,11 +4,11 @@
 		
 		<CalendarBody v-if="showCalendarBodyComponent" :currentMonth="currentMonth" :currentDate="currentDate" :daysOfWeek="daysOfWeek" :calendar="calendar" @date-selected="storeDate" @next-month="nextMonth" @prev-month="prevMonth" @reset-month="resetMonth" @next-clicked="nextCalendarBody" />
 
-		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @services-selected="storeServices" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />
+		<CalendarServices v-if="showCalendarServicesComponent" :selected-date="selectedDate" @selected-services="storeServices" @currency-symbol="storeCurrencySymbol" @prev-clicked="prevCalendarServices" @next-clicked="nextCalendarServices" />
 
 		<CalendarTime v-if="showCalendarTimeComponent" :selected-date="selectedDate" :selected-services="selectedServices" @time-selected="storeTime" @prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
 
-		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" :confirmation-data="confirmationData" @update-user-data="storeUserData" />
+		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" :confirmation-data="confirmationData" :currency-symbol="currencySymbol" @update-user-data="storeUserData" />
 
 		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" @prev-clicked="prevCalendarUserData" />
 	
@@ -53,6 +53,9 @@ export default {
                 phone: '',
                 email: ''
             },
+
+			currencySymbol: null,
+
 		}
 	},
 
@@ -115,6 +118,10 @@ export default {
 		storeServices(services) { // Save the selected services from CalendarServices component
 			this.selectedServices = services;
 			console.log("Services Data Passed: " + JSON.stringify(this.selectedServices, null, 2));
+		},
+
+		storeCurrencySymbol(symbol) { // Save the currency symbol from CalendarServices component
+			this.currencySymbol = symbol;
 		},
 
 		storeTime(time) { // Save the selected time from CalendarTime component
