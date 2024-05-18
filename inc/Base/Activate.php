@@ -14,7 +14,7 @@ class Activate {
       $services_table_name = $wpdb->prefix . 'am_services';
       $mapping_table_name = $wpdb->prefix . 'am_mapping';
 
-      // TODO: Add the booked date and time to the table
+      // TODO: Add the booked date, time, price to the table
       $sql1 = "CREATE TABLE $appointments_table_name 
       (
          id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -24,7 +24,8 @@ class Activate {
          email varchar(255) NOT NULL,
          date date NOT NULL,
          startTime time NOT NULL,
-         endTime time NOT NULL
+         endTime time NOT NULL,
+         status varchar(20) NOT NULL
       ) $charset_collate;";
 
 

@@ -54,20 +54,13 @@ class AdminCallbacks extends BaseController
         echo 'Select your options below!';
     }
 
-    // Example callback functions
-    public function appointmentManagementTextExample() 
-    {
-        $value = esc_attr( get_option( 'text_example' ) );
-        echo '<input type="text" class="regular-text" name="text_example" value="' . $value . '" placeholder="Write something here!">';
-    }
-
-    public function appointmentManagementFirstName() 
-    {
-        $value = esc_attr( get_option( 'first_name' ) );
-        echo '<input type="text" class="regular-text" name="first_name" value="' . $value . '" placeholder="Write your first name here!">';
-    }
-
     // Settings callback functions
+    public function amCurrencySymbol() 
+    {
+        $value = esc_attr( get_option( 'currency_symbol', '$' ) );
+        echo '<input type="text" class="regular-text" name="currency_symbol" value="' . $value . '" placeholder="Currency Symbol">';
+    }
+
     public function amOpenTime() 
     {
         $value = esc_attr( get_option( 'open_time', '09:00' ) );
@@ -117,10 +110,17 @@ class AdminCallbacks extends BaseController
         $value = esc_attr( get_option( 'break_start') );
         echo '<input type="time" class="regular-text" name="break_start" value="' . $value . '" placeholder="Select start time">';
     }
-    // Check if break end time is later than break start time
+    // TODO: Check if break end time is later than break start time
     public function amBreakEnd() 
     {
         $value = esc_attr( get_option( 'break_end') );
         echo '<input type="time" class="regular-text" name="break_end" value="' . $value . '" placeholder="Select close time">';
+    }
+
+    public function amEnableEmailVerification() 
+    {
+        $value = esc_attr( get_option( 'enable_email_verification', '0' ) );
+        $checked = $value === '1' ? 'checked="checked"' : '';
+        echo '<label><input type="checkbox" name="enable_email_verification" value="1" ' . $checked . '> Enable</label>';
     }
 }

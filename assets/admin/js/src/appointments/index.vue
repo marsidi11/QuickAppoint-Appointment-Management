@@ -11,14 +11,14 @@
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">{{ user.name }}</td>
-            <td class="px-6 py-4">{{ user.surname }}</td>
+            <td class="px-6 py-4">{{ user.name + ' ' + user.surname }}</td>
             <td class="px-6 py-4">{{ user.phone }}</td>
             <td class="px-6 py-4">{{ user.email }}</td>
             <td class="px-6 py-4">{{ user.service_names }}</td>
             <td class="px-6 py-4">{{ user.date }}</td>
             <td class="px-6 py-4">{{ user.startTime }}</td>
             <td class="px-6 py-4">{{ user.endTime }}</td>
+            <td class="px-6 py-4">{{ user.total_price }}</td>
           </tr>
         </tbody>
       </table>
@@ -41,7 +41,7 @@ export default {
 
 	data() {
 		return {
-			columns: ['Name', 'Surname', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time'],
+			columns: ['Name', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time', 'Price', 'Status'],
 			users: [],
 		};
 	},

@@ -57,14 +57,14 @@ class Admin extends BaseController
     public function setSubpages() 
     {
         $this->subpages = array(
-            // array(
-            //     'parent_slug' => 'appointment_management', 
-            //     'page_title' => 'Settings', 
-            //     'menu_title' => 'Settings', 
-            //     'capability' => 'manage_options', 
-            //     'menu_slug' => 'appointment_management_settings', 
-            //     'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
-            // )
+            array(
+                'parent_slug' => 'appointment_management', 
+                'page_title' => 'Settings', 
+                'menu_title' => 'Settings', 
+                'capability' => 'manage_options', 
+                'menu_slug' => 'appointment_management_settings', 
+                'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
+            )
         );
     }
 
@@ -73,19 +73,13 @@ class Admin extends BaseController
     {
         $args = array(
 
-            // Example Options Settings Page
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Options Dashboard Page
             array(
-                'option_group' => 'appointment_management_option_group',
-                'option_name' => 'text_example',
-                'callback' => array( $this->callbacks, 'appointmentManagementOptionsGroup' 
+                'option_group' => 'am_options_data',
+                'option_name' => 'currency_symbol',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             ),
-            array(
-                'option_group' => 'appointment_management_option_group',
-                'option_name' => 'first_name'
-            ),
-
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Options Dashboard Page
             array(
                 'option_group' => 'am_options_data',
                 'option_name' => 'open_time',
@@ -127,6 +121,12 @@ class Admin extends BaseController
                 'option_name' => 'break_end',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
+            ),
+            array(
+                'option_group' => 'am_options_data',
+                'option_name' => 'enable_email_verification',
+                'callback' => array( $this->callbacks, 'amOptionsData' 
+                )
             )
         );
 
@@ -138,15 +138,7 @@ class Admin extends BaseController
     {
         $args = array(
 
-            // Example Sections
-            array(
-                'id' => 'appointment_management_admin_index',
-                'title' => 'Settings Example',
-                'callback' => array( $this->callbacks, 'appointmentManagementAdminSection' ),
-                'page' => 'appointment_management_settings'
-            ),
-
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Sections
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Sections
             array(
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
@@ -164,31 +156,19 @@ class Admin extends BaseController
         
         $args = array(
 
-            // Example Fields
-            array(
-                'id' => 'text_example',
-                'title' => 'Text Example',
-                'callback' => array( $this->callbacks, 'appointmentManagementTextExample' ),
-                'page' => 'appointment_management_settings',
-                'section' => 'appointment_management_admin_index',
-                'args' => array(
-                    'label_for' => 'text_example',
-                    'class' => 'example-class'
-                )
-            ),
-            array(
-                'id' => 'first_name',
-                'title' => 'First Name',
-                'callback' => array( $this->callbacks, 'appointmentManagementFirstName' ),
-                'page' => 'appointment_management_settings',
-                'section' => 'appointment_management_admin_index',
-                'args' => array(
-                    'label_for' => 'first_name',
-                    'class' => 'example-class'
-                )
-            ),
 
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time - Fields
+            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Fields
+            array(
+                'id' => 'currency_symbol',
+                'title' => __('Currency Symbol ($)', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amCurrencySymbol' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(    
+                    'label_for' => 'currency_symbol',
+                    'class' => 'currency-symbol'
+                )
+            ),
             array(
                 'id' => 'open_time',
                 'title' => __('Open Time', 'appointment-management'),
@@ -230,7 +210,7 @@ class Admin extends BaseController
                 'section' => 'am_admin_index',
                 'args' => array(
                     'label_for' => 'dates_range',
-                    'class' => 'select-allowed-dates'
+                    'class' => 'select-time'
                 )
             ),
             array(
@@ -265,7 +245,19 @@ class Admin extends BaseController
                     'label_for' => 'break_end',
                     'class' => 'select-time'
                 )
+            ),
+            array(
+                'id' => 'enable_email_verification',
+                'title' => __('Appointment Email Verification', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amEnableEmailVerification' ),
+                'page' => 'appointment_management',
+                'section' => 'am_admin_index',
+                'args' => array(
+                    'label_for' => 'enable_email_verification',
+                    'class' => 'enable-verification'
+                )
             )
+            
         );
 
         $this->settings->setFields( $args );

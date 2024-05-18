@@ -103,13 +103,15 @@ class AppointmentsDataController extends RestController
         $offset = ($page - 1) * $items_per_page;
 
         // Get all appointments from the database, and join service names from the mapping table
-        $query = "SELECT a.*, GROUP_CONCAT(s.name SEPARATOR ', ') as service_names
-            FROM $appointments_table a
-            LEFT JOIN $mapping_table m ON a.id = m.appointment_id
-            LEFT JOIN $services_table s ON m.service_id = s.id
-            GROUP BY a.id
-            ORDER BY a.date ASC, a.startTime ASC
-            LIMIT $items_per_page OFFSET $offset
+        $query =   "SELECT a.*, 
+                        GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+                        SUM(s.price) as total_price
+                    FROM $appointments_table a
+                    LEFT JOIN $mapping_table m ON a.id = m.appointment_id
+                    LEFT JOIN $services_table s ON m.service_id = s.id
+                    GROUP BY a.id
+                    ORDER BY a.date ASC, a.startTime ASC
+                    LIMIT $items_per_page OFFSET $offset
         ";
 
         $appointments = $wpdb->get_results($query);
