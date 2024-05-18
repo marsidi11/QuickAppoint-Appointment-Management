@@ -18,6 +18,7 @@
             <td class="px-6 py-4">{{ user.date }}</td>
             <td class="px-6 py-4">{{ user.startTime }}</td>
             <td class="px-6 py-4">{{ user.endTime }}</td>
+            <!-- TODO: Add currency symbol from options in backend -->
             <td class="px-6 py-4">{{ user.total_price }}</td>
           </tr>
         </tbody>

@@ -8,7 +8,7 @@
 
 		<CalendarTime v-if="showCalendarTimeComponent" :selected-date="selectedDate" :selected-services="selectedServices" @time-selected="storeTime" @prev-clicked="prevCalendarTime" @next-clicked="nextCalendarTime" />
 
-		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" @update-user-data="storeUserData" />
+		<CalendarUserData v-if="showCalendarUserDataComponent" :selected-time="selectedTime" :confirmation-data="confirmationData" @update-user-data="storeUserData" />
 
 		<CreateAppointment v-if="showCalendarUserDataComponent" :appointment-data="appointmentData" @prev-clicked="prevCalendarUserData" />
 	
@@ -82,6 +82,15 @@ export default {
 				endTime: end_time,
 			};
 		},
+
+		confirmationData() {
+			return {
+				date: this.appointmentData.date,
+				startTime: this.appointmentData.startTime,
+				endTime: this.appointmentData.endTime,
+				totalPrice: this.selectedServices.reduce((total, service) => total + Number(service.price), 0),
+			};
+		}
 	},
 
 	methods: {

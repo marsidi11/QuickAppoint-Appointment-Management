@@ -5,6 +5,13 @@
 
         <!-- TODO: Show the price here, also add the price to database, show here also the duration, from what time to what time -->
 
+        <div>
+            <p>Date: {{ confirmationData.date }}</p>
+            <p>Start Time: {{ confirmationData.startTime }}</p>
+            <p>End Time: {{ confirmationData.endTime }}</p>
+            <p>Total Price: {{ confirmationData.totalPrice }}</p>
+        </div>
+
         <form @submit.prevent="submitForm" class="form">
             
 
@@ -37,7 +44,7 @@
 export default {
     name: 'CalendarUserData',
 
-    inject: ['formData'],
+    props: ['confirmationData'],
 
     data() {
         return {

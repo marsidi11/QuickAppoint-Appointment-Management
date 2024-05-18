@@ -90,7 +90,8 @@ export default {
             } else {
                 this.selectedServices.push({ 
                     id: service.id, 
-                    duration: service.duration 
+                    duration: service.duration,
+                    price: service.price
                 }); // Add the service ID and Duration to the array if it's not already selected
             }
             this.$emit('services-selected', this.selectedServices); // Emit the array of selected service IDs

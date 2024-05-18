@@ -210,7 +210,7 @@
 }
 
 /* Error Message */
-
+/* TODO: Fix display of the message */
 .error-message {
     @apply text-red-600 text-sm font-semibold text-center mt-2;
 }
