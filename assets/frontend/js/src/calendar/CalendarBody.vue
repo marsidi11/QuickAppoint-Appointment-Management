@@ -1,9 +1,9 @@
 <template>
     <div class="calendar-wrapper">
-        <button class="reset-month" @click="resetMonth">Current Month</button>
+        <button class="reset-month" @click="resetMonth" :disabled="isCurrentMonth">Current Month</button>
         <div class="calendar-header">
             <!-- TODO: Make button not clickable if it is the current month -->
-            <button class="prev-month-icon" @click="prevMonth">&lt;</button>
+            <button class="prev-month-icon" @click="prevMonth" :disabled="isCurrentMonth">&lt;</button>
             <h2 class="current-month">{{ currentMonth }}</h2>
             <button class="next-month-icon" @click="nextMonth">&gt;</button>
         </div>
@@ -67,11 +67,20 @@ export default {
             required: true
         }
     },
+
+    computed: {
+        isCurrentMonth() {
+            return this.currentDate.getMonth() === new Date().getMonth();
+        }
+    },
+
     methods: {
         isCurrentDay,
         isPastDate,
         isDateWithinAllowedRange,
         isOpenDay,
+        dayClicked,
+        isDateWithinNextXDays,
 
         resetMonth() {
             this.$emit('reset-month');
@@ -117,31 +126,10 @@ export default {
         },
 
         dayClicked(date) {
-            let numberOfDays = this.datesRange;
-
-            if (isPastDate(date)) {
-                return null;
-            }
-            if (!isDateWithinNextXDays(date, numberOfDays)) {
-                return null;
-            }
-            if (!isOpenDay(date, this.openDays)) {
-                return null;
-            }
-            
-            this.selectedDate = date;
-            this.$emit('date-selected', date);
-
-            // If the selected date is in the next month, show next month
-            if (date.getMonth() > this.currentDate.getMonth() ||
-                (date.getMonth() === 0 && this.currentDate.getMonth() === 11)) { // handle December to January transition
-                this.$emit('next-month');
-            }
-
-            // If the selected date is in the previous month, show previous month
-            if (date.getMonth() < this.currentDate.getMonth() ||
-                (date.getMonth() === 11 && this.currentDate.getMonth() === 0)) { // handle January to December transition
-                this.$emit('prev-month');
+            if (this.isValidDate(date)) {
+                this.selectedDate = date;
+                this.$emit('date-selected', date);
+                this.handleMonthTransition(date);
             }
         },
 
@@ -150,6 +138,24 @@ export default {
                 this.$emit('next-clicked');
             } else {
                 this.errorMessage = 'Please select a date';
+            }
+        },
+
+        isValidDate(date) {
+            return !this.isPastDate(date) &&
+                this.isDateWithinNextXDays(date, this.datesRange) &&
+                this.isOpenDay(date, this.openDays);
+        },
+
+        handleMonthTransition(date) {
+            if (date.getMonth() > this.currentDate.getMonth() ||
+                (date.getMonth() === 0 && this.currentDate.getMonth() === 11)) {
+                this.$emit('next-month');
+            }
+
+            if (date.getMonth() < this.currentDate.getMonth() ||
+                (date.getMonth() === 11 && this.currentDate.getMonth() === 0)) {
+                this.$emit('prev-month');
             }
         },
     },

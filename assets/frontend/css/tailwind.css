@@ -16,7 +16,7 @@
 .calendar-services,
 .calendar-time,
 .input-form {
-    @apply h-[28rem] sm:h-[28em] md:h-[26rem] lg:h-[26rem] xl:h-[26rem] 2xl:h-[29rem] overflow-y-auto box-border;
+    @apply h-[28rem] md:h-[26rem] 2xl:h-[29rem] overflow-y-auto box-border;
 }
 
 /* Frontend Calendar Header Style */
@@ -57,19 +57,12 @@
 } 
 
 .clickable-day {
-    @apply cursor-pointer text-gray-600 bg-white opacity-100;
+    @apply cursor-pointer text-gray-600 bg-white opacity-100 hover:bg-blue-300 hover:text-white;
 }
 
-.clickable-day:hover {
-    @apply bg-blue-300 text-white;
-}
-
-.clickable-day.next-month-day {
-    @apply text-gray-400 font-semibold cursor-pointer;
-}
-
-.clickable-day.next-month-day:hover {
-    @apply bg-blue-300 text-white;
+.clickable-day.next-month-day,
+.clickable-day.prev-month-day {
+    @apply text-gray-400 font-semibold cursor-pointer hover:bg-blue-300 hover:text-white;
 }
 
 .current-day {
@@ -77,11 +70,7 @@
 }
 
 .selected-day {
-    @apply bg-blue-500 text-white rounded-full; 
-}
-
-.selected-day:hover {
-    @apply bg-blue-500 text-white rounded-full;
+    @apply bg-blue-500 text-white rounded-full hover:bg-blue-500; 
 }
 
 /* Frontend Calendar Services Style */
@@ -96,9 +85,6 @@
 
 .services-list {
     @apply max-h-[290px] overflow-y-auto grid gap-4 m-auto w-full;
-}
-
-.services-container {
 }
 
 .service-box {

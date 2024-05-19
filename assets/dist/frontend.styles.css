@@ -785,11 +785,6 @@ video {
   border-color: transparent;
 }
 
-.bg-blue-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
-}
-
 .bg-blue-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
@@ -981,6 +976,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.opacity-100 {
+  opacity: 1;
+}
+
 .opacity-50 {
   opacity: 0.5;
 }
@@ -1001,14 +1000,6 @@ video {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 .transition-all {
@@ -1100,34 +1091,7 @@ video {
   overflow-y: auto;
 }
 
-@media (min-width: 640px) {
-  .calendar-wrapper,
-.calendar-services,
-.calendar-time,
-.input-form {
-    height: 28em;
-  }
-}
-
 @media (min-width: 768px) {
-  .calendar-wrapper,
-.calendar-services,
-.calendar-time,
-.input-form {
-    height: 26rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .calendar-wrapper,
-.calendar-services,
-.calendar-time,
-.input-form {
-    height: 26rem;
-  }
-}
-
-@media (min-width: 1280px) {
   .calendar-wrapper,
 .calendar-services,
 .calendar-time,
@@ -1303,14 +1267,16 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.clickable-day.next-month-day {
+.clickable-day.next-month-day,
+.clickable-day.prev-month-day {
   cursor: pointer;
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
-.clickable-day.next-month-day:hover {
+.clickable-day.next-month-day:hover,
+.clickable-day.prev-month-day:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(147 197 253 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
@@ -1333,11 +1299,8 @@ video {
 }
 
 .selected-day:hover {
-  border-radius: 9999px;
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 /* Frontend Calendar Services Style */
@@ -1374,9 +1337,6 @@ video {
   width: 100%;
   gap: 1rem;
   overflow-y: auto;
-}
-
-.services-container {
 }
 
 .service-box {
@@ -1863,6 +1823,11 @@ video {
   inset: 0px;
 }
 
+.hover\:bg-blue-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 64 175 / var(--tw-bg-opacity));
@@ -1937,10 +1902,6 @@ video {
 }
 
 @media (min-width: 640px) {
-  .sm\:h-\[28em\] {
-    height: 28em;
-  }
-
   .sm\:h-\[33rem\] {
     height: 33rem;
   }
@@ -1978,10 +1939,6 @@ video {
 }
 
 @media (min-width: 1024px) {
-  .lg\:h-\[26rem\] {
-    height: 26rem;
-  }
-
   .lg\:h-\[31\.25rem\] {
     height: 31.25rem;
   }
@@ -2004,10 +1961,6 @@ video {
 }
 
 @media (min-width: 1280px) {
-  .xl\:h-\[26rem\] {
-    height: 26rem;
-  }
-
   .xl\:h-\[31\.25rem\] {
     height: 31.25rem;
   }
