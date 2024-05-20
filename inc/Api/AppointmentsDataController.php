@@ -4,6 +4,10 @@
  */
 namespace Inc\Api;
 
+use Inc\EmailVerification\EmailSender;
+use Inc\EmailVerification\VerificationHandler;
+
+
 /**
  * Custom REST API controller for handling appointments data. 
  * Endpoints for getting and posting all appointments (ordered by date and startTime), getting a single appointment and creating a new appointment.
@@ -177,11 +181,14 @@ class AppointmentsDataController extends RestController
             return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
         }
 
+        // Generate the token for email verification
+        $token = bin2hex(openssl_random_pseudo_bytes(16)); 
+        $email = sanitize_email($appointment_data['email']);
+
         // Insert the apppointment data into the database
         global $wpdb;
         $appointments_table = $wpdb->prefix . 'am_appointments';
         $mapping_table = $wpdb->prefix . 'am_mapping';
-
 
         $result = $wpdb->insert($appointments_table, array
         (
@@ -191,7 +198,9 @@ class AppointmentsDataController extends RestController
             'email' => sanitize_email($appointment_data['email']),
             'date' => $appointment_data['date'],
             'startTime' => $appointment_data['startTime'],
-            'endTime' => $appointment_data['endTime']
+            'endTime' => $appointment_data['endTime'],
+            'status' => 'Pending',
+            'token' => $token
         ));
 
         if ($result === false) 
@@ -217,7 +226,11 @@ class AppointmentsDataController extends RestController
             }
         }
 
-        return new \WP_REST_Response('Appointment created successfully', 201);
+        // Send verification email
+        $emailSender = new EmailSender();
+        $emailSender->send_verification_email($email, $token);
+
+        return new \WP_REST_Response('Appointment created successfully. Please check your email for verification', 201);
     }
 
     public function get_reserved_time_slots(\WP_REST_Request $request)

@@ -25,7 +25,8 @@ class Activate {
          date date NOT NULL,
          startTime time NOT NULL,
          endTime time NOT NULL,
-         status varchar(20) NOT NULL
+         status varchar(20) NOT NULL DEFAULT 'Pending',
+         token varchar(255) NOT NULL
       ) $charset_collate;";
 
 
