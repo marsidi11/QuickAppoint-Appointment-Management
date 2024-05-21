@@ -23,6 +23,7 @@ final class Init {
             Api\AppointmentsDataController::class,
             Api\ServicesDataController::class,
             Api\CustomOptionsDataController::class,
+            EmailVerification\VerificationHandler::class,
         ];
     }
 
