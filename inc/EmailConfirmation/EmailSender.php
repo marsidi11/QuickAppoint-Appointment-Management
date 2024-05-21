@@ -12,7 +12,7 @@ class EmailSender
         $confirmation_url = add_query_arg([
             'token' => $token,
             'action' => 'verify_appointment'
-        ], home_url());
+        ], home_url('/appointment-confirmation'));
 
         $subject = 'Please verify your appointment';
         $message = "Please click the following link to verify your appointment: <a href='$confirmation_url'>$confirmation_url</a>";

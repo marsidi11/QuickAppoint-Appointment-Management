@@ -23,23 +23,6 @@ export default {
     },
 
     methods: {
-        // async getAppointment() {
-        //     try {
-        //         this.loading = true;
-        //         const response = await apiService.getAppointment(this.appointmentId);
-        //         // Update the component's data with the server's response
-        //         // this.appointmentData = response;
-
-        //         // Or emit an event with the server's response
-        //         this.$emit('appointment-retrieved', response);
-        //         console.log("Get Appointment: " + response);
-        //     } catch (error) {
-        //         this.errorMessage = error;
-        //     } finally {
-        //         this.loading = false;
-        //     }
-        // },
-
         async createAppointment() {
             try {
                 this.$emit('submit');

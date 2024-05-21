@@ -34,12 +34,10 @@ class ConfirmationHandler
         if ($appointment && $appointment->status === 'Pending') 
         {
             $wpdb->update($table_name, ['status' => 'Confirmed'], ['token' => $token]);
-            echo '<h2>Appointment confirmed successfully!</h2>';
-            // TODO: Redirect to a page that displays the confirmation message, and the appointment data
-            // include plugin_dir_path(__FILE__) . '../../templates/confirmation-page.php';
+            \wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
         } else 
         {
-            echo '<h2>Invalid or expired token. Please try again.</h2>';
+            \wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
         }
         exit;
     }
