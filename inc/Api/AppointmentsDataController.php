@@ -4,8 +4,8 @@
  */
 namespace Inc\Api;
 
-use Inc\EmailVerification\EmailSender;
-use Inc\EmailVerification\VerificationHandler;
+use Inc\EmailConfirmation\EmailSender;
+use Inc\EmailConfirmation\ConfirmationHandler;
 
 
 /**
@@ -181,7 +181,7 @@ class AppointmentsDataController extends RestController
             return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', array('status' => 400));
         }
 
-        // Generate the token for email verification
+        // Generate the token for email confirmation
         $token = bin2hex(openssl_random_pseudo_bytes(16)); 
         $email = sanitize_email($appointment_data['email']);
 
@@ -226,11 +226,11 @@ class AppointmentsDataController extends RestController
             }
         }
 
-        // Send verification email
+        // Send confirmation email
         $emailSender = new EmailSender();
-        $emailSender->send_verification_email($email, $token);
+        $emailSender->send_confirmation_email($email, $token);
 
-        return new \WP_REST_Response('Appointment created successfully. Please check your email for verification', 201);
+        return new \WP_REST_Response('Appointment created successfully. Please check your email for confirmation', 201);
     }
 
     public function get_reserved_time_slots(\WP_REST_Request $request)

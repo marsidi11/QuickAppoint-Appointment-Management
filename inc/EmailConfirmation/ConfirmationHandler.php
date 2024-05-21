@@ -3,16 +3,16 @@
  * @package AppointmentManagementPlugin
  */
 
-namespace Inc\EmailVerification;
+namespace Inc\EmailConfirmation;
 
-class VerificationHandler 
+class ConfirmationHandler 
 {
     public function register() 
     {
-        add_action('init', array($this, 'handle_verification_request'));
+        add_action('init', array($this, 'handle_confirmation_request'));
     }
 
-    public function handle_verification_request() 
+    public function handle_confirmation_request() 
     {
         if (isset($_GET['action']) && $_GET['action'] === 'verify_appointment' && isset($_GET['token'])) 
         {
@@ -35,7 +35,8 @@ class VerificationHandler
         {
             $wpdb->update($table_name, ['status' => 'Confirmed'], ['token' => $token]);
             echo '<h2>Appointment confirmed successfully!</h2>';
-            // include plugin_dir_path(__FILE__) . '../../templates/verification-page.php';
+            // TODO: Redirect to a page that displays the confirmation message, and the appointment data
+            // include plugin_dir_path(__FILE__) . '../../templates/confirmation-page.php';
         } else 
         {
             echo '<h2>Invalid or expired token. Please try again.</h2>';

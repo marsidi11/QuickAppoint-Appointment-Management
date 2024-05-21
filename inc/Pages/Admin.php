@@ -124,7 +124,7 @@ class Admin extends BaseController
             ),
             array(
                 'option_group' => 'am_options_data',
-                'option_name' => 'enable_email_verification',
+                'option_name' => 'enable_email_confirmation',
                 'callback' => array( $this->callbacks, 'amOptionsData' 
                 )
             )
@@ -247,14 +247,14 @@ class Admin extends BaseController
                 )
             ),
             array(
-                'id' => 'enable_email_verification',
-                'title' => __('Appointment Email Verification', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amEnableEmailVerification' ),
+                'id' => 'enable_email_confirmation',
+                'title' => __('Appointment Email Confrimation', 'appointment-management'),
+                'callback' => array( $this->callbacks, 'amEnableEmailConfirmation' ),
                 'page' => 'appointment_management',
                 'section' => 'am_admin_index',
                 'args' => array(
-                    'label_for' => 'enable_email_verification',
-                    'class' => 'enable-verification'
+                    'label_for' => 'enable_email_confirmation',
+                    'class' => 'enable-confirmation'
                 )
             )
             
