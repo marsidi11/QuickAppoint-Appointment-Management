@@ -2,7 +2,6 @@
     <div class="calendar-wrapper">
         <button class="reset-month" @click="resetMonth" :disabled="isCurrentMonth">Current Month</button>
         <div class="calendar-header">
-            <!-- TODO: Make button not clickable if it is the current month -->
             <button class="prev-month-icon" @click="prevMonth" :disabled="isCurrentMonth">&lt;</button>
             <h2 class="current-month">{{ currentMonth }}</h2>
             <button class="next-month-icon" @click="nextMonth">&gt;</button>

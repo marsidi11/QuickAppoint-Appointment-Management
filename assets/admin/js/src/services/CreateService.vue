@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import apiService from './apiService.js';
+import { createService } from './apiService.js';
 
 export default {
 
@@ -24,14 +24,13 @@ export default {
 
         async createService() {
             try {
-                const response = await apiService.createService(this.serviceData);
-                this.$emit('createService', response);
+                const response = await createService(this.serviceData);
+                this.$emit('createService');
                 console.log("Created Service: ", JSON.stringify(response, null, 2));
-                this.errorMessage = "Service created successfully"
 
             } catch (error) {
                 this.errorMessage = error;
-            }
+            } 
         },
 
     },

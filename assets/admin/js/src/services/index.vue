@@ -22,7 +22,7 @@
           <td class="px-6 py-4 font-medium text-gray-800">{{ service.name }}</td>
           <td class="px-6 py-4 text-gray-800">{{ service.description }}</td>
           <td class="px-6 py-4 text-gray-800">{{ service.duration }} minutes</td>
-          <td class="px-6 py-4 text-gray-800">{{ service.price }}</td>
+          <td class="px-6 py-4 text-gray-800">{{ currencySymbol }}{{ service.price }}</td>
 
           <td class="px-6 py-4 text-sm font-medium">
             <DeleteService :serviceData="service" :serviceId="service.id" @serviceDeleted="handleServiceDeleted" />
@@ -60,19 +60,21 @@
 </template>
 
 <script>
+import { getCurrencySymbol } from './apiService.js';
+
 import CreateService from './CreateService.vue';
 import DeleteService from './DeleteService.vue';
 import GetServices from './GetServices.vue';
 
 export default {
-    name: 'ServicesComponent',
+  name: 'ServicesComponent',
 
-    components: {
-      CreateService,
-      DeleteService,
-      GetServices,
-    },
-    
+  components: {
+    CreateService,
+    DeleteService,
+    GetServices,
+  },
+
   data() {
     return {
       columns: ['Name', 'Description', 'Duration', 'Price'],
@@ -85,24 +87,27 @@ export default {
       },
 
       services: [],
+      currencySymbol: '$', // Default currency symbol
     }
   },
 
   methods: {
 
+    // Get currency symbol
+    async fetchCurrencySymbol() {
+      try {
+        const response = await getCurrencySymbol();
+        console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
+        if (response) {
+          this.currencySymbol = response;
+        }
+
+      } catch (error) {
+        this.errorMessage = error;
+      }
+    },
+
     async handleCreateService() {
-
-      // Create a new service object
-      // TODO: Accept only minutes in duration
-      // TODO: Accept only numbers in price
-      const newService = {
-        name: this.serviceData.name,
-        description: this.serviceData.description,
-        duration: this.serviceData.duration,
-        price: this.serviceData.price
-      };
-
-      this.services.push(newService);
 
       // Reset form values
       this.serviceData = {
@@ -111,6 +116,8 @@ export default {
         duration: '',
         price: ''
       };
+
+      this.$refs.getServicesRef.getServices();
 
     },
 
@@ -122,5 +129,10 @@ export default {
       this.$refs.getServicesRef.getServices();
     },
   },
-}
+
+  created() {
+    this.fetchCurrencySymbol();
+  },
+
+};
 </script>

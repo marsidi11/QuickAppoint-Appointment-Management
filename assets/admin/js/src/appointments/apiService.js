@@ -27,58 +27,55 @@ function checkApiSettings() {
 	return true;
 }
 
-const apiService = {
-	
-    async getAllAppointments(page) { 
+// Helper function to get headers
+function getHeaders() {
+    return {
+        'X-WP-Nonce': window.wpApiSettings.nonce,
+    };
+}
 
-        if (!checkApiSettings()) return;
+// Helper function to make GET requests
+async function apiGet(url, params = {}) {
+    if (!checkApiSettings()) return;
 
-        try {
-			const response = await axios.get(`${window.wpApiSettings.apiUrlAppointments}?page=${page}`, {
-                headers: {
-                    'X-WP-Nonce': window.wpApiSettings.nonce,
-                },
-            });
-            return response.data;
+    try {
+        const response = await axios.get(url, {
+            headers: getHeaders(),
+            params,
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
 
-        } catch (error) {
-			throw handleError(error);
-		}
-    },
+// Helper function to make POST requests
+// async function apiPost(url, data) {
+//     if (!checkApiSettings()) return;
 
-	async getAppointment(appointmentId) {
+//     try {
+//         const response = await axios.post(url, data, {
+//             headers: getHeaders(),
+//         });
+//         return response.data;
+//     } catch (error) {
+//         throw handleError(error);
+//     }
+// }
 
-		if (!checkApiSettings()) return;
+/**
+ * Create All Appointments
+ * @param {Object} appointmentData - Page number for pagination
+ * @returns {Promise<Object>}
+ */
+export async function getAllAppointments(page) {
+    return apiGet(`${window.wpApiSettings.apiUrlAppointments}`, { page });
+}
 
-		try {
-			const response = await axios.get(`/wp-json/appointment_management/v1/appointments?id=${appointmentId}`, {
-				headers: {
-					'X-WP-Nonce': window.wpApiSettings.nonce,
-				},
-			});
-			return response.data;
-			
-		} catch (error) {
-			throw handleError(error);
-		}
-	},
-
-	async createAppointment(appointmentData) {
-
-		if (!checkApiSettings()) return;
-
-		try {
-			const response = await axios.post(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData, {
-				headers: {
-					'X-WP-Nonce': window.wpApiSettings.nonce,
-				},
-			});
-			return response.data;
-			
-		} catch (error) {
-			throw handleError(error);
-		}
-	},
-};
-
-export default apiService;
+/**
+ * Get Currency Symbol
+ * @returns {Promise<Object>}
+ */
+export async function getCurrencySymbol() {
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/currency-symbol');
+}

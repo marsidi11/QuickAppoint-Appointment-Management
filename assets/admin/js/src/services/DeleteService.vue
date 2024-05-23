@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import apiService from './apiService.js';
+import { deleteService } from './apiService.js';
 
 // TODO: What if service is deleted by mistake? How to recover it? What will show for past appointments?
 export default {
@@ -26,8 +26,9 @@ export default {
 
         async deleteService() {
             try {
-                const response = await apiService.deleteService(this.serviceId);
+                const response = await deleteService(this.serviceId);
                 console.log("Deleted Service: ", this.serviceId);
+                console.log("Delete Service: ", JSON.stringify(response, null, 2));
                 this.$emit('serviceDeleted');
 
             } catch (error) {

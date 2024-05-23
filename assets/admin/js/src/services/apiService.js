@@ -27,58 +27,87 @@ function checkApiSettings() {
 	return true;
 }
 
-// API service module
-const apiService = {
+// Helper function to get headers
+function getHeaders() {
+    return {
+        'X-WP-Nonce': window.wpApiSettings.nonce,
+    };
+}
 
-	async createService(serviceData) {
+// Helper function to make GET requests
+async function apiGet(url, params = {}) {
+    if (!checkApiSettings()) return;
 
-		if (!checkApiSettings()) return;
+    try {
+        const response = await axios.get(url, {
+            headers: getHeaders(),
+            params,
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
 
-		try {
-			const response = await axios.post(window.wpApiSettings.apiUrlServices + '/create', serviceData, {
-				headers: {
-					'X-WP-Nonce': window.wpApiSettings.nonce,
-				},
-			});
-			return response.data;
-		} catch (error) {
-			throw handleError(error);
-		}
-	},
+// Helper function to make POST requests
+async function apiPost(url, data) {
+    if (!checkApiSettings()) return;
 
-	async getServices() { 
+    try {
+        const response = await axios.post(url, data, {
+            headers: getHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
 
-        if (!checkApiSettings()) return;
+// Helper function to make DELETE requests
+async function apiDelete(url, params = {}) {
+    if (!checkApiSettings()) return;
 
-        try {
-			const response = await axios.get(window.wpApiSettings.apiUrlServices, {
-                headers: {
-                    'X-WP-Nonce': window.wpApiSettings.nonce,
-                },
-            });
-            return response.data;
+    try {
+        const response = await axios.delete(url, {
+            headers: getHeaders(),
+            params,
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
 
-        } catch (error) {
-			throw handleError(error);
-		}
-    },
+/**
+ * Create New Service
+ * @param {Object} serviceData - Service data
+ * @returns {Promise<Object>}
+ */
+export async function createService(serviceData) {
+	return apiPost(window.wpApiSettings.apiUrlServices + '/create', serviceData);
+}
 
-	async deleteService(serviceId) {
+/**
+ * Get Services
+ * @returns {Promise<Object>}
+ */
+export async function getServices() {
+	return apiGet(window.wpApiSettings.apiUrlServices);
+}
 
-		if (!checkApiSettings()) return;
+/**
+ * Delete Service
+ * @param {Object} appointmentData - The appointment data
+ * @returns {Promise<Object>}
+ */
+export async function deleteService(serviceId) {
+	return apiDelete(window.wpApiSettings.apiUrlServices + '/delete/' + serviceId);
+}
 
-		try {
-			const response = await axios.delete(window.wpApiSettings.apiUrlServices + '/delete/' + serviceId, {
-				headers: {
-					'X-WP-Nonce': window.wpApiSettings.nonce,
-				},
-			});
-			return response.data;
-		} catch (error) {
-			throw handleError(error);
-		}
-	}
-
-};
-
-export default apiService;
+/**
+ * Get Currency Symbol
+ * @returns {Promise<Object>}
+ */
+export async function getCurrencySymbol() {
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/currency-symbol');
+}

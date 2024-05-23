@@ -14,6 +14,7 @@ class EmailSender
             'action' => 'verify_appointment'
         ], home_url('/appointment-confirmation'));
 
+        // TODO: Make the email template more user-friendly
         $subject = 'Please verify your appointment';
         $message = "Please click the following link to verify your appointment: <a href='$confirmation_url'>$confirmation_url</a>";
 

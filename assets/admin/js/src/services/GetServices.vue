@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import apiService from './apiService.js';
+import { getServices } from './apiService.js';
 
 export default {
+    
     name: 'GetService',
 
     props: ['serviceData'],
@@ -22,7 +23,7 @@ export default {
 
         async getServices() {
             try {
-                const response = await apiService.getServices();
+                const response = await getServices();
                 console.log("Get All Services: ", JSON.stringify(response, null, 2));
                 this.$emit('getServices', response);
 
