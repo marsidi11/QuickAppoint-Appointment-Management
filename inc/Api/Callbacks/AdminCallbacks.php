@@ -117,10 +117,10 @@ class AdminCallbacks extends BaseController
         echo '<input type="time" class="regular-text" name="break_end" value="' . $value . '" placeholder="Select close time">';
     }
 
-    public function amEnableEmailConfirmation() 
-    {
-        $value = esc_attr( get_option( 'enable_email_confirmation', '0' ) );
-        $checked = $value === '1' ? 'checked="checked"' : '';
-        echo '<label><input type="checkbox" name="enable_email_confirmation" value="1" ' . $checked . '> Enable</label>';
-    }
+    // public function amEnableEmailConfirmation() 
+    // {
+    //     $value = esc_attr( get_option( 'enable_email_confirmation', '0' ) );
+    //     $checked = $value === '1' ? 'checked="checked"' : '';
+    //     echo '<label><input type="checkbox" name="enable_email_confirmation" value="1" ' . $checked . '> Enable</label>';
+    // }
 }

@@ -246,17 +246,17 @@ class Admin extends BaseController
                     'class' => 'select-time'
                 )
             ),
-            array(
-                'id' => 'enable_email_confirmation',
-                'title' => __('Appointment Email Confrimation', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amEnableEmailConfirmation' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'enable_email_confirmation',
-                    'class' => 'enable-confirmation'
-                )
-            )
+            // array(
+            //     'id' => 'enable_email_confirmation',
+            //     'title' => __('Appointment Email Confrimation', 'appointment-management'),
+            //     'callback' => array( $this->callbacks, 'amEnableEmailConfirmation' ),
+            //     'page' => 'appointment_management',
+            //     'section' => 'am_admin_index',
+            //     'args' => array(
+            //         'label_for' => 'enable_email_confirmation',
+            //         'class' => 'enable-confirmation'
+            //     )
+            // )
             
         );
 
