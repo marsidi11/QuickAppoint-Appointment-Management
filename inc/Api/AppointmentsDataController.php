@@ -47,16 +47,6 @@ class AppointmentsDataController extends RestController
             }
         ));
 
-        // Route to get a single appointment
-        \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/(?P<id>\d+)', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'get_single_appointment'),
-            'permission_callback' => function () 
-            {
-                return current_user_can('edit_posts');
-            }
-        ));
-
         // Route to create a new appointment
         \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/create', array(
             'methods' => 'POST',
@@ -117,6 +107,8 @@ class AppointmentsDataController extends RestController
 
         // Get all appointments from the database, and join service names from the mapping table
         $query =   "SELECT a.*, 
+                        DATE_FORMAT(a.startTime, '%H:%i') as startTime,
+                        DATE_FORMAT(a.endTime, '%H:%i') as endTime,
                         GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
                         SUM(s.price) as total_price
                     FROM $appointments_table a
@@ -131,28 +123,7 @@ class AppointmentsDataController extends RestController
 
         return new \WP_REST_Response($appointments, 200);
     }
-
-
-    public function get_single_appointment(\WP_REST_Request $request) 
-    {
-        // Get the appointment ID from the request
-        $appointment_id = $request->get_param('id');
-
-        // Get the appointment data from the database
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
-        $appointment = $wpdb->get_row("SELECT * FROM $table_name WHERE id = $appointment_id");
-
-        // Check if the appointment exists
-        if ($appointment === null) 
-        {
-            return new \WP_Error('not_found', 'Appointment not found', array('status' => 404));
-        }
-
-        return new \WP_REST_Response($appointment, 200);
-    }
     
-
     public function post_appointment_data(\WP_REST_Request $request) 
     {
         $nonce_validation = $this->validate_nonce($request);

@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { generateCalendar, calculateEndTime } from './CalendarUtils.js'; 
 import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
@@ -41,6 +42,7 @@ export default {
 		return {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
+			selectedTime: null,
 
 			showCalendarBodyComponent: true,
 			showCalendarServicesComponent: false,
@@ -89,8 +91,8 @@ export default {
 		confirmationData() {
 			return {
 				date: this.appointmentData.date,
-				startTime: this.appointmentData.startTime,
-				endTime: this.appointmentData.endTime,
+				startTime: moment(this.appointmentData.startTime, 'HH:mm:ss').format('HH:mm'),
+				endTime: moment(this.appointmentData.endTime, 'HH:mm:ss').format('HH:mm'),
 				totalPrice: this.selectedServices.reduce((total, service) => total + Number(service.price), 0),
 			};
 		}
