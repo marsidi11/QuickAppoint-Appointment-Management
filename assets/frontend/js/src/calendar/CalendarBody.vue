@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { isCurrentDay, isPastDate, isDateWithinAllowedRange, isOpenDay, dayClicked, isDateWithinNextXDays } from './CalendarUtils.js';
+import { isCurrentDay, isPastDate, isDateWithinAllowedRange, isOpenDay, isDateWithinNextXDays } from './CalendarUtils.js';
 import { getDatesRange, getOpenDays } from './apiService';
 
 export default {
@@ -78,7 +78,6 @@ export default {
         isPastDate,
         isDateWithinAllowedRange,
         isOpenDay,
-        dayClicked,
         isDateWithinNextXDays,
 
         resetMonth() {

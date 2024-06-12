@@ -1,100 +1,117 @@
 <template>
+  <section class="bg-gray-50 dark:bg-gray-900">
+    <div class="mx-auto">
 
-    <div class="relative overflow-x-auto">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th v-for="column in columns" :key="column" scope="col" class="px-6 py-3 uppercase">
-              {{ column }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">{{ user.name + ' ' + user.surname }}</td>
-            <td class="px-6 py-4">{{ user.phone }}</td>
-            <td class="px-6 py-4">{{ user.email }}</td>
-            <td class="px-6 py-4">{{ user.service_names }}</td>
-            <td class="px-6 py-4">{{ user.date }}</td>
-            <td class="px-6 py-4">{{ user.startTime }}</td>
-            <td class="px-6 py-4">{{ user.endTime }}</td>
-            <td class="px-6 py-4">{{ currencySymbol }}{{ user.total_price }}</td>
-            <td class="px-6 py-4">{{ user.status }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+          <div class="w-full md:w-1/2">
+            <SearchForm @searched-users="searchedUsers" />
+          </div>
+          <div
+            class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+            <AddProductButton />
+            <div class="flex items-center space-x-3 w-full md:w-auto">
+              <ActionsDropdown />
+              <FilterDropdown />
+            </div>
+          </div>
+        </div>
+        <Table :columns="columns" :users="users" :currencySymbol="currencySymbol" />
+
+        <div class="pl-4">
+          <button @click="loadMore" v-if="!loading"
+            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Load
+            More</button>
+          <div v-if="loading">Loading...</div>
+          <div v-if="errorMessage">{{ errorMessage }}</div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- TODO: Style button and error message -->
-    <button @click="loadMore" v-if="!loading" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Load More</button>
-    <div v-if="loading">Loading...</div>
-    <div v-if="errorMessage">{{ errorMessage }}</div>
+
 
 </template>
 
 <script>
 import { getAllAppointments, getCurrencySymbol } from './apiService.js';
+import SearchForm from './components/SearchForm.vue';
+import AddProductButton from './components/AddProductButton.vue';
+import ActionsDropdown from './components/ActionsDropdown.vue';
+import FilterDropdown from './components/FilterDropdown.vue';
+import Table from './components/Table.vue';
 
 export default {
-    name: 'AllAppointments',
+  name: 'AllAppointments',
 
-    props: ['appointmentData'],
+  props: ['appointmentData'],
 
-    data() {
-        return {
-            columns: ['Name', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time', 'Price', 'Status'],
-			users: [],
-            loading: false,
-            errorMessage: null,
-            page: 1, 
-            currencySymbol: '$', // Default currency symbol
-        };
-    },
+  data() {
+    return {
+      columns: ['Name', 'Phone', 'Email', 'Services', 'Date', 'Start Time', 'End Time', 'Price', 'Status', 'Action'],
+      users: [],
+      loading: false,
+      errorMessage: null,
+      page: 1,
+      currencySymbol: '$', // Default currency symbol
+      searchActive: false,
+    };
+  },
 
-    methods: {
-        async fetchAllAppointments() {
-            try {
-                this.loading = true;
-                const response = await getAllAppointments(this.page);
-                console.log("Get All Appointments: ", JSON.stringify(response, null, 2));
-                this.users = [...this.users, ...response];
+  components: {
+    SearchForm,
+    AddProductButton,
+    ActionsDropdown,
+    FilterDropdown,
+    Table
+  },
 
-                if (response.length === 0) {
-                    this.errorMessage = 'No more appointments to load';
-                }
+  methods: {
 
-            } catch (error) {
-                this.errorMessage = error;
-
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        // Get currency symbol
-        async fetchCurrencySymbol() {
-            try {
-                const response = await getCurrencySymbol();
-                console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
-                if (response) {
-                    this.currencySymbol = response;
-                }
-
-            } catch (error) {
-                this.errorMessage = error;
-            } 
-        },
-
-        loadMore() {
-            this.page++;
-            this.fetchAllAppointments();
-        },
-    },
-
-    created() {
-        this.fetchAllAppointments();
-        this.fetchCurrencySymbol();
+    searchedUsers(newUsers) {
+      this.users = newUsers;
     },
     
+    async fetchAllAppointments() {
+      try {
+        this.loading = true;
+        const response = await getAllAppointments(this.page);
+        console.log("Get All Appointments: ", JSON.stringify(response, null, 2));
+        this.users = [...this.users, ...response];
+        
+        if (response.length === 0) {
+          this.errorMessage = 'No more appointments to load';
+        }
+      } catch (error) {
+        this.errorMessage = error.message || 'Failed to load appointments';
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    // Get currency symbol
+    async fetchCurrencySymbol() {
+      try {
+        const response = await getCurrencySymbol();
+        console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
+        if (response) {
+          this.currencySymbol = response;
+        }
+      } catch (error) {
+        this.errorMessage = error.message || 'Failed to fetch currency symbol';
+      }
+  },
+
+    loadMore() {
+      this.page++;
+      this.fetchAllAppointments();
+    },
+  },
+
+  created() {
+    this.fetchAllAppointments();  
+    this.fetchCurrencySymbol();
+  },
+
 };
 </script>
