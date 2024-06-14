@@ -65,12 +65,19 @@ class AppointmentsDataController extends RestController
             [
                 'route' => '/search',
                 'methods' => 'GET',
-                'callback' => 'search_appointment',
+                'callback' => 'get_searched_appointments',
                 'permission_callback' => [$this, 'current_user_can_edit_posts'],
                 'args' => [
                     'search' => [
-                        'required' => true,
-                        // 'validate_callback' => 'is_string',
+                        'required' => false,
+                    ],
+                    'dateFilters' => [
+                        'required' => false,
+                        'type' => 'array',
+                    ],
+                    'page' => [
+                        'required' => false,
+                        'default' => 1,
                     ],
                 ],
             ],
@@ -230,37 +237,126 @@ class AppointmentsDataController extends RestController
         return new \WP_REST_Response($reserved_time_slots, 200);
     }
 
-    public function search_appointment(\WP_REST_Request $request)
-    {
-        $search = $request->get_param('search');
-        $page = $request->get_param('page');
-        $items_per_page = 10;
-        $offset = ($page - 1) * $items_per_page;
+    public function get_searched_appointments(\WP_REST_Request $request)
+{
+    error_log("get_searched_appointments function called");
 
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
+    global $wpdb;
+    $appointments_table = $wpdb->prefix . 'am_appointments';
+    $services_table = $wpdb->prefix . 'am_services';
+    $mapping_table = $wpdb->prefix . 'am_mapping';
+
+    $search = $request->get_param('search');
+    $date_filters = $request->get_param('dateFilters');
+    $date_range_filter = $request->get_param('dateRange');
+    $page = $request->get_param('page') ?: 1;
+    $items_per_page = 10;
+    $offset = ($page - 1) * $items_per_page;
+
+    $where_clauses = [];
+    $where_params = [];
+
+    // Handle search
+    if (!empty($search)) {
         $search_term = '%' . $wpdb->esc_like($search) . '%';
-
-        $query = $wpdb->prepare(
-            "SELECT * FROM $table_name 
-             WHERE name LIKE %s OR phone LIKE %s OR email LIKE %s 
-             LIMIT %d OFFSET %d",
-            $search_term,
-            $search_term,
-            $search_term,
-            $items_per_page,
-            $offset
-        );  
-
-        $appointments = $wpdb->get_results($query);
-
-        if ($wpdb->last_error) 
-        {
-            return new \WP_REST_Response(array('error' => $wpdb->last_error), 500);
-        }
-
-        return new \WP_REST_Response($appointments, 200);
+        $where_clauses[] = "(a.name LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
+        $where_params = array_merge($where_params, [$search_term, $search_term, $search_term]);
     }
+
+    // Handle date filters
+    if (!empty($date_filters) && !is_array($date_filters)) {
+        $date_filters = explode(',', $date_filters);
+    }
+
+    if (!empty($date_filters)) {
+        $date_filter_clauses = [];
+        foreach ($date_filters as $filter) {
+            switch ($filter) {
+                case 'today':
+                    $date_filter_clauses[] = "a.date = %s";
+                    $where_params[] = date('Y-m-d');
+                        break;
+                    case 'tomorrow':
+                        $date_filter_clauses[] = "a.date = %s";
+                        $where_params[] = date('Y-m-d', strtotime('+1 day'));
+                        break;
+                    case 'upcoming':
+                        $date_filter_clauses[] = "a.date >= %s";
+                        $where_params[] = date('Y-m-d');
+                        break;
+                    case 'lastMonth':
+                        $firstDayLastMonth = date('Y-m-01', strtotime('last month'));
+                        $lastDayLastMonth = date('Y-m-t', strtotime('last month'));
+                        $date_filter_clauses[] = "a.date BETWEEN %s AND %s";
+                        $where_params[] = $firstDayLastMonth;
+                        $where_params[] = $lastDayLastMonth;
+                        break;
+                        // Add more cases for other date filters
+                }
+            }
+        if (!empty($date_filter_clauses)) {
+            $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
+        }
+    }
+
+    // Handle date range filter
+    if (!empty($date_range_filter)) {
+        switch ($date_range_filter) {
+            case 'nextMonth':
+                $start_date = date('Y-m-01', strtotime('+1 month'));
+                $end_date = date('Y-m-t', strtotime('+1 month'));
+                break;
+            case 'previousMonth':
+                $start_date = date('Y-m-01', strtotime('-1 month'));
+                $end_date = date('Y-m-t', strtotime('-1 month'));
+                break;
+            // Add more cases for other date ranges
+        }
+        if (isset($start_date) && isset($end_date)) {
+            $where_clauses[] = "a.date BETWEEN %s AND %s";
+            $where_params[] = $start_date;
+            $where_params[] = $end_date;
+        }
+    }
+
+    $where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
+
+    $query = $wpdb->prepare(
+        "SELECT a.*, 
+            DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+            DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+            GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+            SUM(s.price) as total_price
+        FROM $appointments_table a
+        LEFT JOIN $mapping_table m ON a.id = m.appointment_id
+        LEFT JOIN $services_table s ON m.service_id = s.id
+        $where_sql
+        GROUP BY a.id
+        ORDER BY a.date ASC, a.startTime ASC
+        LIMIT %d OFFSET %d",
+        array_merge($where_params, [$items_per_page, $offset])
+    );
+
+    error_log("Parameters: " . print_r($where_params, true));
+
+    $appointments = $wpdb->get_results($query);
+
+    if ($wpdb->last_error) {
+        error_log("Database Error: " . $wpdb->last_error);
+        return new \WP_REST_Response(['error' => $wpdb->last_error], 500);
+    }
+
+    error_log("Appointments found: " . count($appointments));
+
+    return new \WP_REST_Response($appointments, 200);
+}
+
+
+
+
+
+
+
 
     // Helper method for permission check
     public function current_user_can_edit_posts()

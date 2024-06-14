@@ -73,13 +73,23 @@ export async function getAllAppointments(page) {
 }
 
 /**
- * Get Appointment By Search
- * @param {Object} appointmentData - Search query and page number for pagination
+ * Get Appointment By Search & Filter Date
+ * @param {Object} appointmentData - Search query, filter date and page number for pagination
  * @returns {Promise<Object>}
  */
-export async function getAppointmentsBySearch(searchTerm, page) {
-	const queryParams = new URLSearchParams({ search: searchTerm, page }).toString();
-	return apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
+export async function getAppointmentsBySearch(searchTerm = '', page = 1, dateFilters = []) {
+    const params = { page };
+
+    if (searchTerm) {
+        params.search = searchTerm;
+    }
+
+    if (dateFilters.length > 0) {
+        params.dateFilters = dateFilters;
+    }
+    const queryParams = new URLSearchParams(params).toString();
+    console.log(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
+    return apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
 }
 
 /**

@@ -3,7 +3,7 @@
     <input type="text" v-model="searchQuery" placeholder="Search by Name, Email or Phone"
       class="w-full outline-none bg-white text-gray-600 text-sm px-4 py-2" />
 
-    <button @click="fetchAppointmentsBySearch" type='button' class="flex items-center justify-center bg-primary-700 px-5">
+    <button @click="emitSearchQuery" type='button' class="flex items-center justify-center bg-primary-700 px-5">
 
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px" class="fill-white">
         <path
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { getAppointmentsBySearch } from '../apiService.js';
 
 export default {
 
@@ -24,19 +23,20 @@ export default {
   data() {
     return {
       searchQuery: '',
-      page: 1,
     };
   },
 
-  methods: {
-    async fetchAppointmentsBySearch() {
-      try {
-        const response = await getAppointmentsBySearch(this.searchQuery, this.page);
-        this.$emit('searched-users', response);
-        console.log("Searched Data: " + JSON.stringify(response, null, 2));
-      } catch (error) {
-        console.error(error);
+  watch: {
+    searchQuery(newVal) {
+      if (newVal.trim() === '') {
+        this.$emit('empty-search');
       }
+    }
+  },
+
+  methods: {
+    emitSearchQuery() {
+      this.$emit('search-updated', this.searchQuery);
     },
   }
 
