@@ -4,14 +4,33 @@
         <h2 class="form-title">Your Information</h2>
 
 
-        <div>
-            <p>Date: {{ confirmationData.date }}</p>
-            <p>Time: {{ confirmationData.startTime }} to {{ confirmationData.endTime }}</p>
-            <p>Total Price: {{ currencySymbol }}{{ confirmationData.totalPrice }}</p>
+        <div class="user-details">
+            <div class="user-details-row">
+                <div class="user-details-item">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">{{ confirmationData.date }}</span>
+                </div>
+                <div class="user-details-item">
+                    <span class="detail-label">Time:</span>
+                    <span class="detail-value">{{ confirmationData.startTime }} - {{ confirmationData.endTime }}</span>
+                </div>
+            </div>
+
+            <div class="user-details-row">
+                <div class="user-details-item">
+                    <span class="detail-label">Services:</span>
+                    <span class="detail-value detail-services" title="{{ confirmationData.selectedServices }}">{{
+                        confirmationData.selectedServices }}</span>
+                </div>
+                <div class="user-details-item">
+                    <span class="detail-label">Total Price:</span>
+                    <span class="detail-value detail-total">{{ currencySymbol }}{{ confirmationData.totalPrice }}</span>
+                </div>
+            </div>
         </div>
 
         <form @submit.prevent="submitForm" class="form">
-            
+
 
             <div class="form-group">
                 <label for="name" class="label">Name:</label>

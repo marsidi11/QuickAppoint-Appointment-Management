@@ -156,6 +156,34 @@
     @apply text-2xl font-semibold text-center;
 }
 
+.user-details {
+    @apply w-full mx-auto bg-white shadow-sm border-2 border-slate-200 rounded-lg p-4 mb-4;
+}
+
+.user-details-row {
+    @apply flex justify-between items-center mb-2;
+}
+
+.user-details-item {
+    @apply flex items-center;
+}
+
+.detail-label {
+    @apply text-xs font-medium text-gray-500 mr-1;
+}
+
+.detail-value {
+    @apply text-sm font-semibold text-gray-900;
+}
+
+.detail-services {
+    @apply text-right max-w-[80%] truncate;
+}
+
+.detail-total {
+    @apply text-lg font-bold text-green-600;
+}
+
 .input-form > .form {
     @apply m-auto w-full;
 }

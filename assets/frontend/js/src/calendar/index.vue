@@ -1,4 +1,7 @@
 <template>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	
 	<div class="calendar-container">
 	<div class="calendar-section">
 		
@@ -93,6 +96,7 @@ export default {
 				date: this.appointmentData.date,
 				startTime: moment(this.appointmentData.startTime, 'HH:mm:ss').format('HH:mm'),
 				endTime: moment(this.appointmentData.endTime, 'HH:mm:ss').format('HH:mm'),
+				selectedServices: this.selectedServices.map(service => service.name).join(', '),
 				totalPrice: this.selectedServices.reduce((total, service) => total + Number(service.price), 0),
 			};
 		}

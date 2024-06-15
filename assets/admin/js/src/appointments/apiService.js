@@ -88,7 +88,6 @@ export async function getAppointmentsBySearch(searchTerm = '', page = 1, dateFil
         params.dateFilters = dateFilters;
     }
     const queryParams = new URLSearchParams(params).toString();
-    console.log(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
     return apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
 }
 

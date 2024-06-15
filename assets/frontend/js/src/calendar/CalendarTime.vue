@@ -67,9 +67,9 @@ export default {
                 case 2:
                     return 'grid-cols-2';
                 case 3:
-                    return 'grid-cols-2 md:grid-cols-3';
+                    return 'grid-cols-3';
                 default:
-                    return 'grid-cols-4 xl:grid-cols-5';
+                    return 'grid-cols-3 sm:grid-cols-4 xl:grid-cols-5';
             }
         }
     },
