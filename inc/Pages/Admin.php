@@ -48,7 +48,7 @@ class Admin extends BaseController
                 'capability' => 'manage_options', 
                 'menu_slug' => 'appointment_management', 
                 'callback' => array( $this->callbacks, 'adminDashboard' ), // Callback to the dashboard page
-                'icon_url' => $this->plugin_url . 'assets/img/admin_icon.png', 
+                'icon_url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzcyIiBoZWlnaHQ9Ijc3MiIgdmlld0JveD0iMCAwIDc3MiA3NzIiIGZpbGw9IiNhN2FhYWQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zODYgNzcyQzU5OS4xODIgNzcyIDc3MiA1OTkuMTgyIDc3MiAzODZDNzcyIDE3Mi44MTggNTk5LjE4MiAwIDM4NiAwQzE3Mi44MTggMCAwIDE3Mi44MTggMCAzODZDMCA1OTkuMTgyIDE3Mi44MTggNzcyIDM4NiA3NzJaTTE1NCAxNTRINjE4VjYxOEgxNTRWMTU0Wk0yMDIgMjUwVjU3MEg1NzBWMjUwSDIwMlpNMjI2IDIyNkg1NDZWMjc0SDIyNlYyMjZaIiBmaWxsPSIjYTdhYWFkIi8+CiAgPHRleHQgeD0iMzg2IiB5PSI0ODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSIjYTdhYWFkIiBzdHJva2Utd2lkdGg9IjgiPjI5PC90ZXh0Pgo8L3N2Zz4=', 
                 'position' => 2
             )
         );

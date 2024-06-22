@@ -107,7 +107,6 @@ class AppointmentsDataController extends RestController
         return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
     }
 
-    // TODO: Add custom endpoints to order appointments by date, by name, booked date, etc.
     // TODO: Show only upcoming appointments
     public function get_all_appointments(\WP_REST_Request $request) 
     {
@@ -116,18 +115,21 @@ class AppointmentsDataController extends RestController
             return $nonce_validation;
         }
         
-        // Order the appointments by date and start time, and limit the number of appointments returned
         global $wpdb;
         $appointments_table = $wpdb->prefix . 'am_appointments';
         $services_table = $wpdb->prefix . 'am_services';
         $mapping_table = $wpdb->prefix . 'am_mapping';
-
+    
         $page = $request->get_param('page');
         $items_per_page = 10;
         $offset = ($page - 1) * $items_per_page;
-
-        // Get all appointments from the database, and join service names from the mapping table
-        $query =   "SELECT a.*, 
+    
+        // Get the current date and time
+        $current_date = current_time('Y-m-d');
+        $current_time = current_time('H:i:s');
+    
+        // Display only upcoming appointments
+        $query = "SELECT a.*, 
                         DATE_FORMAT(a.startTime, '%H:%i') as startTime,
                         DATE_FORMAT(a.endTime, '%H:%i') as endTime,
                         GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
@@ -135,118 +137,119 @@ class AppointmentsDataController extends RestController
                     FROM $appointments_table a
                     LEFT JOIN $mapping_table m ON a.id = m.appointment_id
                     LEFT JOIN $services_table s ON m.service_id = s.id
+                    WHERE a.date > '$current_date' OR (a.date = '$current_date' AND a.endTime > '$current_time')
                     GROUP BY a.id
                     ORDER BY a.date ASC, a.startTime ASC
                     LIMIT $items_per_page OFFSET $offset
         ";
-
+    
         $appointments = $wpdb->get_results($query);
-
+    
         return new \WP_REST_Response($appointments, 200);
     }
 
     public function post_appointment_data(\WP_REST_Request $request)
-{
-    // Validate the nonce
-    $nonce_validation = $this->validate_nonce($request);
-    if (is_wp_error($nonce_validation)) {
-        return $nonce_validation;
-    }
-
-    // Get the appointment data from the request
-    $appointment_data = $request->get_json_params();
-
-    // Validate the appointment data
-    $required_fields = ['name', 'surname', 'phone', 'email', 'date', 'startTime', 'endTime', 'service_id'];
-    foreach ($required_fields as $field) {
-        if (empty($appointment_data[$field])) {
-            return new \WP_Error('invalid_request', "Field '$field' is required and cannot be empty", ['status' => 400]);
-        }
-    }
-
-    if (!preg_match("/^[a-zA-Z ]*$/", $appointment_data['name'])) {
-        return new \WP_Error('invalid_name', 'Name can only contain letters and whitespace', ['status' => 400]);
-    }
-
-    if (!preg_match("/^[a-zA-Z ]*$/", $appointment_data['surname'])) {
-        return new \WP_Error('invalid_surname', 'Surname can only contain letters and whitespace', ['status' => 400]);
-    }
-
-    if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $appointment_data['date'])) {
-        return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', ['status' => 400]);
-    }
-
-    if (!preg_match("/^[0-9\-\(\)\/\+\s]*$/", $appointment_data['phone'])) {
-        return new \WP_Error('invalid_phone', 'Invalid phone number format', ['status' => 400]);
-    }
-
-    $start_time = strtotime($appointment_data['startTime']);
-    $end_time = strtotime($appointment_data['endTime']);
-    if ($start_time === false || $end_time === false || $end_time <= $start_time) {
-        return new \WP_Error('invalid_time', 'Invalid start or end time', ['status' => 400]);
-    }
-
-    if (!is_array($appointment_data['service_id']) || empty($appointment_data['service_id'])) {
-        return new \WP_Error('invalid_service_id', 'Service ID must be a non-empty array', ['status' => 400]);
-    }
-
-    $email = sanitize_email($appointment_data['email']);
-    if (!is_email($email)) {
-        return new \WP_Error('invalid_email', 'Invalid email address', ['status' => 400]);
-    }
-
-    global $wpdb;
-    $appointments_table = $wpdb->prefix . 'am_appointments';
-    $mapping_table = $wpdb->prefix . 'am_mapping';
-
-    $wpdb->query('START TRANSACTION');
-
-    try {
-        // Generate the token for email confirmation
-        $token = bin2hex(openssl_random_pseudo_bytes(16));
-
-        $result = $wpdb->insert($appointments_table, array(
-            'name' => sanitize_text_field($appointment_data['name']),
-            'surname' => sanitize_text_field($appointment_data['surname']),
-            'phone' => sanitize_text_field($appointment_data['phone']),
-            'email' => $email,
-            'date' => $appointment_data['date'],
-            'startTime' => $appointment_data['startTime'],
-            'endTime' => $appointment_data['endTime'],
-            'status' => 'Pending',
-            'token' => $token
-        ), array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
-
-        if ($result === false) {
-            throw new Exception('Could not insert appointment into the database');
+    {
+        // Validate the nonce
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
         }
 
-        $appointment_id = $wpdb->insert_id;
+        // Get the appointment data from the request
+        $appointment_data = $request->get_json_params();
 
-        foreach ($appointment_data['service_id'] as $service_id) {
-            $mapping_result = $wpdb->insert($mapping_table, array(
-                'appointment_id' => $appointment_id,
-                'service_id' => $service_id
-            ), array('%d', '%d'));
-
-            if ($mapping_result === false) {
-                throw new Exception('Could not insert appointment-service mapping into the database');
+        // Validate the appointment data
+        $required_fields = ['name', 'surname', 'phone', 'email', 'date', 'startTime', 'endTime', 'service_id'];
+        foreach ($required_fields as $field) {
+            if (empty($appointment_data[$field])) {
+                return new \WP_Error('invalid_request', "Field '$field' is required and cannot be empty", ['status' => 400]);
             }
         }
 
-        // Send confirmation email
-        $emailSender = new EmailSender();
-        $emailSender->send_confirmation_email($email, $token);
+        if (!preg_match("/^[a-zA-Z ]*$/", $appointment_data['name'])) {
+            return new \WP_Error('invalid_name', 'Name can only contain letters and whitespace', ['status' => 400]);
+        }
 
-        $wpdb->query('COMMIT');
+        if (!preg_match("/^[a-zA-Z ]*$/", $appointment_data['surname'])) {
+            return new \WP_Error('invalid_surname', 'Surname can only contain letters and whitespace', ['status' => 400]);
+        }
 
-        return new \WP_REST_Response('Appointment created successfully. Please check your email for confirmation', 201);
-    } catch (Exception $e) {
-        $wpdb->query('ROLLBACK');
-        error_log($e->getMessage());
-        return new \WP_Error('db_insert_error', $e->getMessage(), ['status' => 500]);
+        if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $appointment_data['date'])) {
+            return new \WP_Error('invalid_date', 'Date must be in the format YYYY-MM-DD', ['status' => 400]);
+        }
+
+        if (!preg_match("/^[0-9\-\(\)\/\+\s]*$/", $appointment_data['phone'])) {
+            return new \WP_Error('invalid_phone', 'Invalid phone number format', ['status' => 400]);
+        }
+
+        $start_time = strtotime($appointment_data['startTime']);
+        $end_time = strtotime($appointment_data['endTime']);
+        if ($start_time === false || $end_time === false || $end_time <= $start_time) {
+            return new \WP_Error('invalid_time', 'Invalid start or end time', ['status' => 400]);
+        }
+
+        if (!is_array($appointment_data['service_id']) || empty($appointment_data['service_id'])) {
+            return new \WP_Error('invalid_service_id', 'Service ID must be a non-empty array', ['status' => 400]);
+        }
+
+        $email = sanitize_email($appointment_data['email']);
+        if (!is_email($email)) {
+            return new \WP_Error('invalid_email', 'Invalid email address', ['status' => 400]);
+        }
+
+        global $wpdb;
+        $appointments_table = $wpdb->prefix . 'am_appointments';
+        $mapping_table = $wpdb->prefix . 'am_mapping';
+
+        $wpdb->query('START TRANSACTION');
+
+        try {
+            // Generate the token for email confirmation
+            $token = bin2hex(openssl_random_pseudo_bytes(16));
+
+            $result = $wpdb->insert($appointments_table, array(
+                'name' => sanitize_text_field($appointment_data['name']),
+                'surname' => sanitize_text_field($appointment_data['surname']),
+                'phone' => sanitize_text_field($appointment_data['phone']),
+                'email' => $email,
+                'date' => $appointment_data['date'],
+                'startTime' => $appointment_data['startTime'],
+                'endTime' => $appointment_data['endTime'],
+                'status' => 'Pending',
+                'token' => $token
+            ), array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
+
+            if ($result === false) {
+                throw new Exception('Could not insert appointment into the database');
+            }
+
+            $appointment_id = $wpdb->insert_id;
+
+            foreach ($appointment_data['service_id'] as $service_id) {
+                $mapping_result = $wpdb->insert($mapping_table, array(
+                    'appointment_id' => $appointment_id,
+                    'service_id' => $service_id
+                ), array('%d', '%d'));
+
+                if ($mapping_result === false) {
+                    throw new Exception('Could not insert appointment-service mapping into the database');
+                }
+            }
+
+            // Send confirmation email
+            $emailSender = new EmailSender();
+            $emailSender->send_confirmation_email($email, $token);
+
+            $wpdb->query('COMMIT');
+
+            return new \WP_REST_Response('Appointment created successfully. Please check your email for confirmation', 201);
+        } catch (Exception $e) {
+            $wpdb->query('ROLLBACK');
+            error_log($e->getMessage());
+            return new \WP_Error('db_insert_error', $e->getMessage(), ['status' => 500]);
+        }
     }
-}
 
 
 

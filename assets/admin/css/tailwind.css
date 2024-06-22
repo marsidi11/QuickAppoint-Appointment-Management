@@ -41,6 +41,3 @@
 .tab-content > .tab-pane.active {
     @apply block p-2.5 bg-white shadow-md sm:rounded-lg;
 }
-
-/* All Appointments Table */
-
