@@ -84,11 +84,11 @@
 }
 
 .services-list {
-    @apply max-h-[290px] overflow-y-auto grid gap-4 m-auto w-full;
+    @apply grid gap-4 max-h-[290px] overflow-y-auto m-auto w-full;
 }
 
 .service-box {
-    @apply block cursor-pointer max-w-sm px-6 py-4 bg-white border-2 border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-all duration-300 ease-in-out;
+    @apply flex flex-col justify-between h-full max-w-sm px-6 py-4 bg-white border-2 border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-all duration-300 ease-in-out cursor-pointer;
 }
 
 .calendar-services .service-box > * {
@@ -221,9 +221,16 @@
 }
 
 /* Error Message */
-/* TODO: Fix display of the message */
 .error-message {
-    @apply text-red-600 text-sm font-semibold text-center mt-2;
+    @apply text-red-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+}
+
+.success-message {
+    @apply text-green-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+}
+
+.loading-message {
+    @apply text-blue-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
 }
 
 /* Loading */

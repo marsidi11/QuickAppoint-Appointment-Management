@@ -4,7 +4,7 @@
         <button class="button-appointment" @click="createAppointment">Submit</button>
     </div>
     <div v-if="loading" class="loading-message">Loading...</div>
-    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div v-if="messageInfo" :class="messageInfo.class">{{ messageInfo.message }}</div>
 </template>
 
 <script>
@@ -19,27 +19,44 @@ export default {
         return {
             loading: false,
             errorMessage: null,
+            successMessage: null,
         };
     },
 
     methods: {
         async createAppointment() {
-            try {
-                this.$emit('submit');
-                this.loading = true;
-                console.log(this.appointmentData);
-                
-                const response = await createAppointment(this.appointmentData);
+            // Validate the required fields
+            if (!this.appointmentData.name || !this.appointmentData.surname || !this.appointmentData.phone || !this.appointmentData.email) {
+                this.errorMessage = 'All fields are required. Please complete the form.';
+                return;
+            }
 
-                this.errorMessage = 'Appointment created successfully';
-                console.log("Create Appointment: " + response);
+            try {
+                this.loading = true;
+                this.errorMessage = null;
+                this.successMessage = null;
+
+                await createAppointment(this.appointmentData);
+
+                this.successMessage = 'Appointment created successfully';
 
             } catch (error) {
-                this.errorMessage = error;
+                this.errorMessage = `Error creating appointment: ${error.message}`;
 
             } finally {
                 this.loading = false;
             }
+        },
+    },
+
+    computed: {
+        messageInfo() {
+            if (this.errorMessage) {
+                return { message: this.errorMessage, class: 'error-message' };
+            } else if (this.successMessage) {
+                return { message: this.successMessage, class: 'success-message' };
+            }
+            return null;
         },
     },
 };

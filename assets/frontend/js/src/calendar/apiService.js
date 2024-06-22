@@ -6,20 +6,20 @@ import axios from 'axios';
 // Helper function to handle errors
 // TODO: Add more error handling for all apiService functions
 function handleError(error) {
-	console.error('Error:', error);
+    console.error('Error:', error);
 
-	if (error.response) {
-		console.log(error.response.data);
-		console.log(error.response.status);
-		console.log(error.response.headers);
-		return `Error: ${error.response.data.message || 'An error occurred.'}`;
-	} else if (error.request) {
-		console.log(error.request);
-		return 'Error: No response from server.';
-	} else {
-		console.log('Error', error.message);
-		return `Error: ${error.message}`;
-	}
+    if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        throw new Error(error.response.data.message || 'An error occurred.');
+    } else if (error.request) {
+        console.log(error.request);
+        throw new Error('No response from server.');
+    } else {
+        console.log('Error', error.message);
+        throw new Error(error.message);
+    }
 }
 
 // Check if API Settings are set

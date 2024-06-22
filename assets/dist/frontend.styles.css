@@ -1213,6 +1213,11 @@ video {
   line-height: 1.25;
 }
 
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -1241,6 +1246,11 @@ video {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.text-green-600 {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 
 .text-green-700 {
@@ -1647,9 +1657,12 @@ video {
 }
 
 .service-box {
-  display: block;
+  display: flex;
+  height: 100%;
   max-width: 24rem;
   cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
   border-radius: 0.5rem;
   border-width: 2px;
   --tw-border-opacity: 1;
@@ -2126,8 +2139,6 @@ video {
 
 /* Error Message */
 
-/* TODO: Fix display of the message */
-
 .error-message {
   margin-top: 0.5rem;
   text-align: center;
@@ -2136,6 +2147,44 @@ video {
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  .error-message {
+    margin-top: -2.5rem;
+  }
+}
+
+.success-message {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  .success-message {
+    margin-top: -2.5rem;
+  }
+}
+
+.loading-message {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  .loading-message {
+    margin-top: -2.5rem;
+  }
 }
 
 /* Loading */
