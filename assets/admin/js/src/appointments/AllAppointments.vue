@@ -15,7 +15,7 @@
             </div>
           </div>
         </div>
-        <Table :columns="columns" :users="users" :currencySymbol="currencySymbol" />
+        <Table :columns="columns" :users="users" :currencySymbol="currencySymbol" @appointment-deleted="handleAppointmentDelete" />
 
         <div class="pl-4">
           <button @click="loadMore" v-if="!loading"
@@ -68,7 +68,6 @@ export default {
     async fetchCurrencySymbol() {
       try {
         const response = await getCurrencySymbol();
-        console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
         if (response) {
           this.currencySymbol = response;
         }
@@ -82,7 +81,6 @@ export default {
       try {
         this.loading = true;
         const response = await getAllAppointments(this.page);
-        console.log("Get All Appointments: ", JSON.stringify(response, null, 2));
 
         if (this.page === 1) {
           this.users = response;
@@ -105,7 +103,6 @@ export default {
       try {
         this.loading = true;
         const response = await getAppointmentsBySearch(this.searchQuery, this.page, this.dateFilters);
-        console.log("Filtered & Searched Appointments: ", JSON.stringify(response, null, 2));
 
         if (this.page === 1) {
           this.users = response;
@@ -141,6 +138,10 @@ export default {
       this.page = 1;
       this.users = [];
       this.fetchAllAppointments();
+    },
+
+    handleAppointmentDelete(appointmentId) {
+      this.users = this.users.filter(user => user.id !== appointmentId); // Remove the deleted appointment from the list locally
     },
 
     // Load more appointments

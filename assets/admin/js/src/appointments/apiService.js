@@ -49,6 +49,21 @@ async function apiGet(url, params = {}) {
     }
 }
 
+// Helper function to make DELETE requests
+async function apiDelete(url, params = {}) {
+    if (!checkApiSettings()) return;
+
+    try {
+        const response = await axios.delete(url, {
+            headers: getHeaders(),
+            params,
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
 // Helper function to make POST requests
 // async function apiPost(url, data) {
 //     if (!checkApiSettings()) return;
@@ -70,6 +85,15 @@ async function apiGet(url, params = {}) {
  */
 export async function getAllAppointments(page) {
     return apiGet(`${window.wpApiSettings.apiUrlAppointments}`, { page });
+}
+
+/**
+ * Delete Appointment
+ * @param {Object} appointmentId - Appointment Id to delete
+ * @returns {Promise<Object>}
+ */
+export async function deleteAppointment(appointmentId) {
+	return apiDelete(window.wpApiSettings.apiUrlAppointments + '/delete/' + appointmentId);
 }
 
 /**

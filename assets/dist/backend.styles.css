@@ -1084,6 +1084,11 @@ video {
   padding: 1.25rem;
 }
 
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1462,8 +1467,6 @@ video {
     border-radius: 0.5rem;
   }
 }
-
-/* All Appointments Table */
 
 .hover\:bg-blue-300:hover {
   --tw-bg-opacity: 1;
@@ -1891,4 +1894,3 @@ video {
     --tw-ring-color: rgb(30 64 175 / var(--tw-ring-opacity));
   }
 }
-

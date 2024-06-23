@@ -24,9 +24,8 @@ export default {
 
         async createService() {
             try {
-                const response = await createService(this.serviceData);
-                this.$emit('createService');
-                console.log("Created Service: ", JSON.stringify(response, null, 2));
+                await createService(this.serviceData);
+                this.$emit('create-service');
 
             } catch (error) {
                 this.errorMessage = error;

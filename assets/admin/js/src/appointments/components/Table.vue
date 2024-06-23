@@ -32,27 +32,21 @@
                             </svg>
                         </button>
                         <div v-show="dropdownStates[user.id]" :id="'userDropdown-' + user.id"
-                            class="absolute right-0 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                            class="absolute right-0 z-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                 aria-labelledby="dropdownButton">
                                 <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        Show
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <button @click="editAppointment(user.id)"
+                                        class="block py-2 px-12 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         Edit
-                                    </a>
+                                </button>
                                 </li>
                             </ul>
                             <div class="py-1">
-                                <a href="#"
-                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                <button @click="deleteAppointment(user.id)"
+                                    class="block py-2 px-12 w-full text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                     Delete
-                                </a>
+                            </button>
                             </div>
                         </div>
                     </td>
@@ -63,6 +57,8 @@
 </template>
 
 <script>
+import { deleteAppointment } from '../apiService.js';
+
 export default {
     name: 'Table',
 
@@ -95,6 +91,15 @@ export default {
             });
             if (!clickedInsideDropdown) {
                 this.closeDropdown();
+            }
+        },
+        async deleteAppointment(appointmentId) {
+            try {
+                await deleteAppointment(appointmentId);
+                this.$emit('appointment-deleted', appointmentId);
+
+            } catch (error) {
+                this.errorMessage = error;
             }
         },
     },

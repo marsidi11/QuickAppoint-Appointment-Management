@@ -24,8 +24,7 @@ export default {
         async getServices() {
             try {
                 const response = await getServices();
-                console.log("Get All Services: ", JSON.stringify(response, null, 2));
-                this.$emit('getServices', response);
+                this.$emit('get-services', response);
 
             } catch (error) {
                 this.errorMessage = error;

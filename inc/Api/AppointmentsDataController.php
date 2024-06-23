@@ -45,10 +45,16 @@ class AppointmentsDataController extends RestController
                 'permission_callback' => [$this, 'current_user_can_edit_posts']
             ],
             [
+                'route' => '/delete/(?P<id>\d+)',
+                'methods' => 'DELETE',
+                'callback' => 'delete_appointment_data',
+                'permission_callback' => [$this, 'current_user_can_edit_posts']
+            ],
+            [
                 'route' => '/create',
                 'methods' => 'POST',
                 'callback' => 'post_appointment_data',
-                'permission_callback' => '__return_true'
+                'permission_callback' => [$this, 'current_user_can_edit_posts']
             ],
             [
                 'route' => '/reserved-time-slots',
@@ -107,7 +113,6 @@ class AppointmentsDataController extends RestController
         return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
     }
 
-    // TODO: Show only upcoming appointments
     public function get_all_appointments(\WP_REST_Request $request) 
     {
         $nonce_validation = $this->validate_nonce($request);
@@ -251,6 +256,41 @@ class AppointmentsDataController extends RestController
         }
     }
 
+    public function delete_appointment_data(\WP_REST_Request $request) 
+    {
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
+        }
+
+        $appointment_id = $request['id'];
+
+        global $wpdb;
+        $appointments_table = $wpdb->prefix . 'am_appointments';
+        $mapping_table = $wpdb->prefix . 'am_mapping';
+
+        $wpdb->query('START TRANSACTION');
+
+        try {
+            $result = $wpdb->delete($appointments_table, array('id' => $appointment_id));
+            if ($result === false) {
+                throw new Exception('Could not delete appointment from the database');
+            }
+
+            $mapping_result = $wpdb->delete($mapping_table, array('appointment_id' => $appointment_id));
+            if ($mapping_result === false) {
+                throw new Exception('Could not delete appointment-service mapping from the database');
+            }
+
+            $wpdb->query('COMMIT');
+
+            return new \WP_REST_Response('Appointment deleted successfully', 200);
+        } catch (Exception $e) {
+            $wpdb->query('ROLLBACK');
+            error_log($e->getMessage());
+            return new \WP_Error('db_delete_error', $e->getMessage(), ['status' => 500]);
+        }
+    }
 
 
     public function get_reserved_time_slots(\WP_REST_Request $request)

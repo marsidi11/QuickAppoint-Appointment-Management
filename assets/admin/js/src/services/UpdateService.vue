@@ -25,8 +25,7 @@ export default {
 
         async updateService(id, data) {
             try {
-                const response = await apiService.updateService(id, data);
-                console.log("Update Service: ", JSON.stringify(response, null, 2));
+                await apiService.updateService(id, data);
                 this.getServices();
 
             } catch (error) {

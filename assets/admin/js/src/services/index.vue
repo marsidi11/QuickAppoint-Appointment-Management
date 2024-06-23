@@ -25,7 +25,7 @@
           <td class="px-6 py-4 text-gray-800">{{ currencySymbol }}{{ service.price }}</td>
 
           <td class="px-6 py-4 text-sm font-medium">
-            <DeleteService :serviceData="service" :serviceId="service.id" @serviceDeleted="handleServiceDeleted" />
+            <DeleteService :serviceData="service" :serviceId="service.id" @service-deleted="handleServiceDeleted" />
           </td>
 
         </tr>
@@ -44,7 +44,7 @@
             <input type="text" v-model="serviceData.price" placeholder="Enter service price">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <CreateService :serviceData="serviceData" @createService="handleCreateService" />
+            <CreateService :serviceData="serviceData" @create-service="handleCreateService" />
           </td>
         </tr>
 
@@ -54,7 +54,7 @@
 
   </div>
 
-  <GetServices ref="getServicesRef" @getServices="handleGetServices" />
+  <GetServices ref="getServicesRef" @get-services="handleGetServices" />
 
 
 </template>
