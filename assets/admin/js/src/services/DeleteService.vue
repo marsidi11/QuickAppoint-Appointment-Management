@@ -26,7 +26,7 @@ export default {
 
         async deleteService() {
             try {
-                const response = await deleteService(this.serviceId);
+                await deleteService(this.serviceId);
                 this.$emit('service-deleted');
 
             } catch (error) {

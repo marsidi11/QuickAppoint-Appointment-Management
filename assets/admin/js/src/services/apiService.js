@@ -78,6 +78,20 @@ async function apiDelete(url, params = {}) {
     }
 }
 
+// Helper function to make UPDATE requests
+async function apiUpdate(url, data) {
+    if (!checkApiSettings()) return;
+
+    try {
+        const response = await axios.put(url, data, {
+            headers: getHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
 /**
  * Create New Service
  * @param {Object} serviceData - Service data
@@ -97,11 +111,20 @@ export async function getServices() {
 
 /**
  * Delete Service
- * @param {Object} appointmentData - The appointment data
+ * @param {Object} serviceId - The service id
  * @returns {Promise<Object>}
  */
 export async function deleteService(serviceId) {
 	return apiDelete(window.wpApiSettings.apiUrlServices + '/delete/' + serviceId);
+}
+
+/**
+ * Update Service
+ * @param {Object} serviceId - The service id
+ * @returns {Promise<Object>}
+ */
+export async function updateService(serviceId, data) {
+	return apiUpdate(window.wpApiSettings.apiUrlServices + '/update/' + serviceId, data);
 }
 
 /**

@@ -19,13 +19,44 @@
         <tr v-for="service in services" :key="service.id"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-70">
 
-          <td class="px-6 py-4 font-medium text-gray-800">{{ service.name }}</td>
-          <td class="px-6 py-4 text-gray-800">{{ service.description }}</td>
-          <td class="px-6 py-4 text-gray-800">{{ service.duration }} minutes</td>
-          <td class="px-6 py-4 text-gray-800">{{ currencySymbol }}{{ service.price }}</td>
+          <td class="px-6 py-4 font-medium text-gray-800">
+            <template v-if="editingServiceId === service.id">
+              <input type="text" v-model="service.name" class="editable-input" />
+            </template>
+            <template v-else>
+              {{ service.name }}
+            </template>
+          </td>
+          <td class="px-6 py-4 text-gray-800">
+            <template v-if="editingServiceId === service.id">
+              <input type="text" v-model="service.description" class="editable-input" />
+            </template>
+            <template v-else>
+              {{ service.description }}
+            </template>
+          </td>
+          <td class="px-6 py-4 text-gray-800">
+            <template v-if="editingServiceId === service.id">
+              <input type="text" v-model="service.duration" class="editable-input" />
+            </template>
+            <template v-else>
+              {{ service.duration }} minutes
+            </template>
+          </td>
+          <td class="px-6 py-4 text-gray-800">
+            <template v-if="editingServiceId === service.id">
+              <input type="text" v-model="service.price" class="editable-input" />
+            </template>
+            <template v-else>
+              {{ currencySymbol }}{{ service.price }}
+            </template>
+          </td>
 
           <td class="px-6 py-4 text-sm font-medium">
-            <DeleteService :serviceData="service" :serviceId="service.id" @service-deleted="handleServiceDeleted" />
+            <UpdateService :serviceData="service" :serviceId="service.id" :editingServiceId="editingServiceId"
+            @edit-active="handleEditActive(service.id)" @service-updated="handleServiceUpdated" />
+
+            <DeleteService :serviceData="service" :serviceId="service.id" @service-deleted="handleServiceUpdated" />
           </td>
 
         </tr>
@@ -64,6 +95,7 @@ import { getCurrencySymbol } from './apiService.js';
 
 import CreateService from './CreateService.vue';
 import DeleteService from './DeleteService.vue';
+import UpdateService from './UpdateService.vue';
 import GetServices from './GetServices.vue';
 
 export default {
@@ -72,6 +104,7 @@ export default {
   components: {
     CreateService,
     DeleteService,
+    UpdateService,
     GetServices,
   },
 
@@ -88,6 +121,8 @@ export default {
 
       services: [],
       currencySymbol: '$', // Default currency symbol
+
+      editingServiceId: null, // Track the ID of the service being edited
     }
   },
 
@@ -97,7 +132,6 @@ export default {
     async fetchCurrencySymbol() {
       try {
         const response = await getCurrencySymbol();
-        console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
         if (response) {
           this.currencySymbol = response;
         }
@@ -117,7 +151,7 @@ export default {
         price: ''
       };
 
-      this.$refs.getServicesRef.getServices();
+      this.handleServiceUpdated();
 
     },
 
@@ -125,8 +159,13 @@ export default {
       this.services = services;
     },
 
-    async handleServiceDeleted() {
+    async handleServiceUpdated() {
       this.$refs.getServicesRef.getServices();
+      this.editingServiceId = null;
+    },
+
+    handleEditActive(serviceId) {
+      this.editingServiceId = serviceId;
     },
   },
 

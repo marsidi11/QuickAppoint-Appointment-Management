@@ -5,8 +5,6 @@
 namespace Inc\Api;
 
 use Inc\EmailConfirmation\EmailSender;
-use Inc\EmailConfirmation\ConfirmationHandler;
-
 
 /**
  * Custom REST API controller for handling appointments data.
@@ -42,19 +40,25 @@ class AppointmentsDataController extends RestController
                 'route' => '',
                 'methods' => 'GET',
                 'callback' => 'get_all_appointments',
-                'permission_callback' => [$this, 'current_user_can_edit_posts']
+                'permission_callback' => [$this, 'can_edit_posts']
             ],
             [
                 'route' => '/delete/(?P<id>\d+)',
                 'methods' => 'DELETE',
                 'callback' => 'delete_appointment_data',
-                'permission_callback' => [$this, 'current_user_can_edit_posts']
+                'permission_callback' => [$this, 'can_edit_posts']
             ],
             [
                 'route' => '/create',
                 'methods' => 'POST',
                 'callback' => 'post_appointment_data',
-                'permission_callback' => [$this, 'current_user_can_edit_posts']
+                'permission_callback' => [$this, 'can_edit_posts']
+            ],
+            [
+                'route' => '/update/(?P<id>\d+)',
+                'methods' => 'UPDATE',
+                'callback' => 'update_appointment_data',
+                'permission_callback' => [$this, 'can_edit_posts']
             ],
             [
                 'route' => '/reserved-time-slots',
@@ -72,7 +76,7 @@ class AppointmentsDataController extends RestController
                 'route' => '/search',
                 'methods' => 'GET',
                 'callback' => 'get_searched_appointments',
-                'permission_callback' => [$this, 'current_user_can_edit_posts'],
+                'permission_callback' => [$this, 'can_edit_posts'],
                 'args' => [
                     'search' => [
                         'required' => false,
@@ -97,6 +101,12 @@ class AppointmentsDataController extends RestController
                 'args' => $route['args'] ?? []
             ]);
         }
+    }
+
+    // Helper method for permission check
+    public function can_edit_posts()
+    {
+        return current_user_can('edit_posts');
     }
 
     private function validate_nonce($request)
@@ -292,6 +302,64 @@ class AppointmentsDataController extends RestController
         }
     }
 
+    public function update_appointment_data(\WP_REST_Request $request)
+    {
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
+        }
+
+        $appointment_id = $request['id'];
+        $appointment_data = $request->get_json_params();
+
+        global $wpdb;
+        $appointments_table = $wpdb->prefix . 'am_appointments';
+        $mapping_table = $wpdb->prefix . 'am_mapping';
+
+        $wpdb->query('START TRANSACTION');
+
+        try {
+            $result = $wpdb->update($appointments_table, array(
+                'name' => sanitize_text_field($appointment_data['name']),
+                'surname' => sanitize_text_field($appointment_data['surname']),
+                'phone' => sanitize_text_field($appointment_data['phone']),
+                'email' => sanitize_email($appointment_data['email']),
+                'date' => $appointment_data['date'],
+                'startTime' => $appointment_data['startTime'],
+                'endTime' => $appointment_data['endTime'],
+                'status' => $appointment_data['status']
+            ), array('id' => $appointment_id), array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'), array('%d'));
+
+            if ($result === false) {
+                throw new Exception('Could not update appointment in the database');
+            }
+
+            $mapping_result = $wpdb->delete($mapping_table, array('appointment_id' => $appointment_id));
+            if ($mapping_result === false) {
+                throw new Exception('Could not delete appointment-service mapping from the database');
+            }
+
+            foreach ($appointment_data['service_id'] as $service_id) {
+                $mapping_result = $wpdb->insert($mapping_table, array(
+                    'appointment_id' => $appointment_id,
+                    'service_id' => $service_id
+                ), array('%d', '%d'));
+
+                if ($mapping_result === false) {
+                    throw new Exception('Could not insert appointment-service mapping into the database');
+                }
+            }
+
+            $wpdb->query('COMMIT');
+
+            return new \WP_REST_Response('Appointment updated successfully', 200);
+        } catch (Exception $e) {
+            $wpdb->query('ROLLBACK');
+            error_log($e->getMessage());
+            return new \WP_Error('db_update_error', $e->getMessage(), ['status' => 500]);
+        }
+    }
+
 
     public function get_reserved_time_slots(\WP_REST_Request $request)
     {
@@ -419,12 +487,6 @@ class AppointmentsDataController extends RestController
         error_log("Appointments found: " . count($appointments));
 
         return new \WP_REST_Response($appointments, 200);
-    }
-
-    // Helper method for permission check
-    public function current_user_can_edit_posts()
-    {
-        return current_user_can('edit_posts');
     }
 }
 ?>
