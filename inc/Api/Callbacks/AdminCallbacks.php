@@ -192,63 +192,79 @@ class AdminCallbacks extends BaseController
     private function renderColorField(string $name, string $default, string $label): void
     {
         $value = esc_attr(get_option($name, $default));
-        echo "<label for='$name'>$label:</label><br>";
         echo "<input type='color' id='$name' name='$name' value='$value' style='width: 50px; height: 50px; vertical-align: middle;'>";
         echo "<input type='text' id='{$name}_text' name='{$name}_text' value='$value' style='width: 120px; margin-left: 10px;' placeholder='Hex or RGB'>";
-        
-        // Add JavaScript to handle color input and conversion
-        echo "
-        <script>
+        echo "<button type='button' id='{$name}_toggle' style='margin-left: 10px;'>Toggle RGB/Hex</button>";
+
+        // Add JavaScript to handle color input, conversion, and toggling
+        echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
-            var colorPicker = document.getElementById('$name');
-            var textInput = document.getElementById('{$name}_text');
-            
-            function isValidColor(c                return /^#[0-9A-F]{6}$/i.test(color) || 
-                       /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i.test(color);
-            }
+        var colorPicker = document.getElementById('$name');
+        var textInput = document.getElementById('{$name}_text');
+        var toggleButton = document.getElementById('{$name}_toggle');
+        var isHex = true;
 
-            function rgbToHex(r, g, b) {
-                return '#' + [r, g, b].map(x => {
-                    const hex =                    return hex.length === 1 ? '0' + hex : hex;
-                }).join('');
-            }
+        function isValidColor(color) {
+            return /^#[0-9A-F]{6}$/i.test(color) || /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i.test(color);
+        }
 
-            function hexToRgb(hex) {
-                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? 
-                    `rgb(                    : null;
-            }
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
 
-            colorPicker.addEventListener('input', function() {
-                textInput.value = this.value;
-            });
-            
-                   var color = this.value.trim();
-                if (isValidColor(color)) {
-                    if (color.startsWith('rgb')) {
-                        var rgb = color.match(/\d+/g);
-                        colorPicker.value = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
-                    } else {
-                        colorPicker.value = color;
-                    }
-                }
-            });
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 'rgb(' + parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) + ')' : null;
+        }
 
-            textInput.addEventListener('blur', function() {
-                var color = this.value.trim();
-                if (isValidColor(color                    if (color.startsWith('#')) {
-                        this.value = color.toUpperCase();
-                    } else if (color.startsWith('rgb')) {
-                        var rgb = color.match(/\d+/g);
-                        this.value = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])).toUpperCase();
-                    }
-                } else {
-                    this.value = colorPicker.value.toUpperCase();
-                }
-            });
+        function updateTextInput(color) {
+            textInput.value = isHex ? color.toUpperCase() : hexToRgb(color);
+        }
+
+        // Update text input in real-time as color is picked
+        colorPicker.addEventListener('input', function() {
+            updateTextInput(this.value);
         });
-        </script>
-        ";
-    }
 
+        // Ensure final selected color is reflected in text input
+        colorPicker.addEventListener('change', function() {
+            updateTextInput(this.value);
+        });
+
+        textInput.addEventListener('input', function() {
+            var color = this.value.trim();
+            if (isValidColor(color)) {
+                if (color.startsWith('rgb')) {
+                    var rgb = color.match(/\d+/g);
+                    colorPicker.value = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
+                } else {
+                    colorPicker.value = color;
+                }
+            }
+        });
+
+        textInput.addEventListener('blur', function() {
+            var color = this.value.trim();
+            if (isValidColor(color)) {
+                if (color.startsWith('#')) {
+                    this.value = isHex ? color.toUpperCase() : hexToRgb(color);
+                } else if (color.startsWith('rgb')) {
+                    var rgb = color.match(/\d+/g);
+                    this.value = isHex ? rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])).toUpperCase() : color;
+                }
+            } else {
+                this.value = colorPicker.value;
+            }
+        });
+
+        toggleButton.addEventListener('click', function() {
+            isHex = !isHex;
+            updateTextInput(colorPicker.value);
+        });
+    });
+    </script>";
+    }
 }
