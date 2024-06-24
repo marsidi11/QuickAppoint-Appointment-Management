@@ -66,10 +66,10 @@
             <input type="text" v-model="serviceData.name" placeholder="Enter service name">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="text" v-model="serviceData.description" placeholder="Service description">
+            <input type="text" v-model="serviceData.description" placeholder="Short description">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="number" v-model.number="serviceData.duration" placeholder="Service duration (minutes)">
+            <input type="number" v-model.number="serviceData.duration" placeholder="Duration (minutes)">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
             <input type="number" v-model.number="serviceData.price" placeholder="Service price">

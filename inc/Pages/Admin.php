@@ -4,263 +4,141 @@
  */
 namespace Inc\Pages;
 
-use \Inc\Api\SettingsApi;
-use \Inc\Base\BaseController;
-use \Inc\Api\Callbacks\AdminCallbacks;
+use Inc\Api\SettingsApi;
+use Inc\Base\BaseController;
+use Inc\Api\Callbacks\AdminCallbacks;
 
 /**
- * It registers the plugin through SettingsApi in the WordPress admin menu. 
- * It adds the submenu items. 
- * It calls the callback methods from AdminCallbacks.
+ * Admin class for the Appointment Management Plugin.
+ * 
+ * This class registers the plugin through SettingsApi in the WordPress admin menu,
+ * adds submenu items, and calls callback methods from AdminCallbacks.
  */
 class Admin extends BaseController 
 {
-    public $settings;
-
-    public $callbacks;
-
-    public $pages = array();
-
-    public $subpages = array();
+    private SettingsApi $settings;
+    private AdminCallbacks $callbacks;
+    private array $pages = [];
+    private array $subpages = [];
 
     public function register() 
     {
         $this->settings = new SettingsApi();
-
         $this->callbacks = new AdminCallbacks();
 
         $this->setPages();
         $this->setSubpages();
-
         $this->setSettings();
         $this->setSections();
         $this->setFields();
 
-        $this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();
+        $this->settings->addPages($this->pages)
+                       ->withSubPage('Dashboard')
+                       ->addSubPages($this->subpages)
+                       ->register();
     }
 
-    public function setPages() 
+    private function setPages() 
     {
-        $this->pages = array(
-            array(
-                'page_title' => 'Appointment Management', 
-                'menu_title' => 'Appointment', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'appointment_management', 
-                'callback' => array( $this->callbacks, 'adminDashboard' ), // Callback to the dashboard page
-                'icon_url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzcyIiBoZWlnaHQ9Ijc3MiIgdmlld0JveD0iMCAwIDc3MiA3NzIiIGZpbGw9IiNhN2FhYWQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zODYgNzcyQzU5OS4xODIgNzcyIDc3MiA1OTkuMTgyIDc3MiAzODZDNzcyIDE3Mi44MTggNTk5LjE4MiAwIDM4NiAwQzE3Mi44MTggMCAwIDE3Mi44MTggMCAzODZDMCA1OTkuMTgyIDE3Mi44MTggNzcyIDM4NiA3NzJaTTE1NCAxNTRINjE4VjYxOEgxNTRWMTU0Wk0yMDIgMjUwVjU3MEg1NzBWMjUwSDIwMlpNMjI2IDIyNkg1NDZWMjc0SDIyNlYyMjZaIiBmaWxsPSIjYTdhYWFkIi8+CiAgPHRleHQgeD0iMzg2IiB5PSI0ODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSIjYTdhYWFkIiBzdHJva2Utd2lkdGg9IjgiPjI5PC90ZXh0Pgo8L3N2Zz4=', 
+        $this->pages = [
+            [
+                'page_title' => 'Appointment Management',
+                'menu_title' => 'Appointment',
+                'capability' => 'manage_options',
+                'menu_slug' => 'appointment_management',
+                'callback' => [$this->callbacks, 'adminDashboard'],
+                'icon_url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzcyIiBoZWlnaHQ9Ijc3MiIgdmlld0JveD0iMCAwIDc3MiA3NzIiIGZpbGw9IiNhN2FhYWQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zODYgNzcyQzU5OS4xODIgNzcyIDc3MiA1OTkuMTgyIDc3MiAzODZDNzcyIDE3Mi44MTggNTk5LjE4MiAwIDM4NiAwQzE3Mi44MTggMCAwIDE3Mi44MTggMCAzODZDMCA1OTkuMTgyIDE3Mi44MTggNzcyIDM4NiA3NzJaTTE1NCAxNTRINjE4VjYxOEgxNTRWMTU0Wk0yMDIgMjUwVjU3MEg1NzBWMjUwSDIwMlpNMjI2IDIyNkg1NDZWMjc0SDIyNlYyMjZaIiBmaWxsPSIjYTdhYWFkIi8+CiAgPHRleHQgeD0iMzg2IiB5PSI0ODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSIjYTdhYWFkIiBzdHJva2Utd2lkdGg9IjgiPjI5PC90ZXh0Pgo8L3N2Zz4=',
                 'position' => 2
-            )
-        );
+            ]
+        ];
     }
 
-    public function setSubpages() 
+    private function setSubpages() 
     {
-        $this->subpages = array(
-            array(
-                'parent_slug' => 'appointment_management', 
-                'page_title' => 'Settings', 
-                'menu_title' => 'Settings', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'appointment_management_settings', 
-                'callback' => array( $this->callbacks, 'adminSettings' ) // Callback to the settings page
-            )
-        );
+        $this->subpages = [
+            [
+                'parent_slug' => 'appointment_management',
+                'page_title' => 'Settings',
+                'menu_title' => 'Settings',
+                'capability' => 'manage_options',
+                'menu_slug' => 'appointment_management_settings',
+                'callback' => [$this->callbacks, 'adminSettings']
+            ]
+        ];
     }
 
-    // Register custom Settings setters for custom option data
-    public function setSettings() 
+    private function setSettings() 
     {
-        $args = array(
+        $args = [
+            $this->createSettingArg('currency_symbol'),
+            $this->createSettingArg('open_time'),
+            $this->createSettingArg('close_time'),
+            $this->createSettingArg('time_slot_duration'),
+            $this->createSettingArg('dates_range'),
+            $this->createSettingArg('open_days'),
+            $this->createSettingArg('break_start'),
+            $this->createSettingArg('break_end'),
+            $this->createSettingArg('enable_email_confirmation'),
+            $this->createSettingArg('primary_color'),
+            $this->createSettingArg('secondary_color'),
+        ];
 
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Options Dashboard Page
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'currency_symbol',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'open_time',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'close_time',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'time_slot_duration',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'dates_range',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'open_days',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'break_start',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'break_end',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            ),
-            array(
-                'option_group' => 'am_options_data',
-                'option_name' => 'enable_email_confirmation',
-                'callback' => array( $this->callbacks, 'amOptionsData' 
-                )
-            )
-        );
-
-        $this->settings->setSettings( $args );
+        $this->settings->setSettings($args);
     }
 
-    // Register custom Sections setters
-    public function setSections() 
+    private function createSettingArg(string $optionName): array
     {
-        $args = array(
+        return [
+            'option_group' => 'am_options_data',
+            'option_name' => $optionName,
+            'callback' => [$this->callbacks, 'amOptionsData']
+        ];
+    }
 
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Sections
-            array(
+    private function setSections() 
+    {
+        $args = [
+            [
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
-                'callback' => array( $this->callbacks, 'amAdminSection' ),
+                'callback' => [$this->callbacks, 'amAdminSection'],
                 'page' => 'appointment_management'
-            )
-        );
+            ]
+        ];
 
-        $this->settings->setSections( $args );
+        $this->settings->setSections($args);
     }
 
-    // Register custom Fields setters
-    public function setFields() 
+    private function setFields() 
     {
-        
-        $args = array(
+        $args = [
+            $this->createFieldArg('currency_symbol', 'Currency Symbol ($)', 'amCurrencySymbol', 'currency-symbol'),
+            $this->createFieldArg('open_time', 'Open Time', 'amOpenTime', 'select-time'),
+            $this->createFieldArg('close_time', 'Close Time', 'amCloseTime', 'select-time'),
+            $this->createFieldArg('time_slot_duration', 'Time Slot Duration (every x minutes)', 'amTimeSlotDuration', 'select-time'),
+            $this->createFieldArg('dates_range', 'Allowed Bookings Date Range', 'amDatesRange', 'select-time'),
+            $this->createFieldArg('open_days', 'Open Days', 'amOpenDays', 'select-allowed-dates'),
+            $this->createFieldArg('break_start', 'Break Start', 'amBreakStart', 'select-time'),
+            $this->createFieldArg('break_end', 'Break End', 'amBreakEnd', 'select-time'),
+            $this->createFieldArg('primary_color', 'Primary Color', 'amPrimaryColor', 'select-color'),
+            $this->createFieldArg('secondary_color', 'Secondary Color', 'amSecondaryColor', 'select-color'),
+        ];
 
-
-            // Open Time, Close Time, Time Break, Allowed Dates Range, Open Days, Start Break Time, Close Break Time, ... - Fields
-            array(
-                'id' => 'currency_symbol',
-                'title' => __('Currency Symbol ($)', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amCurrencySymbol' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(    
-                    'label_for' => 'currency_symbol',
-                    'class' => 'currency-symbol'
-                )
-            ),
-            array(
-                'id' => 'open_time',
-                'title' => __('Open Time', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amOpenTime' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'open_time',
-                    'class' => 'select-time'
-                )
-            ),
-            array(
-                'id' => 'close_time',
-                'title' => __('Close Time', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amCloseTime' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'close_time',
-                    'class' => 'select-time'
-                )
-            ),
-            array(
-                'id' => 'time_slot_duration',
-                'title' => __('Time Slot Duration (every x minutes)', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amTimeSlotDuration' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'time_slot_duration',
-                    'class' => 'select-time'
-                )
-            ),
-            array(
-                'id' => 'dates_range',
-                'title' => __('Allowed Bookings Date Range', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amDatesRange' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'dates_range',
-                    'class' => 'select-time'
-                )
-            ),
-            array(
-                'id' => 'open_days',
-                'title' => __('Open Days', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amOpenDays' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'open_days',
-                    'class' => 'select-allowed-dates'
-                )
-            ),
-            array(
-                'id' => 'break_start',
-                'title' => __('Break Start', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amBreakStart' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'break_start',
-                    'class' => 'select-time'
-                )
-            ),
-            array(
-                'id' => 'break_end',
-                'title' => __('Break End', 'appointment-management'),
-                'callback' => array( $this->callbacks, 'amBreakEnd' ),
-                'page' => 'appointment_management',
-                'section' => 'am_admin_index',
-                'args' => array(
-                    'label_for' => 'break_end',
-                    'class' => 'select-time'
-                )
-            ),
-            // array(
-            //     'id' => 'enable_email_confirmation',
-            //     'title' => __('Appointment Email Confrimation', 'appointment-management'),
-            //     'callback' => array( $this->callbacks, 'amEnableEmailConfirmation' ),
-            //     'page' => 'appointment_management',
-            //     'section' => 'am_admin_index',
-            //     'args' => array(
-            //         'label_for' => 'enable_email_confirmation',
-            //         'class' => 'enable-confirmation'
-            //     )
-            // )
-            
-        );
-
-        $this->settings->setFields( $args );
+        $this->settings->setFields($args);
     }
 
+    private function createFieldArg(string $id, string $title, string $callback, string $class): array
+    {
+        return [
+            'id' => $id,
+            'title' => __($title, 'appointment-management'),
+            'callback' => [$this->callbacks, $callback],
+            'page' => 'appointment_management',
+            'section' => 'am_admin_index',
+            'args' => [
+                'label_for' => $id,
+                'class' => $class
+            ]
+        ];
+    }
 }
