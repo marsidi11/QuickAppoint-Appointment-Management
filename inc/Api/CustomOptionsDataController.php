@@ -2,25 +2,29 @@
 /**
  * @package AppointmentManagementPlugin
  */
+
 namespace Inc\Api;
+
+use WP_REST_Controller;
+use WP_Error;
+use WP_REST_Request;
 
 /**
  * Custom REST API controller for handling custom data.
- * Custom data: Open Time, Close Time, 
  */
-
-
-class CustomOptionsDataController extends RestController 
+class CustomOptionsDataController extends WP_REST_Controller 
 {
     const DEFAULT_OPEN_TIME = '09:00';
     const DEFAULT_CLOSE_TIME = '17:00';
     const DEFAULT_TIME_SLOT_DURATION = '30';
     const DEFAULT_DATES_RANGE = '21';
     const DEFAULT_CURRENCY_SYMBOL = '$';
+    const DEFAULT_PRIMARY_COLOR = '#6b7280';
+    const DEFAULT_SECONDARY_COLOR = '#1d4ed8';
 
     public function register()
     {
-        add_action('rest_api_init', array($this, 'register_routes'));
+        add_action('rest_api_init', [$this, 'register_routes']);
     }
 
     public function get_namespace()
@@ -35,133 +39,93 @@ class CustomOptionsDataController extends RestController
 
     public function register_routes()
     {
-        $permission_callback = function () {
-            return true; // Allow all users to get custom options data
-        };
-
         $routes = [
-            'open-time' => 'get_open_time',
-            'close-time' => 'get_close_time',
-            'time-slot-duration' => 'get_time_slot_duration',
-            'dates-range' => 'get_dates_range',
-            'open-days' => 'get_open_days',
-            'break-start' => 'get_break_start',
-            'break-end' => 'get_break_end',
-            'currency-symbol' => 'get_currency_symbol',
+            'open-time' => 'get_option_data',
+            'close-time' => 'get_option_data',
+            'time-slot-duration' => 'get_option_data',
+            'dates-range' => 'get_option_data',
+            'open-days' => 'get_option_data',
+            'break-start' => 'get_option_data',
+            'break-end' => 'get_option_data',
+            'currency-symbol' => 'get_option_data',
+            'primary-color' => 'get_option_data',
+            'secondary-color' => 'get_option_data',
         ];
 
         foreach ($routes as $route => $method) {
-            \register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/' . $route, array(
+            register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/' . $route, [
                 'methods' => 'GET',
-                'callback' => array($this, $method),
-                'permission_callback' => $permission_callback,
+                'callback' => [$this, $method],
+                'permission_callback' => [$this, 'can_edit_posts'],
                 'args' => [
                     'context' => [
                         'default' => 'view',
                     ],
+                    'option_name' => [
+                        'default' => $route,
+                        'validate_callback' => 'rest_validate_request_arg',
+                    ]
                 ],
-            ));
+            ]);
         }
+    }
+
+    public function can_edit_posts($request)
+    {
+        return current_user_can('read');
     }
 
     private function validate_nonce($request)
     {
-        $nonce = $request->get_header('X_WP_Nonce');
+        $nonce = $request->get_header('X-WP-Nonce');
         if (!wp_verify_nonce($nonce, 'wp_rest')) {
-            return new \WP_Error('invalid_nonce', 'Invalid nonce', array('status' => 403));
+            return new WP_Error('invalid_nonce', 'Invalid nonce', ['status' => 403]);
         }
         return true;
     }
 
-    public function get_open_time(\WP_REST_Request $request)
+    public function get_option_data(WP_REST_Request $request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
             return $nonce_validation;
         }
 
-        return get_option('open_time', self::DEFAULT_OPEN_TIME);
+        $option_name = str_replace('-', '_', $request['option_name']);
+        $default_value = $this->get_default_value($option_name);
+        $option_value = get_option($option_name, $default_value);
+
+        if (empty($option_value) && $option_value !== '0') {
+            return new WP_Error('no_value', 'No value found for ' . $option_name, ['status' => 200]);
+        }
+
+        return rest_ensure_response($option_value);
     }
 
-    public function get_close_time(\WP_REST_Request $request)
+    private function get_default_value($option_name)
     {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
+        switch ($option_name) {
+            case 'open_time':
+                return self::DEFAULT_OPEN_TIME;
+            case 'close_time':
+                return self::DEFAULT_CLOSE_TIME;
+            case 'time_slot_duration':
+                return self::DEFAULT_TIME_SLOT_DURATION;
+            case 'dates_range':
+                return self::DEFAULT_DATES_RANGE;
+            case 'currency_symbol':
+                return self::DEFAULT_CURRENCY_SYMBOL;
+            case 'open_days':
+                return [];
+            case 'break_start':
+            case 'break_end':
+                return '';
+            case 'primary_color':
+                return self::DEFAULT_PRIMARY_COLOR;
+            case 'secondary_color':
+                return self::DEFAULT_SECONDARY_COLOR;
+            default:
+                return null;
         }
-
-        return get_option('close_time', self::DEFAULT_CLOSE_TIME);
-    }
-
-    public function get_time_slot_duration(\WP_REST_Request $request)
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        return get_option('time_slot_duration', self::DEFAULT_TIME_SLOT_DURATION);
-    }
-
-    public function get_dates_range(\WP_REST_Request $request)
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        return get_option('dates_range', self::DEFAULT_DATES_RANGE);
-    }
-
-    public function get_open_days(\WP_REST_Request $request)
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        return get_option('open_days', array());
-    }
-
-    public function get_break_start(\WP_REST_Request $request)
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        $break_start = get_option('break_start');
-
-        if (empty($break_start)) {
-            return new \WP_Error('no_value', 'No value for Break Start', array('status' => 200));
-        }
-
-        return $break_start;
-    }
-
-    public function get_break_end(\WP_REST_Request $request) 
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        $break_end = get_option('break_end');
-
-        if (empty($break_end)) {
-            return new \WP_Error('no_value', 'No value for Break End', array('status' => 200));
-        }
-
-        return $break_end;
-    }
-
-    public function get_currency_symbol(\WP_REST_Request $request) 
-    {
-        $nonce_validation = $this->validate_nonce($request);
-        if (is_wp_error($nonce_validation)) {
-            return $nonce_validation;
-        }
-
-        return get_option('currency_symbol', self::DEFAULT_CURRENCY_SYMBOL);
     }
 }

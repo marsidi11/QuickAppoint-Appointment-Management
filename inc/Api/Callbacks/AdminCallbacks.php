@@ -153,7 +153,7 @@ class AdminCallbacks extends BaseController
      */
     public function amPrimaryColor(): void
     {
-        $this->renderColorField('primary_color', '#007bff', 'Select primary color');
+        $this->renderColorField('primary_color', '#6b7280', 'Select primary color');
     }
 
     /**
@@ -163,7 +163,7 @@ class AdminCallbacks extends BaseController
      */
     public function amSecondaryColor(): void
     {
-        $this->renderColorField('secondary_color', '#6c757d', 'Select secondary color');
+        $this->renderColorField('secondary_color', '#1d4ed8', 'Select secondary color');
     }
 
     /**

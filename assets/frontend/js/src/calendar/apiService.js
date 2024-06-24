@@ -143,6 +143,22 @@ export async function getBreakEnd() {
 }
 
 /**
+ * Get Primary Color
+ * @returns {Promise<Object>}
+ */
+export async function getPrimaryColor() {
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/primary-color');
+}
+
+/**
+ * Get Secondary Color
+ * @returns {Promise<Object>}
+ */
+export async function getSecondaryColor() {
+	return apiGet(window.wpApiSettings.apiUrlOptions + '/secondary-color');
+}
+
+/**
  * Get Reserved Time Slots
  * @param {string} date - The date to get reserved time slots for
  * @returns {Promise<Object>}
