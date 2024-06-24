@@ -21,7 +21,7 @@
 
           <td class="px-6 py-4 font-medium text-gray-800">
             <template v-if="editingServiceId === service.id">
-              <input type="text" v-model="service.name" class="editable-input" />
+              <input type="text" v-model="service.name" />
             </template>
             <template v-else>
               {{ service.name }}
@@ -29,7 +29,7 @@
           </td>
           <td class="px-6 py-4 text-gray-800">
             <template v-if="editingServiceId === service.id">
-              <input type="text" v-model="service.description" class="editable-input" />
+              <input type="text" v-model="service.description" />
             </template>
             <template v-else>
               {{ service.description }}
@@ -37,7 +37,7 @@
           </td>
           <td class="px-6 py-4 text-gray-800">
             <template v-if="editingServiceId === service.id">
-              <input type="text" v-model="service.duration" class="editable-input" />
+              <input type="number" v-model.number="service.duration" min="0" step="1" />
             </template>
             <template v-else>
               {{ service.duration }} minutes
@@ -45,7 +45,7 @@
           </td>
           <td class="px-6 py-4 text-gray-800">
             <template v-if="editingServiceId === service.id">
-              <input type="text" v-model="service.price" class="editable-input" />
+              <input type="number" v-model.number="service.price" />
             </template>
             <template v-else>
               {{ currencySymbol }}{{ service.price }}
@@ -66,13 +66,13 @@
             <input type="text" v-model="serviceData.name" placeholder="Enter service name">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="text" v-model="serviceData.description" placeholder="Enter service description">
+            <input type="text" v-model="serviceData.description" placeholder="Service description">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="text" v-model="serviceData.duration" placeholder="Enter service duration (minutes)">
+            <input type="number" v-model.number="serviceData.duration" placeholder="Service duration (minutes)">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
-            <input type="text" v-model="serviceData.price" placeholder="Enter service price">
+            <input type="number" v-model.number="serviceData.price" placeholder="Service price">
           </td>
           <td class="px-6 py-4 font-medium text-gray-800">
             <CreateService :serviceData="serviceData" @create-service="handleCreateService" />
@@ -115,8 +115,8 @@ export default {
       serviceData: {
         name: '',
         description: '',
-        duration: '',
-        price: ''
+        duration: null,
+        price: null
       },
 
       services: [],
