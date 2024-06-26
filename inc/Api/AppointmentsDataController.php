@@ -252,9 +252,15 @@ class AppointmentsDataController extends RestController
                 }
             }
 
-            // Send confirmation email
+            // Get the admin email address
+            $admin_email = get_option('admin_email');
+
+            // Send confirmation email to user
             $emailSender = new EmailSender();
-            $emailSender->send_confirmation_email($email, $token);
+            $emailSender->send_confirmation_email_to_user($email, $token);
+
+            // Notify admin about the new appointment
+            $emailSender->notify_admin_about_appointment($admin_email, $appointment_data, $token);
 
             $wpdb->query('COMMIT');
 
