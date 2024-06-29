@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @package AppointmentManagementPlugin
  */
@@ -17,11 +17,11 @@ final class Init {
     public static function get_services() {
         return [
             Pages\Admin::class,
-            Base\Enqueue::class, 
-            Base\SettingsLinks::class, 
+            Base\Enqueue::class,
+            Base\SettingsLinks::class,
             Pages\Shortcodes::class,
             Api\AppointmentsDataController::class,
-            Api\ServicesDataController::class,
+            Api\Controllers\ServiceController::class,
             Api\CustomOptionsDataController::class,
             EmailConfirmation\ConfirmationHandler::class,
         ];
@@ -29,24 +29,33 @@ final class Init {
 
     /**
      * Loop through the classes, initialize them, and call the register() method if it exists
-     * @return
+     * @return void
      */
     public static function register_services() {
-        foreach ( self::get_services() as $class ) {
-            $service = self::instantiate( $class );
-            if ( method_exists( $service, 'register' ) ) {
-                $service->register();
+        foreach (self::get_services() as $class) {
+            if (class_exists($class)) {
+                $instance = self::instantiate($class);
+                if (method_exists($instance, 'register')) {
+                    $instance->register();
+                }
             }
         }
     }
 
     /**
-     * Initialize the class
-     * @param class $class class from the services array
-     * @return class instance new instance of the class
+     * Initialize the class, handling special cases where dependencies need to be injected.
+     * @param string $class Class name from the services array.
+     * @return object Instance of the class.
      */
-    private static function instantiate( $class ) {
-        $service = new $class();
-        return $service;
+    private static function instantiate($class) {
+        switch ($class) {
+            case 'Inc\\Api\\Controllers\\ServiceController':
+                $serviceRepository = new \Inc\Api\Repositories\ServiceRepository();
+                $serviceService = new \Inc\Api\Services\ServiceService($serviceRepository);
+                return new $class($serviceService);
+            // Add cases for other classes with dependencies if needed
+            default:
+                return new $class();
+        }
     }
 }
