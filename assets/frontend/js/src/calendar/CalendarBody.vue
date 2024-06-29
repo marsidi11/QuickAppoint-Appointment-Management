@@ -93,7 +93,6 @@ export default {
         async fetchDatesRange() {
             try {
                 const response = await getDatesRange();
-                console.log("Get Dates Range: ", JSON.stringify(response, null, 2));
                 this.datesRange = response; // Set datesRange to response (allowed next x booking days)
 
             } catch (error) {
@@ -104,7 +103,6 @@ export default {
         async fetchOpenDays() {
             try {
                 const response = await getOpenDays();
-                console.log("Get Open Days: ", JSON.stringify(response, null, 2));
                 this.openDays = response; // Set openDays to response (days when the business is open)
 
             } catch (error) {

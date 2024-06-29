@@ -118,12 +118,10 @@ export default {
 		
 		storeDate(date) { // Save the selected date from CalendarBody component
 			this.selectedDate = date;
-			console.log("Date Data Passed: " + this.selectedDate);
 		},
 
 		storeServices(services) { // Save the selected services from CalendarServices component
 			this.selectedServices = services;
-			console.log("Services Data Passed: " + JSON.stringify(this.selectedServices, null, 2));
 		},
 
 		storeCurrencySymbol(symbol) { // Save the currency symbol from CalendarServices component
@@ -132,7 +130,6 @@ export default {
 
 		storeTime(time) { // Save the selected time from CalendarTime component
 			this.selectedTime = time;
-			console.log("Time Data Passed: " + this.selectedTime);
 		},
 
 		storeUserData(userData) { // Store the user data emitted from the CalendarUserData component

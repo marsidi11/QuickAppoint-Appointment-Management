@@ -81,7 +81,6 @@ export default {
             try {
                 this.loading = true;
                 const response = await getOpenTime();
-                console.log("Get Open Time: ", JSON.stringify(response, null, 2));
                 return response;
 
             } catch (error) {
@@ -93,7 +92,6 @@ export default {
         async fetchCloseTime() {
             try {
                 const response = await getCloseTime();
-                console.log("Get Close Time: ", JSON.stringify(response, null, 2));
                 return response;
 
             } catch (error) {
@@ -105,7 +103,6 @@ export default {
         async fetchTimeSlotDuration() {
             try {
                 const response = await getTimeSlotDuration();
-                console.log("Get Time Slot Duration: ", JSON.stringify(response, null, 2));
                 return response;
 
             } catch (error) {
@@ -117,7 +114,6 @@ export default {
         async fetchBreakStart() {
             try {
                 const response = await getBreakStart();
-                console.log("Get Break Start Time: ", JSON.stringify(response, null, 2));
 
                 if (response === null) {
                     return 0;
@@ -133,7 +129,6 @@ export default {
         async fetchBreakEnd() {
             try {
                 const response = await getBreakEnd();
-                console.log("Get Break End Time: ", JSON.stringify(response, null, 2));
 
                 if (response === null) {
                     return 0;
@@ -149,7 +144,6 @@ export default {
         async fetchReservedTimeSlots() {
             try {
                 const response = await getReservedTimeSlots(this.formattedSelectedDate);
-                console.log("Get Reserved Time Slots: ", JSON.stringify(response, null, 2));
 
                 if (response.length === 0) {
                     return [];
@@ -215,7 +209,6 @@ export default {
                 currentMinutes += timeSlotDuration;
             }
 
-            console.log("Times: ", times);
             this.times = times;
         },
 

@@ -52,7 +52,6 @@ export default {
 
         saveFilters() {
             this.$emit('filters-updated', this.selectedFilters);
-            console.log("Selected Filters: " + this.selectedFilters);
             this.closeDropdown();
         },
 

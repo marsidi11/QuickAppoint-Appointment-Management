@@ -65,7 +65,6 @@ export default {
             try {
                 this.loading = true;
                 const response = await getServices();
-                console.log("Get All Services: ", JSON.stringify(response, null, 2));
                 this.services = response;
 
             } catch (error) {
@@ -78,7 +77,6 @@ export default {
             try {
                 this.loading = true;
                 const response = await getCurrencySymbol();
-                console.log("Currency Symbol: ", JSON.stringify(response, null, 2));
                 if (response) {
                     this.currencySymbol = response;
                 }
