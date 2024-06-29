@@ -10,7 +10,9 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "phpoffice/phpspreadsheet": "^2.1"
+    },
     "autoload": {
         "psr-4": {
             "Inc\\": "./inc"
