@@ -56,7 +56,7 @@ class CustomOptionsDataController extends WP_REST_Controller
             register_rest_route($this->get_namespace(), '/' . $this->get_base() . '/' . $route, [
                 'methods' => 'GET',
                 'callback' => [$this, $method],
-                'permission_callback' => [$this, 'can_edit_posts'],
+                'permission_callback' => '__return_true',
                 'args' => [
                     'context' => [
                         'default' => 'view',
