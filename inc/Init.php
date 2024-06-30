@@ -59,10 +59,12 @@ final class Init {
             case 'Inc\\Api\\Controllers\\AppointmentController':
                 $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
                 $emailSender = new \Inc\EmailConfirmation\EmailSender();
-
-                // Update the instantiatioyn with the new $serviceRepository argument
                 $appointmentService = new \Inc\Api\Services\AppointmentService($appointmentRepository, $emailSender);
                 return new $class($appointmentService);
+            case 'Inc\\Api\\Controllers\\AppointmentReportingController':
+                $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
+                $reportingService = new \Inc\Api\Services\AppointmentReportingService($appointmentRepository);
+                return new $class($reportingService);
             default:
                 return new $class();
         }

@@ -170,4 +170,107 @@ class AppointmentRepository
             return new WP_Error('db_update_error', $e->getMessage(), ['status' => 500]);
         }
     }
+
+    public function getReservedTimeSlots(string $date): array
+    {
+        $query = $this->wpdb->prepare(
+            "SELECT startTime, endTime FROM {$this->appointments_table} WHERE date = %s",
+            $date
+        );
+        return $this->wpdb->get_results($query);
+    }
+
+    public function searchAppointments(?string $search, ?array $dateFilters, ?string $dateRange, int $itemsPerPage, int $offset): array
+    {
+        $where_clauses = [];
+        $where_params = [];
+
+        if (!empty($search)) {
+            $search_term = '%' . $this->wpdb->esc_like($search) . '%';
+            $where_clauses[] = "(a.name LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
+            $where_params = array_merge($where_params, [$search_term, $search_term, $search_term]);
+        }
+
+        if (!empty($dateFilters)) {
+            $date_filter_clauses = $this->buildDateFilterClauses($dateFilters, $where_params);
+            if (!empty($date_filter_clauses)) {
+                $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
+            }
+        }
+
+        if (!empty($dateRange)) {
+            $date_range_clause = $this->buildDateRangeClause($dateRange, $where_params);
+            if ($date_range_clause) {
+                $where_clauses[] = $date_range_clause;
+            }
+        }
+
+        $where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
+
+        $query = $this->wpdb->prepare(
+            "SELECT a.*, 
+            DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+            DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+            GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+            SUM(s.price) as total_price
+            FROM {$this->appointments_table} a
+            LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+            LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+            $where_sql
+            GROUP BY a.id
+            ORDER BY a.date ASC, a.startTime ASC
+            LIMIT %d OFFSET %d",
+            array_merge($where_params, [$itemsPerPage, $offset])
+        );
+
+        return $this->wpdb->get_results($query);
+    }
+
+    private function buildDateFilterClauses(array $dateFilters, array &$where_params): array
+    {
+        $date_filter_clauses = [];
+        foreach ($dateFilters as $filter) {
+            switch ($filter) {
+                case 'today':
+                    $date_filter_clauses[] = "a.date = %s";
+                    $where_params[] = date('Y-m-d');
+                    break;
+                case 'tomorrow':
+                    $date_filter_clauses[] = "a.date = %s";
+                    $where_params[] = date('Y-m-d', strtotime('+1 day'));
+                    break;
+                case 'upcoming':
+                    $date_filter_clauses[] = "a.date >= %s";
+                    $where_params[] = date('Y-m-d');
+                    break;
+                case 'lastMonth':
+                    $firstDayLastMonth = date('Y-m-01', strtotime('last month'));
+                    $lastDayLastMonth = date('Y-m-t', strtotime('last month'));
+                    $date_filter_clauses[] = "a.date BETWEEN %s AND %s";
+                    $where_params[] = $firstDayLastMonth;
+                    $where_params[] = $lastDayLastMonth;
+                    break;
+            }
+        }
+        return $date_filter_clauses;
+    }
+
+    private function buildDateRangeClause(string $dateRange, array &$where_params): ?string
+    {
+        switch ($dateRange) {
+            case 'nextMonth':
+                $start_date = date('Y-m-01', strtotime('+1 month'));
+                $end_date = date('Y-m-t', strtotime('+1 month'));
+                break;
+            case 'previousMonth':
+                $start_date = date('Y-m-01', strtotime('-1 month'));
+                $end_date = date('Y-m-t', strtotime('-1 month'));
+                break;
+            default:
+                return null;
+        }
+        $where_params[] = $start_date;
+        $where_params[] = $end_date;
+        return "a.date BETWEEN %s AND %s";
+    }
 }
