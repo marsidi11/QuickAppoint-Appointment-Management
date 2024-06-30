@@ -52,44 +52,13 @@ class AppointmentsDataController extends RestController
                 'route' => '/create',
                 'methods' => 'POST',
                 'callback' => 'post_appointment_data',
-                'permission_callback' => [$this, 'can_edit_posts']
+                'permission_callback' => '__return_true'
             ],
             [
                 'route' => '/update/(?P<id>\d+)',
                 'methods' => 'UPDATE',
                 'callback' => 'update_appointment_data',
                 'permission_callback' => [$this, 'can_edit_posts']
-            ],
-            [
-                'route' => '/reserved-time-slots',
-                'methods' => 'GET',
-                'callback' => 'get_reserved_time_slots',
-                'permission_callback' => '__return_true',
-                'args' => [
-                    'date' => [
-                        'required' => true,
-                        'validate_callback' => [$this, 'validate_date_format'],
-                    ],
-                ],
-            ],
-            [
-                'route' => '/search',
-                'methods' => 'GET',
-                'callback' => 'get_searched_appointments',
-                'permission_callback' => [$this, 'can_edit_posts'],
-                'args' => [
-                    'search' => [
-                        'required' => false,
-                    ],
-                    'dateFilters' => [
-                        'required' => false,
-                        'type' => 'array',
-                    ],
-                    'page' => [
-                        'required' => false,
-                        'default' => 1,
-                    ],
-                ],
             ],
         ];
 
@@ -116,11 +85,6 @@ class AppointmentsDataController extends RestController
             return new \WP_Error('invalid_nonce', 'Invalid nonce', ['status' => 403]);
         }
         return true;
-    }
-
-    public function validate_date_format($param)
-    {
-        return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
     }
 
     public function get_all_appointments(\WP_REST_Request $request) 
@@ -236,7 +200,7 @@ class AppointmentsDataController extends RestController
             ), array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
 
             if ($result === false) {
-                throw new Exception('Could not insert appointment into the database');
+                throw new \Exception('Could not insert appointment into the database');
             }
 
             $appointment_id = $wpdb->insert_id;
@@ -248,7 +212,7 @@ class AppointmentsDataController extends RestController
                 ), array('%d', '%d'));
 
                 if ($mapping_result === false) {
-                    throw new Exception('Could not insert appointment-service mapping into the database');
+                    throw new \Exception('Could not insert appointment-service mapping into the database');
                 }
             }
 
@@ -265,7 +229,7 @@ class AppointmentsDataController extends RestController
             $wpdb->query('COMMIT');
 
             return new \WP_REST_Response('Appointment created successfully. Please check your email for confirmation', 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $wpdb->query('ROLLBACK');
             error_log($e->getMessage());
             return new \WP_Error('db_insert_error', $e->getMessage(), ['status' => 500]);
@@ -290,18 +254,18 @@ class AppointmentsDataController extends RestController
         try {
             $result = $wpdb->delete($appointments_table, array('id' => $appointment_id));
             if ($result === false) {
-                throw new Exception('Could not delete appointment from the database');
+                throw new \Exception('Could not delete appointment from the database');
             }
 
             $mapping_result = $wpdb->delete($mapping_table, array('appointment_id' => $appointment_id));
             if ($mapping_result === false) {
-                throw new Exception('Could not delete appointment-service mapping from the database');
+                throw new \Exception('Could not delete appointment-service mapping from the database');
             }
 
             $wpdb->query('COMMIT');
 
             return new \WP_REST_Response('Appointment deleted successfully', 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $wpdb->query('ROLLBACK');
             error_log($e->getMessage());
             return new \WP_Error('db_delete_error', $e->getMessage(), ['status' => 500]);
@@ -337,12 +301,12 @@ class AppointmentsDataController extends RestController
             ), array('id' => $appointment_id), array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'), array('%d'));
 
             if ($result === false) {
-                throw new Exception('Could not update appointment in the database');
+                throw new \Exception('Could not update appointment in the database');
             }
 
             $mapping_result = $wpdb->delete($mapping_table, array('appointment_id' => $appointment_id));
             if ($mapping_result === false) {
-                throw new Exception('Could not delete appointment-service mapping from the database');
+                throw new \Exception('Could not delete appointment-service mapping from the database');
             }
 
             foreach ($appointment_data['service_id'] as $service_id) {
@@ -352,147 +316,18 @@ class AppointmentsDataController extends RestController
                 ), array('%d', '%d'));
 
                 if ($mapping_result === false) {
-                    throw new Exception('Could not insert appointment-service mapping into the database');
+                    throw new \Exception('Could not insert appointment-service mapping into the database');
                 }
             }
 
             $wpdb->query('COMMIT');
 
             return new \WP_REST_Response('Appointment updated successfully', 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $wpdb->query('ROLLBACK');
             error_log($e->getMessage());
             return new \WP_Error('db_update_error', $e->getMessage(), ['status' => 500]);
         }
-    }
-
-
-    public function get_reserved_time_slots(\WP_REST_Request $request)
-    {
-        // Get the date from the request
-        $date = $request->get_param('date');
-
-        // Get the reserved time slots from the database
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
-        $query = $wpdb->prepare("SELECT startTime, endTime FROM $table_name WHERE date = %s", $date);
-        $reserved_time_slots = $wpdb->get_results($query);
-
-        return new \WP_REST_Response($reserved_time_slots, 200);
-    }
-
-    public function get_searched_appointments(\WP_REST_Request $request)
-    {
-        error_log("get_searched_appointments function called");
-
-        global $wpdb;
-        $appointments_table = $wpdb->prefix . 'am_appointments';
-        $services_table = $wpdb->prefix . 'am_services';
-        $mapping_table = $wpdb->prefix . 'am_mapping';
-
-        $search = $request->get_param('search');
-        $date_filters = $request->get_param('dateFilters');
-        $date_range_filter = $request->get_param('dateRange');
-        $page = $request->get_param('page') ?: 1;
-        $items_per_page = 10;
-        $offset = ($page - 1) * $items_per_page;
-
-        $where_clauses = [];
-        $where_params = [];
-
-        // Handle search
-        if (!empty($search)) {
-            $search_term = '%' . $wpdb->esc_like($search) . '%';
-            $where_clauses[] = "(a.name LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
-            $where_params = array_merge($where_params, [$search_term, $search_term, $search_term]);
-        }
-
-        // Handle date filters
-        if (!empty($date_filters) && !is_array($date_filters)) {
-            $date_filters = explode(',', $date_filters);
-        }
-
-        if (!empty($date_filters)) {
-            $date_filter_clauses = [];
-            foreach ($date_filters as $filter) {
-                switch ($filter) {
-                    case 'today':
-                        $date_filter_clauses[] = "a.date = %s";
-                        $where_params[] = date('Y-m-d');
-                        break;
-                    case 'tomorrow':
-                        $date_filter_clauses[] = "a.date = %s";
-                        $where_params[] = date('Y-m-d', strtotime('+1 day'));
-                        break;
-                    case 'upcoming':
-                        $date_filter_clauses[] = "a.date >= %s";
-                        $where_params[] = date('Y-m-d');
-                        break;
-                    case 'lastMonth':
-                        $firstDayLastMonth = date('Y-m-01', strtotime('last month'));
-                        $lastDayLastMonth = date('Y-m-t', strtotime('last month'));
-                        $date_filter_clauses[] = "a.date BETWEEN %s AND %s";
-                        $where_params[] = $firstDayLastMonth;
-                        $where_params[] = $lastDayLastMonth;
-                        break;
-                        // Add more cases for other date filters
-                }
-            }
-            if (!empty($date_filter_clauses)) {
-                $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
-            }
-        }
-
-        // Handle date range filter
-        if (!empty($date_range_filter)) {
-            switch ($date_range_filter) {
-                case 'nextMonth':
-                    $start_date = date('Y-m-01', strtotime('+1 month'));
-                    $end_date = date('Y-m-t', strtotime('+1 month'));
-                    break;
-                case 'previousMonth':
-                    $start_date = date('Y-m-01', strtotime('-1 month'));
-                    $end_date = date('Y-m-t', strtotime('-1 month'));
-                    break;
-                    // Add more cases for other date ranges
-            }
-            if (isset($start_date) && isset($end_date)) {
-                $where_clauses[] = "a.date BETWEEN %s AND %s";
-                $where_params[] = $start_date;
-                $where_params[] = $end_date;
-            }
-        }
-
-        $where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
-
-        $query = $wpdb->prepare(
-            "SELECT a.*, 
-            DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
-            DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
-            GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
-            SUM(s.price) as total_price
-        FROM $appointments_table a
-        LEFT JOIN $mapping_table m ON a.id = m.appointment_id
-        LEFT JOIN $services_table s ON m.service_id = s.id
-        $where_sql
-        GROUP BY a.id
-        ORDER BY a.date ASC, a.startTime ASC
-        LIMIT %d OFFSET %d",
-            array_merge($where_params, [$items_per_page, $offset])
-        );
-
-        error_log("Parameters: " . print_r($where_params, true));
-
-        $appointments = $wpdb->get_results($query);
-
-        if ($wpdb->last_error) {
-            error_log("Database Error: " . $wpdb->last_error);
-            return new \WP_REST_Response(['error' => $wpdb->last_error], 500);
-        }
-
-        error_log("Appointments found: " . count($appointments));
-
-        return new \WP_REST_Response($appointments, 200);
     }
 }
 ?>

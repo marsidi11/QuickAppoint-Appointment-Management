@@ -20,7 +20,9 @@ final class Init {
             Base\Enqueue::class,
             Base\SettingsLinks::class,
             Pages\Shortcodes::class,
-            Api\AppointmentsDataController::class,
+            // Api\AppointmentsDataController::class,
+            Api\Controllers\AppointmentController::class,
+            Api\Controllers\AppointmentReportingController::class,
             Api\Controllers\ServiceController::class,
             Api\CustomOptionsDataController::class,
             EmailConfirmation\ConfirmationHandler::class,
@@ -47,13 +49,20 @@ final class Init {
      * @param string $class Class name from the services array.
      * @return object Instance of the class.
      */
-    private static function instantiate($class) {
+    private static function instantiate($class)
+    {
         switch ($class) {
             case 'Inc\\Api\\Controllers\\ServiceController':
                 $serviceRepository = new \Inc\Api\Repositories\ServiceRepository();
                 $serviceService = new \Inc\Api\Services\ServiceService($serviceRepository);
                 return new $class($serviceService);
-            // Add cases for other classes with dependencies if needed
+            case 'Inc\\Api\\Controllers\\AppointmentController':
+                $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
+                $emailSender = new \Inc\EmailConfirmation\EmailSender();
+
+                // Update the instantiatioyn with the new $serviceRepository argument
+                $appointmentService = new \Inc\Api\Services\AppointmentService($appointmentRepository, $emailSender);
+                return new $class($appointmentService);
             default:
                 return new $class();
         }

@@ -17,30 +17,45 @@ use WP_Error;
 class ServiceRepository
 {
     private $wpdb;
-    private $table_name;
+    private $services_table;
 
     public function __construct()
     {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->table_name = $wpdb->prefix . 'am_services';
+        $this->services_table = $wpdb->prefix . 'am_services';
     }
 
+    /**
+     * Retrieve all services.
+     *
+     * @return array|WP_Error List of services or WP_Error on failure.
+     */
     public function getAll()
     {
-        $query = "SELECT id, name, description, FLOOR(TIME_TO_SEC(duration)/60) as duration, price FROM {$this->table_name}";
+        $query = "SELECT id, name, description, FLOOR(TIME_TO_SEC(duration)/60) as duration, price FROM {$this->services_table}";
         $results = $this->wpdb->get_results($query, ARRAY_A);
         
+        if ($results === false) {
+            return new WP_Error('database_error', 'Failed to retrieve services.');
+        }
+
         return array_map(function($data) {
             return new Service($data);
         }, $results);
     }
 
-    public function create($serviceData)
+    /**
+     * Create a new service.
+     *
+     * @param array $serviceData The service data.
+     * @return int|WP_Error The created service ID or WP_Error on failure.
+     */
+    public function create(Service $serviceData)
     {
         $time = $this->convertDurationToTime($serviceData['duration']);
 
-        $result = $this->wpdb->insert($this->table_name, [
+        $result = $this->wpdb->insert($this->services_table, [
             'name' => sanitize_text_field($serviceData['name']),
             'description' => sanitize_text_field($serviceData['description']),
             'duration' => $time,
@@ -54,9 +69,15 @@ class ServiceRepository
         return $this->wpdb->insert_id;
     }
 
+    /**
+     * Delete a service.
+     *
+     * @param int $serviceId The service ID.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
     public function delete($serviceId)
     {
-        $result = $this->wpdb->delete($this->table_name, ['id' => $serviceId]);
+        $result = $this->wpdb->delete($this->services_table, ['id' => $serviceId]);
 
         if ($result === false) {
             return new WP_Error('db_delete_error', 'Could not delete service from the database', ['status' => 500]);
@@ -65,11 +86,18 @@ class ServiceRepository
         return true;
     }
 
+    /**
+     * Update a service.
+     *
+     * @param int $serviceId The service ID.
+     * @param array $serviceData The service data.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
     public function update($serviceId, $serviceData)
     {
         $time = $this->convertDurationToTime($serviceData['duration']);
 
-        $result = $this->wpdb->update($this->table_name, [
+        $result = $this->wpdb->update($this->services_table, [
             'name' => sanitize_text_field($serviceData['name']),
             'description' => sanitize_text_field($serviceData['description']),
             'duration' => $time,
@@ -83,6 +111,30 @@ class ServiceRepository
         return true;
     }
 
+    /**
+     * Retrieve a service by its ID.
+     *
+     * @param int $id The service ID.
+     * @return Service|WP_Error Service object on success, WP_Error on failure.
+     */
+    public function getById($id)
+    {
+        $query = $this->wpdb->prepare("SELECT * FROM {$this->services_table} WHERE id = %d", $id);
+        $result = $this->wpdb->get_row($query);
+
+        if (!$result) {
+            return new WP_Error('not_found', 'Service not found.');
+        }
+
+        return new Service((array)$result);
+    }
+
+    /**
+     * Convert duration from minutes to time format.
+     *
+     * @param int $minutes The duration in minutes.
+     * @return string The duration in "HH:MM:SS" format.
+     */
     private function convertDurationToTime($minutes)
     {
         $hours = floor($minutes / 60);

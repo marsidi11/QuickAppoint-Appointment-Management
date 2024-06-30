@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Service Management
  *
@@ -24,50 +25,110 @@ class ServiceService
         $this->serviceRepository = $serviceRepository;
     }
 
+    /**
+     * Retrieve all services.
+     *
+     * @return array|WP_Error List of services or WP_Error on failure.
+     */
     public function getAllServices()
     {
-        return $this->serviceRepository->getAll();
+        $services = $this->serviceRepository->getAll();
+        if (is_wp_error($services)) {
+            return $services;
+        }
+        return $services;
     }
 
-    public function createService($serviceData)
+    /**
+     * Create a new service.
+     *
+     * @param array $serviceData The service data.
+     * @return int|WP_Error The created service ID or WP_Error on failure.
+     */
+    public function createService(array $serviceData)
     {
-        $errors = $this->validate_service_data($serviceData);
+        $errors = $this->validateServiceData($serviceData);
         if (!empty($errors)) {
             return new WP_Error('invalid_request', implode(', ', $errors), ['status' => 400]);
         }
 
-        return $this->serviceRepository->create($serviceData);
+        $createdService = $this->serviceRepository->create($serviceData);
+        if (is_wp_error($createdService)) {
+            return $createdService;
+        }
+        return $createdService;
     }
 
-    public function deleteService($serviceId)
+    /**
+     * Delete a service.
+     *
+     * @param int $serviceId The service ID.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
+    public function deleteService(int $serviceId)
     {
-        return $this->serviceRepository->delete($serviceId);
+        $deleted = $this->serviceRepository->delete($serviceId);
+        if (is_wp_error($deleted)) {
+            return $deleted;
+        }
+        return $deleted;
     }
 
-    public function updateService($serviceId, $serviceData)
+    /**
+     * Update a service.
+     *
+     * @param int $serviceId The service ID.
+     * @param array $serviceData The service data.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
+    public function updateService(int $serviceId, array $serviceData)
     {
-        $errors = $this->validate_service_data($serviceData);
+        $errors = $this->validateServiceData($serviceData);
         if (!empty($errors)) {
             return new WP_Error('invalid_request', implode(', ', $errors), ['status' => 400]);
         }
 
-        return $this->serviceRepository->update($serviceId, $serviceData);
+        $updatedService = $this->serviceRepository->update($serviceId, $serviceData);
+        if (is_wp_error($updatedService)) {
+            return $updatedService;
+        }
+        return $updatedService;
     }
 
-    private function validate_service_data($data)
+    /**
+     * Validate service data.
+     *
+     * @param array $data The service data.
+     * @return array List of validation errors.
+     */
+    private function validateServiceData(array $data)
     {
         $errors = [];
 
+        // Validate name
         if (empty($data['name'])) {
-            $errors[] = 'Name is required';
+            $errors[] = 'Name is required.';
+        } elseif (!is_string($data['name']) || strlen(trim($data['name'])) < 3) {
+            $errors[] = 'Name must be a string with at least 3 characters.';
         }
 
-        if (empty($data['price']) || !is_numeric($data['price'])) {
-            $errors[] = 'Valid price is required';
+        // Validate price
+        if (empty($data['price'])) {
+            $errors[] = 'Price is required.';
+        } elseif (!is_numeric($data['price']) || $data['price'] <= 0) {
+            $errors[] = 'Price must be a positive number.';
         }
 
-        if (empty($data['duration']) || !is_numeric($data['duration']) || $data['duration'] <= 0) {
-            $errors[] = 'Valid duration in minutes is required';
+        // Validate duration
+        if (empty($data['duration'])) {
+            $errors[] = 'Duration is required.';
+        } elseif (!is_numeric($data['duration']) || $data['duration'] <= 0) {
+            $errors[] = 'Duration must be a positive number of minutes.';
+        }
+
+        // Validate description
+        if (isset($data['description']) && (!is_string($data['description']) || strlen($data['description']) > 500)) {
+            $errors[] = 'Description must be a string with a maximum length of 500 characters.';
         }
 
         return $errors;
