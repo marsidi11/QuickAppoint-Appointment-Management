@@ -20,7 +20,6 @@ final class Init {
             Base\Enqueue::class,
             Base\SettingsLinks::class,
             Pages\Shortcodes::class,
-            // Api\AppointmentsDataController::class,
             Api\Controllers\AppointmentController::class,
             Api\Controllers\AppointmentReportingController::class,
             Api\Controllers\ServiceController::class,

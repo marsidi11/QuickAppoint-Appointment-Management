@@ -122,3 +122,12 @@ export async function getAppointmentsBySearch(searchTerm = '', page = 1, dateFil
 export async function getCurrencySymbol() {
 	return apiGet(window.wpApiSettings.apiUrlOptions + '/currency-symbol');
 }
+
+/**
+ * Get Appointments Data Report
+ * @param {Object} startDate & endDate - Dates range for report
+ * @returns {Promise<Object>}
+ */
+export async function getAppointmentsReport() {
+    return apiGet(window.wpApiSettings.apiUrlAppointments + '/get-data-report');
+}

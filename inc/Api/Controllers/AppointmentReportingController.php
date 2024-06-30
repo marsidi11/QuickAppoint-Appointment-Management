@@ -72,6 +72,12 @@ class AppointmentReportingController extends RestController
                     ],
                 ],
             ],
+            [
+                'route' => '/get-data-report',
+                'methods' => 'GET',
+                'callback' => 'get_data_report',
+                'permission_callback' => '__return_true',
+            ],
         ];
 
         foreach ($routes as $route) 
@@ -90,7 +96,7 @@ class AppointmentReportingController extends RestController
         return current_user_can('edit_posts');
     }
 
-    private function validate_nonce(WP_REST_Request $request)
+    private function validate_nonce($request)
     {
         $nonce = $request->get_header('X_WP_Nonce');
         if (!wp_verify_nonce($nonce, 'wp_rest')) {
@@ -104,7 +110,7 @@ class AppointmentReportingController extends RestController
         return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
     }
     
-    public function get_reserved_time_slots(WP_REST_Request $request)
+    public function get_reserved_time_slots($request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -117,7 +123,7 @@ class AppointmentReportingController extends RestController
         return new WP_REST_Response($reserved_time_slots, 200);
     }
 
-    public function get_searched_appointments(WP_REST_Request $request)
+    public function get_searched_appointments($request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -131,10 +137,37 @@ class AppointmentReportingController extends RestController
 
         $appointments = $this->reportingService->searchAppointments($search, $date_filters, $date_range, $page);
 
-        // if (is_wp_error($appointments)) {
-        //     return new WP_REST_Response(['error' => $appointments->get_error_message()], 500);
-        // }
-
         return new WP_REST_Response($appointments, 200);
+    }
+
+    public function get_data_report(WP_REST_Request $request)
+    {
+        $nonce_validation = $this->validate_nonce($request);
+        if (is_wp_error($nonce_validation)) {
+            return $nonce_validation;
+        }
+
+        // $startDate = $request->get_param('start_date');
+        // $endDate = $request->get_param('end_date');
+
+        $startDate = "2024-06-01";
+        $endDate = "2024-06-30";
+
+        if (!$startDate || !$endDate) {
+            return new WP_Error('missing_params', 'Start date and end date are required', ['status' => 400]);
+        }
+
+        $filepath = $this->reportingService->generateReport($startDate, $endDate);
+
+        if (!file_exists($filepath)) {
+            return new WP_Error('report_generation_failed', 'Failed to generate report', ['status' => 500]);
+        }
+
+        $file_url = wp_upload_dir()['url'] . '/' . basename($filepath);
+
+        return new WP_REST_Response([
+            'message' => 'Report generated successfully',
+            'file_url' => $file_url
+        ], 200);
     }
 }

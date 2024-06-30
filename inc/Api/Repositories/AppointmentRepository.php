@@ -244,11 +244,11 @@ class AppointmentRepository
                     $where_params[] = date('Y-m-d');
                     break;
                 case 'lastMonth':
-                    $firstDayLastMonth = date('Y-m-01', strtotime('last month'));
-                    $lastDayLastMonth = date('Y-m-t', strtotime('last month'));
+                    $last30DaysStart = date('Y-m-d', strtotime('-30 days'));
+                    $last30DaysEnd = date('Y-m-d');
                     $date_filter_clauses[] = "a.date BETWEEN %s AND %s";
-                    $where_params[] = $firstDayLastMonth;
-                    $where_params[] = $lastDayLastMonth;
+                    $where_params[] = $last30DaysStart;
+                    $where_params[] = $last30DaysEnd;
                     break;
             }
         }
@@ -272,5 +272,27 @@ class AppointmentRepository
         $where_params[] = $start_date;
         $where_params[] = $end_date;
         return "a.date BETWEEN %s AND %s";
+    }
+
+    public function getAppointmentsForReport($startDate, $endDate)
+    {
+        $query = $this->wpdb->prepare(
+            "SELECT a.*, 
+            DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+            DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+            GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+            GROUP_CONCAT(s.price SEPARATOR ', ') as service_prices,
+            SUM(s.price) as total_price
+            FROM {$this->appointments_table} a
+            LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+            LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+            WHERE a.date BETWEEN %s AND %s
+            GROUP BY a.id
+            ORDER BY a.date ASC, a.startTime ASC",
+            $startDate,
+            $endDate
+        );
+
+        return $this->wpdb->get_results($query);
     }
 }
