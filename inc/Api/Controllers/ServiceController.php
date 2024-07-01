@@ -2,12 +2,12 @@
 namespace Inc\Api\Controllers;
 
 use Inc\Api\Services\ServiceService;
-use Inc\Api\RestController;
+use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 
-class ServiceController extends RestController
+class ServiceController extends WP_REST_Controller
 {
     private $serviceService;
 

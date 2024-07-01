@@ -2,13 +2,13 @@
 
 namespace Inc\Api\Controllers;
 
-use Inc\Api\RestController;
 use Inc\Api\Services\AppointmentReportingService;
+use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 
-class AppointmentReportingController extends RestController
+class AppointmentReportingController extends WP_REST_Controller
 {
     private $reportingService;
 
