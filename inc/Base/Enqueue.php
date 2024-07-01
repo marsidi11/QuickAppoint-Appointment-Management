@@ -5,6 +5,7 @@
 namespace Inc\Base;
 
 use \Inc\Base\BaseController;
+use \Inc\Api\Callbacks\ColorGenerator;
 
 /**
  * Enqueue scripts and styles 
@@ -15,22 +16,30 @@ class Enqueue extends BaseController
     const BACKEND_SCRIPT_HANDLE = 'appointment-management-backend-script';
     const FRONTEND_STYLE_HANDLE = 'appointment-management-frontend-style';
     const FRONTEND_SCRIPT_HANDLE = 'appointment-management-frontend-script';
+    const COLOR_STYLE_HANDLE = 'appointment-management-color-style';
 
     const BACKEND_STYLE_PATH = 'assets/dist/backend.styles.css';
     const BACKEND_SCRIPT_PATH = 'assets/dist/backend.bundle.js';
     const FRONTEND_STYLE_PATH = 'assets/dist/frontend.styles.css';
     const FRONTEND_SCRIPT_PATH = 'assets/dist/frontend.bundle.js';
+    
+    const COLOR_OPTION_KEY = 'appointment_management_color_css';
 
     public function register() 
     {
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_backend_scripts' ) ); // Enqueue scripts for admin-side
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) ); // Enqueue scripts for front-end
+
+        add_action('wp_head', array($this, 'print_color_styles'), 1);
+        add_action('admin_head', array($this, 'print_color_styles'), 1);
+        add_action('update_option_primary_color', array($this, 'update_color_cache'));
+        add_action('update_option_secondary_color', array($this, 'update_color_cache'));
     }
 
     private function enqueue_scripts($style_handle, $script_handle, $style_path, $script_path) 
     {
         wp_enqueue_style( $style_handle, $this->plugin_url . $style_path );
-        wp_enqueue_script( $script_handle, $this->plugin_url . $script_path );
+        wp_enqueue_script($script_handle, $this->plugin_url . $script_path, array(), null, true);
 
         // Create a nonce
         $nonce = wp_create_nonce('wp_rest');
@@ -64,5 +73,51 @@ class Enqueue extends BaseController
             self::FRONTEND_STYLE_PATH, 
             self::FRONTEND_SCRIPT_PATH
         );
+    }
+
+    public function print_color_styles() 
+    {
+        $css = $this->get_color_css();
+        if (!empty($css)) {
+            echo "<style id='appointment-management-color-style'>\n:root {\n" . $css . "\n}\n</style>\n";
+        }
+    }
+
+    private function get_color_css() 
+    {
+        $css = get_option(self::COLOR_OPTION_KEY);
+        if (false === $css) {
+            $css = $this->generate_color_css();
+            update_option(self::COLOR_OPTION_KEY, $css);
+        }
+        return $css;
+    }
+
+    private function generate_color_css() 
+    {
+        $primary_color = get_option('primary_color', '#4b5563');
+        $secondary_color = get_option('secondary_color', '#3b82f6');
+
+        $css = "--primary-color: {$primary_color};\n";
+        $css .= "--secondary-color: {$secondary_color};\n";
+
+        $primary_shades = ColorGenerator::generate_color_shades($primary_color);
+        $secondary_shades = ColorGenerator::generate_color_shades($secondary_color);
+
+        foreach ($primary_shades as $key => $value) {
+            $css .= "--primary-color-{$key}: {$value};\n";
+        }
+
+        foreach ($secondary_shades as $key => $value) {
+            $css .= "--secondary-color-{$key}: {$value};\n";
+        }
+
+        return $css;
+    }
+
+    public function update_color_cache() 
+    {
+        $css = $this->generate_color_css();
+        update_option(self::COLOR_OPTION_KEY, $css);
     }
 }

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
     --primary-color-50: #f9fafb;
     --primary-color-100: #e5e7eb;
     --primary-color-200: #d1d5db;
@@ -25,7 +25,7 @@
     --secondary-color-800: #1e40af;
     --secondary-color-900: #1e3a8a;
     --secondary-color-950: #172554;
-}
+} */
 
 /* Frontend Calendar Style */
 

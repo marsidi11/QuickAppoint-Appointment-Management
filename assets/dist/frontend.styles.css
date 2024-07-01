@@ -1376,30 +1376,6 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-:root {
-  --primary-color-50: #f9fafb;
-  --primary-color-100: #e5e7eb;
-  --primary-color-200: #d1d5db;
-  --primary-color-300: #9ca3af;
-  --primary-color-400: #6b7280;
-  --primary-color-500: #4b5563;
-  --primary-color-600: #374151;
-  --primary-color-700: #1f2937;
-  --primary-color-800: #111827;
-  --primary-color-950: #0f172a;
-  --secondary-color-50: #eff6ff;
-  --secondary-color-100: #dbeafe;
-  --secondary-color-200: #bfdbfe;
-  --secondary-color-300: #93c5fd;
-  --secondary-color-400: #60a5fa;
-  --secondary-color-500: #3b82f6;
-  --secondary-color-600: #1d4ed8;
-  --secondary-color-700: #e53935;
-  --secondary-color-800: #1e40af;
-  --secondary-color-900: #1e3a8a;
-  --secondary-color-950: #172554;
-}
-
 /* Frontend Calendar Style */
 
 .calendar-container {
