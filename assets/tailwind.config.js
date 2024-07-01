@@ -11,11 +11,35 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: { "50": "#eff6ff", "100": "#dbeafe", "200": "#bfdbfe", "300": "#93c5fd", "400": "#60a5fa", "500": "#3b82f6", "600": "#2563eb", "700": "#1d4ed8", "800": "#1e40af", "900": "#1e3a8a", "950": "#172554" }
+        primary: {
+          50: 'var(--primary-color-50)',
+          100: 'var(--primary-color-100)',
+          200: 'var(--primary-color-200)',
+          300: 'var(--primary-color-300)',
+          400: 'var(--primary-color-400)',
+          500: 'var(--primary-color-500)',
+          600: 'var(--primary-color-600)',
+          700: 'var(--primary-color-700)',
+          800: 'var(--primary-color-800)',
+          900: 'var(--primary-color-900)',
+          950: 'var(--primary-color-950)',
+        },
+        secondary: {
+          50: 'var(--secondary-color-50)',
+          100: 'var(--secondary-color-100)',
+          200: 'var(--secondary-color-200)',
+          300: 'var(--secondary-color-300)',
+          400: 'var(--secondary-color-400)',
+          500: 'var(--secondary-color-500)',
+          600: 'var(--secondary-color-600)',
+          700: 'var(--secondary-color-700)',
+          800: 'var(--secondary-color-800)',
+          900: 'var(--secondary-color-900)',
+          950: 'var(--secondary-color-950)',
+        },
       }
     },
   },
   plugins: [
-    // Add any plugins here
   ],
 }

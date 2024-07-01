@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --primary-color-50: #f9fafb;
+    --primary-color-100: #e5e7eb;
+    --primary-color-200: #d1d5db;
+    --primary-color-300: #9ca3af;
+    --primary-color-400: #6b7280;
+    --primary-color-500: #4b5563;
+    --primary-color-600: #374151;
+    --primary-color-700: #1f2937;
+    --primary-color-800: #111827;
+    --primary-color-950: #0f172a;
+  
+    --secondary-color-50: #eff6ff;
+    --secondary-color-100: #dbeafe;
+    --secondary-color-200: #bfdbfe;
+    --secondary-color-300: #93c5fd;
+    --secondary-color-400: #60a5fa;
+    --secondary-color-500: #3b82f6;
+    --secondary-color-600: #1d4ed8;
+    --secondary-color-700: #e53935;
+    --secondary-color-800: #1e40af;
+    --secondary-color-900: #1e3a8a;
+    --secondary-color-950: #172554;
+}
+
 /* Frontend Calendar Style */
 
 .calendar-container {
@@ -22,7 +47,7 @@
 /* Frontend Calendar Header Style */
 
 .reset-month {
-    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white py-2 mb-2 px-4 rounded text-sm transition-colors duration-300 block mx-auto;
+    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-white py-2 mb-2 px-4 rounded text-sm transition-colors duration-300 block mx-auto;
 }
 
 .calendar-header {
@@ -31,7 +56,7 @@
 
 .prev-month-icon, 
 .next-month-icon {
-    @apply cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300 mt-2 sm:mt-0;
+    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300 mt-2 sm:mt-0;
 }
 
 .calendar-header > .current-month {
@@ -49,28 +74,28 @@
 }
 
 .calendar-day-name {
-    @apply w-11 md:w-12 text-center text-gray-600 font-semibold cursor-default m-auto;
+    @apply w-11 md:w-12 text-center text-primary-600 font-semibold cursor-default m-auto;
 }
 
 .calendar-day {
-    @apply w-11 md:w-12 text-center text-gray-400 font-semibold cursor-default p-2 rounded-full bg-gray-200 opacity-50 m-auto;
+    @apply w-11 md:w-12 text-center text-primary-400 font-semibold cursor-default p-2 rounded-full bg-primary-200 opacity-50 m-auto;
 } 
 
 .clickable-day {
-    @apply cursor-pointer text-gray-600 bg-white opacity-100 hover:bg-blue-300 hover:text-white;
+    @apply cursor-pointer text-primary-600 bg-white opacity-100 hover:bg-secondary-300 hover:text-white;
 }
 
 .clickable-day.next-month-day,
 .clickable-day.prev-month-day {
-    @apply text-gray-400 font-semibold cursor-pointer hover:bg-blue-300 hover:text-white;
+    @apply text-primary-400 font-semibold cursor-pointer hover:bg-secondary-300 hover:text-white;
 }
 
 .current-day {
-    @apply border-2 border-blue-300 font-bold; 
+    @apply border-2 border-secondary-300 font-bold; 
 }
 
 .selected-day {
-    @apply bg-blue-500 text-white rounded-full hover:bg-blue-500; 
+    @apply bg-secondary-500 text-white rounded-full hover:bg-secondary-500; 
 }
 
 /* Frontend Calendar Services Style */
@@ -88,7 +113,7 @@
 }
 
 .service-box {
-    @apply flex flex-col justify-between h-full max-w-sm px-6 py-4 bg-white border-2 border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-all duration-300 ease-in-out cursor-pointer;
+    @apply flex flex-col justify-between h-full max-w-sm px-6 py-4 bg-white border-2 border-primary-200 rounded-lg shadow hover:bg-primary-100 dark:bg-primary-800 dark:border-primary-700 dark:hover:bg-primary-700 transition-all duration-300 ease-in-out cursor-pointer;
 }
 
 .calendar-services .service-box > * {
@@ -100,16 +125,16 @@
 }
 
 .service-description {
-  @apply text-gray-600 dark:text-gray-400;
+  @apply text-primary-600 dark:text-primary-400;
 }
 
 .service-duration,
 .service-price {
-  @apply text-sm text-gray-500 dark:text-gray-400;
+  @apply text-sm text-primary-500 dark:text-primary-400;
 }
 
 .selected-service {
-    @apply bg-gray-100 border-indigo-600;
+    @apply bg-primary-100 border-secondary-600;
 }
 
 /* Frontend Calendar Time Style */
@@ -131,19 +156,19 @@
 }
     
 .calendar-time-item {
-    @apply bg-white p-4 w-full max-w-xs rounded-lg cursor-pointer text-center border-4 border-gray-200 font-semibold transition-all duration-300 ease-in-out active:bg-gray-400 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-gray-500; 
+    @apply bg-white p-4 w-full max-w-xs rounded-lg cursor-pointer text-center border-4 border-primary-200 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-500; 
 }
 
 .calendar-time-item:hover {
-    @apply bg-indigo-300 border-indigo-300;
+    @apply bg-secondary-300 border-secondary-300;
 }
 
 .selected-time {
-    @apply bg-indigo-600 text-white border-indigo-600; 
+    @apply bg-secondary-600 text-white border-secondary-600; 
 }
 
 .selected-time:hover {
-    @apply bg-indigo-600 text-white border-indigo-600;
+    @apply bg-secondary-600 text-white border-secondary-600;
 }
 
 /* Frontend Calendar User Data Style */
@@ -169,11 +194,11 @@
 }
 
 .detail-label {
-    @apply text-xs font-medium text-gray-500 mr-1;
+    @apply text-xs font-medium text-primary-500 mr-1;
 }
 
 .detail-value {
-    @apply text-sm font-semibold text-gray-900;
+    @apply text-sm font-semibold text-primary-900;
 }
 
 .detail-services {
@@ -193,11 +218,11 @@
 }
 
 .from-group label {
-    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+    @apply block mb-2 text-sm font-medium text-primary-900 dark:text-white;
 }
 
 .form-group input {
-    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    @apply bg-primary-50 border border-primary-300 text-primary-900 text-sm rounded-lg focus:ring-secondary-500 focus:border-secondary-500 block w-full p-2.5 dark:bg-primary-700 dark:border-primary-600 dark:placeholder-primary-400 dark:text-white dark:focus:ring-secondary-500 dark:focus:border-secondary-500;
 }
 
 
@@ -209,7 +234,7 @@
   
 .nav-previous,
 .nav-next {
-    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-white bg-gray-500 rounded-lg hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-400 dark:hover:bg-gray-600 dark:focus:ring-gray-700;
+    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-white bg-primary-500 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-secondary-300 dark:bg-primary-400 dark:hover:bg-primary-600 dark:focus:ring-primary-700;
 }
 
 .nav-previous {
@@ -217,7 +242,7 @@
 }
   
 .button-appointment {
-    @apply px-3 py-2 text-white text-sm font-medium text-center rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+    @apply px-3 py-2 text-white text-sm font-medium text-center rounded-lg bg-secondary-700 hover:bg-secondary-800 focus:ring-4 focus:outline-none focus:ring-secondary-300 dark:bg-secondary-600 dark:hover:bg-secondary-700 dark:focus:ring-secondary-800;
 }
 
 /* Error Message */
@@ -230,19 +255,19 @@
 }
 
 .loading-message {
-    @apply text-blue-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+    @apply text-secondary-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
 }
 
 /* Loading */
 
 .loading-style-1 {
-    @apply w-12 h-12 rounded-full animate-spin border-2 border-solid border-blue-500 border-t-transparent;
+    @apply w-12 h-12 rounded-full animate-spin border-2 border-solid border-secondary-500 border-t-transparent;
     @apply absolute m-auto;
     @apply inset-0;
 }
 
 .loading-style-2 {
-    @apply w-12 h-12 rounded-full animate-spin absolute border-4 border-dashed border-blue-500 border-t-transparent;
+    @apply w-12 h-12 rounded-full animate-spin absolute border-4 border-dashed border-secondary-500 border-t-transparent;
     @apply absolute m-auto;
     @apply inset-0;
 }
@@ -250,15 +275,15 @@
 /* Appointment Confirmation Page */
 
 #am_confirmation {
-    @apply w-full mx-auto mt-5 p-5 border border-gray-200 rounded-lg shadow-sm bg-gray-50;
+    @apply w-full mx-auto mt-5 p-5 border border-primary-200 rounded-lg shadow-sm bg-primary-50;
 }
 
 #am_confirmation h3 {
-    @apply text-xl text-gray-700 mb-2;
+    @apply text-xl text-primary-700 mb-2;
 }
 
 #am_confirmation p {
-    @apply text-base text-gray-600 mb-5;
+    @apply text-base text-primary-600 mb-5;
 }
 
 #am_confirmation ul {
@@ -270,7 +295,7 @@
 }
 
 #am_confirmation li strong {
-    @apply text-gray-700;
+    @apply text-primary-700;
 }
 
 #am_confirmation p.confirmation-message {
