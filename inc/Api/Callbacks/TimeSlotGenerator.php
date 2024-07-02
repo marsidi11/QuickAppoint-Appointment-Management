@@ -2,118 +2,175 @@
 
 namespace Inc\Api\Callbacks;
 
+use DateTime;
+use DateInterval;
+use Exception;
+use InvalidArgumentException;
+
 class TimeSlotGenerator
 {
     private $wpdb;
     private $appointments_table;
+    private $cache;
 
     public function __construct()
     {
         global $wpdb;
         $this->wpdb = $wpdb;
         $this->appointments_table = $wpdb->prefix . 'am_appointments';
+        $this->cache = [];
     }
 
+    /**
+     * Generate available time slots based on given parameters.
+     *
+     * @param array $params {
+     *     @type string $date            The date for which to generate slots (Y-m-d format).
+     *     @type int    $serviceDuration Duration of the service in minutes.
+     * }
+     * @return array An array of available time slots.
+     * @throws InvalidArgumentException If input parameters are invalid.
+     */
     public function generateAvailableTimeSlots(array $params): array
     {
+        $this->validateParams($params);
+
         $date = $params['date'];
         $serviceDuration = $params['serviceDuration'];
 
-        $businessHours = $this->getBusinessHours();
-        $breakTime = $this->getBreakTime();
+        $businessHours = $this->getBusinessHours($date);
+        $breakTimes = $this->getBreakTimes($date);
         $reservedSlots = $this->getReservedTimeSlots($date);
-        $minSlotDuration = $this->getMinSlotDuration();
+        $minSlotDuration = $this->getSlotDuration();
 
         $openTime = $this->timeToMinutes($businessHours['openTime']);
         $closeTime = $this->timeToMinutes($businessHours['closeTime']);
-        $breakStart = $breakTime ? $this->timeToMinutes($breakTime['start']) : null;
-        $breakEnd = $breakTime ? $this->timeToMinutes($breakTime['end']) : null;
 
         $availableSlots = [];
         $currentTime = $openTime;
 
         while ($currentTime < $closeTime) {
-            // Check if current time is within break time
-            if ($breakStart && $breakEnd && $currentTime >= $breakStart && $currentTime < $breakEnd) {
-                $currentTime = $breakEnd;
+            if ($this->isWithinBreakTime($currentTime, $breakTimes)) {
+                $currentTime = $this->getNextTimeAfterBreak($currentTime, $breakTimes);
                 continue;
             }
 
-            // Check if the current time slot overlaps with any reserved slot
-            $isReserved = $this->isTimeSlotReserved($currentTime, $currentTime + $serviceDuration, $reservedSlots);
+            $slotEnd = $currentTime + $serviceDuration;
 
-            if (!$isReserved) {
-                $slotEnd = $currentTime + $serviceDuration;
+            if ($slotEnd > $closeTime) {
+                break;
+            }
+
+            if (!$this->isTimeSlotReserved($currentTime, $slotEnd, $reservedSlots)) {
                 $availableSlots[] = [
                     'start' => $this->minutesToTime($currentTime),
                     'end' => $this->minutesToTime($slotEnd)
                 ];
             }
 
-            // Move to the next potential slot start time
             $currentTime += $minSlotDuration;
         }
 
         return $availableSlots;
     }
 
-    private function isTimeSlotReserved(int $start, int $end, array $reservedSlots): bool
+    private function validateParams(array $params): void
     {
-        foreach ($reservedSlots as $slot) {
-            if (($start < $slot['end'] && $end > $slot['start']) || 
-                ($start >= $slot['start'] && $start < $slot['end']) || 
-                ($end > $slot['start'] && $end <= $slot['end'])) {
+        if (!isset($params['date']) || !$this->isValidDate($params['date'])) {
+            throw new InvalidArgumentException("Invalid or missing date parameter");
+        }
+
+        if (!isset($params['serviceDuration']) || !is_int($params['serviceDuration']) || $params['serviceDuration'] <= 0) {
+            throw new InvalidArgumentException("Invalid or missing serviceDuration parameter");
+        }
+    }
+
+    private function isValidDate(string $date): bool
+    {
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
+
+    private function isWithinBreakTime(int $time, array $breakTimes): bool
+    {
+        foreach ($breakTimes as $breakTime) {
+            if ($time >= $breakTime['start'] && $time < $breakTime['end']) {
                 return true;
             }
         }
         return false;
     }
 
-    private function getBusinessHours(): array
+    private function getNextTimeAfterBreak(int $time, array $breakTimes): int
     {
-        $openTime = get_option('open_time', '09:00');
-        $closeTime = get_option('close_time', '17:00');
+        foreach ($breakTimes as $breakTime) {
+            if ($time >= $breakTime['start'] && $time < $breakTime['end']) {
+                return $breakTime['end'];
+            }
+        }
+        return $time;
+    }
 
+    private function isTimeSlotReserved(int $start, int $end, array $reservedSlots): bool
+    {
+        foreach ($reservedSlots as $slot) {
+            if (max($start, $slot['start']) < min($end, $slot['end'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function getBusinessHours(string $date): array
+    {
+        // Implement day-specific business hours if needed
         return [
-            'openTime' => $openTime,
-            'closeTime' => $closeTime
+            'openTime' => get_option('open_time', '09:00'),
+            'closeTime' => get_option('close_time', '17:00')
         ];
     }
 
-    private function getBreakTime(): ?array
+    private function getBreakTimes(string $date): array
     {
-        $breakStart = get_option('break_start', null);
-        $breakEnd = get_option('break_end', null);
+        // Implement day-specific break times if needed
+        $breakStart = get_option('break_start');
+        $breakEnd = get_option('break_end');
 
         if ($breakStart && $breakEnd) {
             return [
-                'start' => $breakStart,
-                'end' => $breakEnd
+                [
+                    'start' => $this->timeToMinutes($breakStart),
+                    'end' => $this->timeToMinutes($breakEnd)
+                ]
             ];
         }
 
-        return null;
+        return [];
     }
 
-    private function getMinSlotDuration(): int
+    private function getSlotDuration(): int
     {
-        return max(15, get_option('min_slot_duration', 15)); // Minimum 15 minutes
+        return get_option('time_slot_duration', 15); 
     }
 
     public function getReservedTimeSlots(string $date): array
     {
-        $query = $this->wpdb->prepare(
-            "SELECT startTime, endTime FROM {$this->appointments_table} WHERE date = %s ORDER BY startTime",
-            $date
-        );
-        $results = $this->wpdb->get_results($query);
+        if (!isset($this->cache[$date])) {
+            $query = $this->wpdb->prepare(
+                "SELECT startTime, endTime FROM {$this->appointments_table} WHERE date = %s ORDER BY startTime",
+                $date
+            );
+            $results = $this->wpdb->get_results($query);
 
-        return array_map(function($slot) {
-            return [
-                'start' => $this->timeToMinutes($slot->startTime),
-                'end' => $this->timeToMinutes($slot->endTime)
-            ];
-        }, $results);
+            $this->cache[$date] = array_map(function($slot) {
+                return [
+                    'start' => $this->timeToMinutes($slot->startTime),
+                    'end' => $this->timeToMinutes($slot->endTime)
+                ];
+            }, $results);
+        }
+
+        return $this->cache[$date];
     }
 
     private function timeToMinutes(string $time): int
