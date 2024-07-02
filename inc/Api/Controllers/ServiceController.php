@@ -2,6 +2,7 @@
 namespace Inc\Api\Controllers;
 
 use Inc\Api\Services\ServiceService;
+use Inc\Api\Models\Service;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -106,7 +107,9 @@ class ServiceController extends WP_REST_Controller
         }
 
         $service_data = $request->get_json_params();
-        $result = $this->serviceService->createService($service_data);
+
+        $service = new Service ($service_data);
+        $result = $this->serviceService->createService($service);
 
         if (is_wp_error($result)) {
             return $result;

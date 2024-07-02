@@ -48,18 +48,18 @@ class ServiceRepository
     /**
      * Create a new service.
      *
-     * @param array $serviceData The service data.
+     * @param Service $serviceData The service data.
      * @return int|WP_Error The created service ID or WP_Error on failure.
      */
     public function create(Service $serviceData)
     {
-        $time = $this->convertDurationToTime($serviceData['duration']);
+        $time = $this->convertDurationToTime($serviceData->duration);
 
         $result = $this->wpdb->insert($this->services_table, [
-            'name' => sanitize_text_field($serviceData['name']),
-            'description' => sanitize_text_field($serviceData['description']),
+            'name' => sanitize_text_field($serviceData->name),
+            'description' => sanitize_text_field($serviceData->description),
             'duration' => $time,
-            'price' => floatval($serviceData['price']),
+            'price' => floatval($serviceData->price),
         ]);
 
         if ($result === false) {
@@ -68,6 +68,7 @@ class ServiceRepository
 
         return $this->wpdb->insert_id;
     }
+
 
     /**
      * Delete a service.

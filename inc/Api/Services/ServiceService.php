@@ -14,6 +14,7 @@
 namespace Inc\Api\Services;
 
 use Inc\Api\Repositories\ServiceRepository;
+use Inc\Api\Models\Service;
 use WP_Error;
 
 class ServiceService
@@ -42,12 +43,12 @@ class ServiceService
     /**
      * Create a new service.
      *
-     * @param array $serviceData The service data.
+     * @param Service $serviceData The service data.
      * @return int|WP_Error The created service ID or WP_Error on failure.
      */
-    public function createService(array $serviceData)
+    public function createService(Service $serviceData)
     {
-        $errors = $this->validateServiceData($serviceData);
+        $errors = $this->validateServiceData($serviceData->toArray());
         if (!empty($errors)) {
             return new WP_Error('invalid_request', implode(', ', $errors), ['status' => 400]);
         }
@@ -58,6 +59,7 @@ class ServiceService
         }
         return $createdService;
     }
+
 
     /**
      * Delete a service.
