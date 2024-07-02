@@ -738,32 +738,8 @@ video {
   width: 1.25rem;
 }
 
-.w-\[31\.25rem\] {
-  width: 31.25rem;
-}
-
-.w-\[37\.5rem\] {
-  width: 37.5rem;
-}
-
-.w-\[44rem\] {
-  width: 44rem;
-}
-
-.w-\[50rem\] {
-  width: 50rem;
-}
-
-.w-\[56\.25rem\] {
-  width: 56.25rem;
-}
-
 .w-full {
   width: 100%;
-}
-
-.max-w-\[56\.25rem\] {
-  max-width: 56.25rem;
 }
 
 .max-w-\[80\%\] {
@@ -1381,24 +1357,25 @@ video {
 .calendar-section {
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
   border-radius: 0.5rem;
   background-color: var(--background-color-600);
   padding: 1rem;
   --tw-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px;
   --tw-shadow-colored: 0px 9px 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  width: 100%;
+  /* Full width on mobile */
   height: auto;
   /* Allow content to determine height on mobile */
-  min-height: 24rem;
-  /* Minimum height for very small screens */
+  min-height: 384px;
+  /* 24rem equivalent */
   max-height: 100vh;
   /* Prevent overflow on small screens */
 }
 
 /* Extra small devices (phones, 640px and down) */
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
   .calendar-section {
     padding: 0.5rem;
     /* Reduce padding on very small screens */
@@ -1409,8 +1386,10 @@ video {
 
 @media (min-width: 640px) {
   .calendar-section {
-    width: 31.25rem;
-    height: 33rem;
+    width: 500px;
+    /* 31.25rem equivalent */
+    height: 528px;
+    /* 33rem equivalent */
   }
 }
 
@@ -1418,8 +1397,10 @@ video {
   /* md */
 
   .calendar-section {
-    width: 37.5rem;
-    height: 31rem;
+    width: 600px;
+    /* 37.5rem equivalent */
+    height: 496px;
+    /* 31rem equivalent */
   }
 }
 
@@ -1427,8 +1408,10 @@ video {
   /* lg */
 
   .calendar-section {
-    width: 44rem;
-    height: 31.25rem;
+    width: 704px;
+    /* 44rem equivalent */
+    height: 500px;
+    /* 31.25rem equivalent */
   }
 }
 
@@ -1436,8 +1419,10 @@ video {
   /* xl */
 
   .calendar-section {
-    width: 50rem;
-    height: 31.25rem;
+    width: 800px;
+    /* 50rem equivalent */
+    height: 500px;
+    /* 31.25rem equivalent */
   }
 }
 
@@ -1445,9 +1430,10 @@ video {
   /* 2xl */
 
   .calendar-section {
-    width: 56.25rem;
-    max-width: 56.25rem;
-    height: 43.75rem;
+    width: 900px;
+    /* 56.25rem equivalent */
+    height: 700px;
+    /* 43.75rem equivalent */
   }
 }
 

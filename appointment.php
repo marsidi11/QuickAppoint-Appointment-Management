@@ -6,9 +6,9 @@
  * 
  * Plugin Name: Appointments Management
  * Description: This plugin allows you to manage appointments on your WordPress site.
- * Version: 1.0.0
+ * Version: 0.6.0
  * Author: Marsid Zyberi
- * Plugin URI: https://marketingon.al/plugins/appointment_management
+ * Plugin URI: https://marketingon.al/plugins/appointment-management
  */
 
 // Check the script is being executed within the WordPress environment
