@@ -4,7 +4,7 @@
 
         <h2 class="calendar-time-header">Select a Time</h2>
 
-        <div v-if="loading" class="loading-style-2"></div>
+        <div v-if="loading" class="loading-style-1"></div>
 
         <div :class="['calendar-time-body', gridColumnsClass]">
 
