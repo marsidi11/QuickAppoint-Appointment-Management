@@ -646,6 +646,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.box-border {
+  box-sizing: border-box;
+}
+
 .block {
   display: block;
 }
@@ -690,8 +694,52 @@ video {
   height: 1.25rem;
 }
 
-.h-\[28rem\] {
-  height: 28rem;
+.h-\[416px\] {
+  height: 416px;
+}
+
+.h-\[420px\] {
+  height: 420px;
+}
+
+.h-\[448px\] {
+  height: 448px;
+}
+
+.h-\[496px\] {
+  height: 496px;
+}
+
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[528px\] {
+  height: 528px;
+}
+
+.h-\[620px\] {
+  height: 620px;
+}
+
+.h-\[700px\] {
+  height: 700px;
+}
+
+.h-\[calc\(100vh-3rem\)\] {
+  height: calc(100vh - 3rem);
+}
+
+.h-\[calc\(100vh-4rem\)\] {
+  height: calc(100vh - 4rem);
+}
+
+.h-\[calc\(100vh-8rem\)\] {
+  height: calc(100vh - 8rem);
+}
+
+.h-auto {
+  height: auto;
 }
 
 .h-full {
@@ -704,6 +752,10 @@ video {
 
 .max-h-\[290px\] {
   max-height: 290px;
+}
+
+.max-h-screen {
+  max-height: 100vh;
 }
 
 .w-11 {
@@ -736,6 +788,26 @@ video {
 
 .w-5 {
   width: 1.25rem;
+}
+
+.w-\[500px\] {
+  width: 500px;
+}
+
+.w-\[600px\] {
+  width: 600px;
+}
+
+.w-\[704px\] {
+  width: 704px;
+}
+
+.w-\[800px\] {
+  width: 800px;
+}
+
+.w-\[900px\] {
+  width: 900px;
 }
 
 .w-full {
@@ -1121,8 +1193,16 @@ video {
   padding-bottom: 1rem;
 }
 
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
+}
+
+.pt-7 {
+  padding-top: 1.75rem;
 }
 
 .text-left {
@@ -1357,94 +1437,18 @@ video {
 .calendar-section {
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
   border-radius: 0.5rem;
   background-color: var(--background-color-600);
-  padding: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1.75rem;
+  padding-bottom: 1rem;
   --tw-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px;
   --tw-shadow-colored: 0px 9px 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  width: 100%;
-  /* Full width on mobile */
-  height: auto;
-  /* Allow content to determine height on mobile */
   min-height: 384px;
-  /* 24rem equivalent */
   max-height: 100vh;
-  /* Prevent overflow on small screens */
-}
-
-/* Extra small devices (phones, 640px and down) */
-
-@media (max-width: 639px) {
-  .calendar-section {
-    padding: 0.5rem;
-    /* Reduce padding on very small screens */
-  }
-}
-
-/* Small devices (large phones, 640px and up) */
-
-@media (min-width: 640px) {
-  .calendar-section {
-    width: 500px;
-    /* 31.25rem equivalent */
-    height: 528px;
-    /* 33rem equivalent */
-  }
-}
-
-@media (min-width: 768px) {
-  /* md */
-
-  .calendar-section {
-    width: 600px;
-    /* 37.5rem equivalent */
-    height: 496px;
-    /* 31rem equivalent */
-  }
-}
-
-@media (min-width: 1024px) {
-  /* lg */
-
-  .calendar-section {
-    width: 704px;
-    /* 44rem equivalent */
-    height: 500px;
-    /* 31.25rem equivalent */
-  }
-}
-
-@media (min-width: 1280px) {
-  /* xl */
-
-  .calendar-section {
-    width: 800px;
-    /* 50rem equivalent */
-    height: 500px;
-    /* 31.25rem equivalent */
-  }
-}
-
-@media (min-width: 1536px) {
-  /* 2xl */
-
-  .calendar-section {
-    width: 900px;
-    /* 56.25rem equivalent */
-    height: 700px;
-    /* 43.75rem equivalent */
-  }
-}
-
-/* Adjust height for landscape orientation on mobile */
-
-@media (max-width: 640px) and (orientation: landscape) {
-  .calendar-section {
-    height: auto;
-    max-height: 100vh;
-    overflow-y: auto;
-  }
 }
 
 .calendar-wrapper,
@@ -1452,25 +1456,102 @@ video {
 .calendar-time,
 .input-form {
   box-sizing: border-box;
-  height: 28rem;
+  height: calc(100vh - 8rem);
+  width: 100%;
+  max-width: 100%;
   overflow-y: auto;
+  max-height: 464px;
+}
+
+@media (max-width: 639px) {
+  .calendar-section {
+    padding: 0.5rem;
+  }
+
+  .calendar-wrapper,
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: calc(100vh - 4rem);
+    max-height: 448px;
+  }
+}
+
+@media (min-width: 640px) {
+  .calendar-section {
+    height: 528px;
+    width: 500px;
+  }
+
+  .calendar-wrapper,
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: 448px;
+  }
 }
 
 @media (min-width: 768px) {
+  .calendar-section {
+    height: 496px;
+    width: 600px;
+  }
+
   .calendar-wrapper,
-.calendar-services,
-.calendar-time,
-.input-form {
-    height: 26rem;
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: 416px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .calendar-section {
+    height: 500px;
+    width: 704px;
+  }
+
+  .calendar-wrapper,
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: 420px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .calendar-section {
+    width: 800px;
   }
 }
 
 @media (min-width: 1536px) {
+  .calendar-section {
+    height: 700px;
+    width: 900px;
+  }
+
   .calendar-wrapper,
-.calendar-services,
-.calendar-time,
-.input-form {
-    height: 29rem;
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: 620px;
+  }
+}
+
+@media (max-width: 640px) and (orientation: landscape) {
+  .calendar-section {
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .calendar-wrapper,
+    .calendar-services,
+    .calendar-time,
+    .input-form {
+    height: calc(100vh - 3rem);
+    max-height: 400px;
   }
 }
 
@@ -2379,10 +2460,6 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:h-\[26rem\] {
-    height: 26rem;
-  }
-
   .md\:w-1\/2 {
     width: 50%;
   }
@@ -2448,12 +2525,6 @@ video {
 @media (min-width: 1280px) {
   .xl\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1536px) {
-  .\32xl\:h-\[29rem\] {
-    height: 29rem;
   }
 }
 
