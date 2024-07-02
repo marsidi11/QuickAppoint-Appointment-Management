@@ -93,6 +93,16 @@ class AdminCallbacks extends BaseController
     }
 
     /**
+     * Renders the buffer time for time slots.
+     *
+     * @return void
+     */
+    public function amBufferTime(): void
+    {
+        $this->renderInputField('buffer_time', 'text', '5', 'Buffer Time');
+    }
+
+    /**
      * Renders the dates range input field.
      *
      * @return void

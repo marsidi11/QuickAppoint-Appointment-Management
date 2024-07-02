@@ -17,6 +17,7 @@ class CustomOptionsDataController extends WP_REST_Controller
     const DEFAULT_OPEN_TIME = '09:00';
     const DEFAULT_CLOSE_TIME = '17:00';
     const DEFAULT_TIME_SLOT_DURATION = '30';
+    const DEFAULT_BUFFER_TIME = '5';
     const DEFAULT_DATES_RANGE = '21';
     const DEFAULT_CURRENCY_SYMBOL = '$';
     const DEFAULT_PRIMARY_COLOR = '#6b7280';
@@ -43,6 +44,7 @@ class CustomOptionsDataController extends WP_REST_Controller
             'open-time' => 'get_option_data',
             'close-time' => 'get_option_data',
             'time-slot-duration' => 'get_option_data',
+            'buffer-time' => 'get_option_data',
             'dates-range' => 'get_option_data',
             'open-days' => 'get_option_data',
             'break-start' => 'get_option_data',
@@ -111,6 +113,8 @@ class CustomOptionsDataController extends WP_REST_Controller
                 return self::DEFAULT_CLOSE_TIME;
             case 'time_slot_duration':
                 return self::DEFAULT_TIME_SLOT_DURATION;
+            case 'buffer_time':
+                return self::DEFAULT_BUFFER_TIME;
             case 'dates_range':
                 return self::DEFAULT_DATES_RANGE;
             case 'currency_symbol':

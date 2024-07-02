@@ -3,6 +3,7 @@
 namespace Inc\Api\Services;
 
 use Inc\Api\Repositories\AppointmentRepository;
+use Inc\Api\Callbacks\TimeSlotGenerator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
@@ -15,15 +16,21 @@ use PhpOffice\PhpSpreadsheet\Chart\Title;
 class AppointmentReportingService
 {
     private $appointmentRepository;
+    private $timeSlotGenerator;
 
-    public function __construct(AppointmentRepository $appointmentRepository)
+    public function __construct(AppointmentRepository $appointmentRepository, TimeSlotGenerator $timeSlotGenerator)
     {
         $this->appointmentRepository = $appointmentRepository;
+        $this->timeSlotGenerator = $timeSlotGenerator;
     }
 
-    public function getReservedTimeSlots(string $date): array
+    public function getAvailableTimeSlots(string $date, int $serviceDuration): array
     {
-        return $this->appointmentRepository->getReservedTimeSlots($date);
+        $params = [
+            'date' => $date,
+            'serviceDuration' => $serviceDuration,
+        ];
+        return $this->timeSlotGenerator->generateAvailableTimeSlots($params);
     }
 
     public function searchAppointments(?string $search, ?array $dateFilters, ?string $dateRange, int $page): array

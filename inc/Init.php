@@ -50,20 +50,25 @@ final class Init {
      */
     private static function instantiate($class)
     {
-        switch ($class) {
+        switch ($class) 
+        {
             case 'Inc\\Api\\Controllers\\ServiceController':
                 $serviceRepository = new \Inc\Api\Repositories\ServiceRepository();
                 $serviceService = new \Inc\Api\Services\ServiceService($serviceRepository);
                 return new $class($serviceService);
+
             case 'Inc\\Api\\Controllers\\AppointmentController':
                 $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
                 $emailSender = new \Inc\EmailConfirmation\EmailSender();
                 $appointmentService = new \Inc\Api\Services\AppointmentService($appointmentRepository, $emailSender);
                 return new $class($appointmentService);
+
             case 'Inc\\Api\\Controllers\\AppointmentReportingController':
                 $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
-                $reportingService = new \Inc\Api\Services\AppointmentReportingService($appointmentRepository);
+                $timeSlotGenerator = new \Inc\Api\Callbacks\TimeSlotGenerator();
+                $reportingService = new \Inc\Api\Services\AppointmentReportingService($appointmentRepository, $timeSlotGenerator);
                 return new $class($reportingService);
+
             default:
                 return new $class();
         }

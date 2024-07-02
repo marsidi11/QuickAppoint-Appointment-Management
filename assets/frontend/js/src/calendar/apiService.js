@@ -84,30 +84,6 @@ export async function getServices() {
 }
 
 /**
- * Get Open Time
- * @returns {Promise<Object>}
- */
-export async function getOpenTime() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/open-time');
-}
-
-/**
- * Get Close Time
- * @returns {Promise<Object>}
- */
-export async function getCloseTime() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/close-time');
-}
-
-/**
- * Get Time Slot Duration
- * @returns {Promise<Object>}
- */
-export async function getTimeSlotDuration() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/time-slot-duration');
-}
-
-/**
  * Get Dates Range To Allow Bookings
  * @returns {Promise<Object>}
  */
@@ -124,30 +100,12 @@ export async function getOpenDays() {
 }
 
 /**
- * Get Break Start Time
- * @returns {Promise<Object>}
- */
-export async function getBreakStart() {
-	const response = await apiGet(window.wpApiSettings.apiUrlOptions + '/break-start');
-	return response.code === 'no_value' ? null : response;
-}
-
-/**
- * Get Break End Time
- * @returns {Promise<Object>}
- */
-export async function getBreakEnd() {
-	const response = await apiGet(window.wpApiSettings.apiUrlOptions + '/break-end');
-	return response.code === 'no_value' ? null : response;
-}
-
-/**
  * Get Reserved Time Slots
- * @param {string} date - The date to get reserved time slots for
+ * @param {string} date @param {int} duration - The date to get reserved time slots for and duration to calculate available time slots
  * @returns {Promise<Object>}
  */
-export async function getReservedTimeSlots(date) {
-	return apiGet(window.wpApiSettings.apiUrlAppointments + '/reserved-time-slots', { date });
+export async function getAvailableTimeSlots(date, serviceDuration) {
+	return apiGet(window.wpApiSettings.apiUrlAppointments + '/available-time-slots', { date, serviceDuration });
 }
 
 /**

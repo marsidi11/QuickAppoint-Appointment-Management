@@ -39,14 +39,17 @@ class AppointmentReportingController extends WP_REST_Controller
 
         $routes = [
             [
-                'route' => '/reserved-time-slots',
+                'route' => '/available-time-slots',
                 'methods' => 'GET',
-                'callback' => 'get_reserved_time_slots',
+                'callback' => 'get_available_time_slots',
                 'permission_callback' => '__return_true',
                 'args' => [
                     'date' => [
                         'required' => true,
                         'validate_callback' => [$this, 'validate_date_format'],
+                    ],
+                    'serviceDuration' => [
+                        'required' => true,
                     ],
                 ],
             ],
@@ -110,7 +113,7 @@ class AppointmentReportingController extends WP_REST_Controller
         return is_string($param) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $param);
     }
     
-    public function get_reserved_time_slots($request)
+    public function get_available_time_slots($request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -118,7 +121,13 @@ class AppointmentReportingController extends WP_REST_Controller
         }
 
         $date = $request->get_param('date');
-        $reserved_time_slots = $this->reportingService->getReservedTimeSlots($date);
+        $serviceDuration = $request->get_param('serviceDuration');
+
+        if (!$date || !$serviceDuration) {
+            return new WP_Error('missing_params', 'Date and service duration are required', ['status' => 400]);
+        }
+
+        $reserved_time_slots = $this->reportingService->getAvailableTimeSlots($date, $serviceDuration);
 
         return new WP_REST_Response($reserved_time_slots, 200);
     }
