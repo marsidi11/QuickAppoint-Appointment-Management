@@ -706,12 +706,12 @@ video {
   height: 448px;
 }
 
-.h-\[496px\] {
-  height: 496px;
+.h-\[510px\] {
+  height: 510px;
 }
 
-.h-\[500px\] {
-  height: 500px;
+.h-\[520px\] {
+  height: 520px;
 }
 
 .h-\[528px\] {
@@ -748,10 +748,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.max-h-\[290px\] {
-  max-height: 290px;
 }
 
 .max-h-screen {
@@ -1464,16 +1460,12 @@ video {
 }
 
 @media (max-width: 639px) {
-  .calendar-section {
-    padding: 0.5rem;
-  }
-
   .calendar-wrapper,
     .calendar-services,
     .calendar-time,
     .input-form {
     height: calc(100vh - 4rem);
-    max-height: 448px;
+    max-height: 408px;
   }
 }
 
@@ -1493,7 +1485,7 @@ video {
 
 @media (min-width: 768px) {
   .calendar-section {
-    height: 496px;
+    height: 510px;
     width: 600px;
   }
 
@@ -1507,7 +1499,7 @@ video {
 
 @media (min-width: 1024px) {
   .calendar-section {
-    height: 500px;
+    height: 520px;
     width: 704px;
   }
 
@@ -1761,7 +1753,6 @@ video {
 .services-list {
   margin: auto;
   display: grid;
-  max-height: 290px;
   width: 100%;
   gap: 1rem;
   overflow-y: auto;

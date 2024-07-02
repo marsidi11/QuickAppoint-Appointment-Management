@@ -29,16 +29,12 @@
 }
 
 @media (max-width: 639px) {
-    .calendar-section {
-        @apply p-2;
-    }
-
     .calendar-wrapper,
     .calendar-services,
     .calendar-time,
     .input-form {
         @apply h-[calc(100vh-4rem)];
-        max-height: 448px;
+        max-height: 408px;
     }
 }
 
@@ -57,7 +53,7 @@
 
 @media (min-width: 768px) {
     .calendar-section {
-        @apply w-[600px] h-[496px];
+        @apply w-[600px] h-[510px];
     }
 
     .calendar-wrapper,
@@ -70,7 +66,7 @@
 
 @media (min-width: 1024px) {
     .calendar-section {
-        @apply w-[704px] h-[500px];
+        @apply w-[704px] h-[520px];
     }
 
     .calendar-wrapper,
@@ -179,7 +175,7 @@
 }
 
 .services-list {
-    @apply grid gap-4 max-h-[290px] overflow-y-auto m-auto w-full;
+    @apply grid gap-4 overflow-y-auto m-auto w-full;
 }
 
 .service-box {
