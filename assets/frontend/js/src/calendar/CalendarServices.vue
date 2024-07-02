@@ -114,8 +114,6 @@ export default {
         
     },
 
-    // TODO: Call fetchServices() method when index.vue is created
-    // Call fetchServices() method when component is created
     created() {
         this.fetchServices();
         this.fetchCurrencySymbol();

@@ -227,7 +227,6 @@ export default {
         },
     },
 
-    // TODO: Call generateTimes() method when index.vue is created
     created() {
         this.generateTimes();
     },

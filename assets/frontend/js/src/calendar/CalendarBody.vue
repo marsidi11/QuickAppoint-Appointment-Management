@@ -156,7 +156,6 @@ export default {
         },
     },
 
-    // TODO: Call methods when index.vue is created
     created() {
         this.fetchDatesRange();
         this.fetchOpenDays();

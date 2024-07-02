@@ -10,7 +10,6 @@
 <script>
 import { deleteService } from './apiService.js';
 
-// TODO: What if service is deleted by mistake? How to recover it? What will show for past appointments?
 export default {
     name: 'DeleteService',
 

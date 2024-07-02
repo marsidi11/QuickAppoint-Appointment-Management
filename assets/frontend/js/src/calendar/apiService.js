@@ -4,7 +4,6 @@
 import axios from 'axios';
 
 // Helper function to handle errors
-// TODO: Add more error handling for all apiService functions
 function handleError(error) {
     console.error('Error:', error);
 
