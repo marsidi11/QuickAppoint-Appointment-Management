@@ -32,8 +32,10 @@ class Enqueue extends BaseController
 
         add_action('wp_head', array($this, 'print_color_styles'), 1);
         add_action('admin_head', array($this, 'print_color_styles'), 1);
+        add_action('update_option_background_color', array($this, 'update_color_cache'));
         add_action('update_option_primary_color', array($this, 'update_color_cache'));
         add_action('update_option_secondary_color', array($this, 'update_color_cache'));
+        add_action('update_option_text_color', array($this, 'update_color_cache'));
     }
 
     private function enqueue_scripts($style_handle, $script_handle, $style_path, $script_path) 
@@ -75,11 +77,11 @@ class Enqueue extends BaseController
         );
     }
 
-    public function print_color_styles() 
+    public function print_color_styles()
     {
         $css = $this->get_color_css();
         if (!empty($css)) {
-            echo "<style id='appointment-management-color-style'>\n:root {\n" . $css . "\n}\n</style>\n";
+            echo "<style id='appointment-management-color-style'>\n" . $css . "\n</style>\n";
         }
     }
 
@@ -87,37 +89,15 @@ class Enqueue extends BaseController
     {
         $css = get_option(self::COLOR_OPTION_KEY);
         if (false === $css) {
-            $css = $this->generate_color_css();
+            $css = ColorGenerator::generate_color_variables();
             update_option(self::COLOR_OPTION_KEY, $css);
         }
         return $css;
     }
 
-    private function generate_color_css() 
-    {
-        $primary_color = get_option('primary_color', '#4b5563');
-        $secondary_color = get_option('secondary_color', '#3b82f6');
-
-        $css = "--primary-color: {$primary_color};\n";
-        $css .= "--secondary-color: {$secondary_color};\n";
-
-        $primary_shades = ColorGenerator::generate_color_shades($primary_color);
-        $secondary_shades = ColorGenerator::generate_color_shades($secondary_color);
-
-        foreach ($primary_shades as $key => $value) {
-            $css .= "--primary-color-{$key}: {$value};\n";
-        }
-
-        foreach ($secondary_shades as $key => $value) {
-            $css .= "--secondary-color-{$key}: {$value};\n";
-        }
-
-        return $css;
-    }
-
     public function update_color_cache() 
     {
-        $css = $this->generate_color_css();
+        $css = ColorGenerator::generate_color_variables();
         update_option(self::COLOR_OPTION_KEY, $css);
     }
 }

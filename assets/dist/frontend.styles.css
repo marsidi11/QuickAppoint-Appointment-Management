@@ -991,6 +991,10 @@ video {
   border-color: transparent;
 }
 
+.bg-background-600 {
+  background-color: var(--background-color-600);
+}
+
 .bg-blue-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
@@ -1032,6 +1036,10 @@ video {
 
 .bg-secondary-300 {
   background-color: var(--secondary-color-300);
+}
+
+.bg-secondary-50 {
+  background-color: var(--secondary-color-50);
 }
 
 .bg-secondary-500 {
@@ -1296,6 +1304,18 @@ video {
   color: var(--secondary-color-600);
 }
 
+.text-tertiary-200 {
+  color: var(--tertiary-color-200);
+}
+
+.text-tertiary-400 {
+  color: var(--tertiary-color-400);
+}
+
+.text-tertiary-600 {
+  color: var(--tertiary-color-600);
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1376,6 +1396,15 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 
+* Custom Tailwind CSS
+* background-600 - Background Color set as option on admin
+* primary-600 - Primary Color set as option on admin
+* secondary-600 - Secondary Color set as option on admin
+* tertiary-600 - Tertiary Color set as option on admin
+*
+*/
+
 /* Frontend Calendar Style */
 
 .calendar-container {
@@ -1393,8 +1422,7 @@ video {
   margin-right: auto;
   width: 100%;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: var(--background-color-600);
   padding: 1rem;
   --tw-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px;
   --tw-shadow-colored: 0px 9px 20px var(--tw-shadow-color);
@@ -1479,8 +1507,7 @@ video {
   padding-right: 1rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: var(--tertiary-color-600);
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -1511,8 +1538,7 @@ video {
   padding-left: 1rem;
   padding-right: 1rem;
   font-weight: 700;
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: var(--tertiary-color-600);
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -1570,7 +1596,7 @@ video {
   cursor: default;
   text-align: center;
   font-weight: 600;
-  color: var(--primary-color-600);
+  color: var(--tertiary-color-600);
 }
 
 @media (min-width: 768px) {
@@ -1588,7 +1614,7 @@ video {
   padding: 0.5rem;
   text-align: center;
   font-weight: 600;
-  color: var(--primary-color-400);
+  color: var(--tertiary-color-400);
   opacity: 0.5;
 }
 
@@ -1600,16 +1626,14 @@ video {
 
 .clickable-day {
   cursor: pointer;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: var(--secondary-color-50);
   color: var(--primary-color-600);
   opacity: 1;
 }
 
 .clickable-day:hover {
   background-color: var(--secondary-color-300);
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: var(--tertiary-color-200);
 }
 
 .clickable-day.next-month-day,
@@ -1635,8 +1659,7 @@ video {
 .selected-day {
   border-radius: 9999px;
   background-color: var(--secondary-color-500);
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: var(--tertiary-color-200);
 }
 
 .selected-day:hover {

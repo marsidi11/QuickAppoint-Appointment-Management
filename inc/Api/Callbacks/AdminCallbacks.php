@@ -147,6 +147,16 @@ class AdminCallbacks extends BaseController
     }
 
     /**
+     * Renders the background color input field.
+     *
+     * @return void
+     */
+    public function amBackgroundColor(): void
+    {
+        $this->renderColorField('background_color', '#ffffff', 'Select background color');
+    }
+
+    /**
      * Renders the primary color input field.
      *
      * @return void
@@ -164,6 +174,16 @@ class AdminCallbacks extends BaseController
     public function amSecondaryColor(): void
     {
         $this->renderColorField('secondary_color', '#1d4ed8', 'Select secondary color');
+    }
+
+    /**
+     * Renders the text color input field.
+     *
+     * @return void
+     */
+    public function amTextColor(): void
+    {
+        $this->renderColorField('text_color', '#272525', 'Select text color');
     }
 
     /**

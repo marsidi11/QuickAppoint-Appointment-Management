@@ -2,30 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-    --primary-color-50: #f9fafb;
-    --primary-color-100: #e5e7eb;
-    --primary-color-200: #d1d5db;
-    --primary-color-300: #9ca3af;
-    --primary-color-400: #6b7280;
-    --primary-color-500: #4b5563;
-    --primary-color-600: #374151;
-    --primary-color-700: #1f2937;
-    --primary-color-800: #111827;
-    --primary-color-950: #0f172a;
-  
-    --secondary-color-50: #eff6ff;
-    --secondary-color-100: #dbeafe;
-    --secondary-color-200: #bfdbfe;
-    --secondary-color-300: #93c5fd;
-    --secondary-color-400: #60a5fa;
-    --secondary-color-500: #3b82f6;
-    --secondary-color-600: #1d4ed8;
-    --secondary-color-700: #e53935;
-    --secondary-color-800: #1e40af;
-    --secondary-color-900: #1e3a8a;
-    --secondary-color-950: #172554;
-} */
+/* 
+* Custom Tailwind CSS
+* background-600 - Background Color set as option on admin
+* primary-600 - Primary Color set as option on admin
+* secondary-600 - Secondary Color set as option on admin
+* tertiary-600 - Tertiary Color set as option on admin
+*
+*/
 
 /* Frontend Calendar Style */
 
@@ -34,7 +18,7 @@
 }
 
 .calendar-section {
-    @apply bg-white w-full sm:w-[31.25rem] md:w-[37.5rem] lg:w-[44rem] xl:w-[50rem] 2xl:w-[56.25rem] sm:h-[33rem] md:h-[31rem] lg:h-[31.25rem] xl:h-[31.25rem] 2xl:h-[43.75rem] mx-auto p-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
+    @apply bg-background-600 w-full sm:w-[31.25rem] md:w-[37.5rem] lg:w-[44rem] xl:w-[50rem] 2xl:w-[56.25rem] sm:h-[33rem] md:h-[31rem] lg:h-[31.25rem] xl:h-[31.25rem] 2xl:h-[43.75rem] mx-auto p-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
 }
 
 .calendar-wrapper,
@@ -47,7 +31,7 @@
 /* Frontend Calendar Header Style */
 
 .reset-month {
-    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-white py-2 mb-2 px-4 rounded text-sm transition-colors duration-300 block mx-auto;
+    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-tertiary-600 py-2 mb-2 px-4 rounded text-sm transition-colors duration-300 block mx-auto;
 }
 
 .calendar-header {
@@ -56,7 +40,7 @@
 
 .prev-month-icon, 
 .next-month-icon {
-    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300 mt-2 sm:mt-0;
+    @apply cursor-pointer bg-primary-500 hover:bg-primary-700 text-tertiary-600 font-bold py-2 px-4 rounded transition-colors duration-300 mt-2 sm:mt-0;
 }
 
 .calendar-header > .current-month {
@@ -74,15 +58,15 @@
 }
 
 .calendar-day-name {
-    @apply w-11 md:w-12 text-center text-primary-600 font-semibold cursor-default m-auto;
+    @apply w-11 md:w-12 text-center text-tertiary-600 font-semibold cursor-default m-auto;
 }
 
 .calendar-day {
-    @apply w-11 md:w-12 text-center text-primary-400 font-semibold cursor-default p-2 rounded-full bg-primary-200 opacity-50 m-auto;
+    @apply w-11 md:w-12 text-center text-tertiary-400 font-semibold cursor-default p-2 rounded-full bg-primary-200 opacity-50 m-auto;
 } 
 
 .clickable-day {
-    @apply cursor-pointer text-primary-600 bg-white opacity-100 hover:bg-secondary-300 hover:text-white;
+    @apply cursor-pointer text-primary-600 bg-secondary-50 opacity-100 hover:bg-secondary-300 hover:text-tertiary-200;
 }
 
 .clickable-day.next-month-day,
@@ -95,7 +79,7 @@
 }
 
 .selected-day {
-    @apply bg-secondary-500 text-white rounded-full hover:bg-secondary-500; 
+    @apply bg-secondary-500 text-tertiary-200 rounded-full hover:bg-secondary-500; 
 }
 
 /* Frontend Calendar Services Style */

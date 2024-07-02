@@ -11,6 +11,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        background: {
+          50: 'var(--background-color-50)',
+          100: 'var(--background-color-100)',
+          200: 'var(--background-color-200)',
+          300: 'var(--background-color-300)',
+          400: 'var(--background-color-400)',
+          500: 'var(--background-color-500)',
+          600: 'var(--background-color-600)',
+          700: 'var(--background-color-700)',
+          800: 'var(--background-color-800)',
+          900: 'var(--background-color-900)',
+          950: 'var(--background-color-950)',
+        },
         primary: {
           50: 'var(--primary-color-50)',
           100: 'var(--primary-color-100)',
@@ -36,6 +49,19 @@ module.exports = {
           800: 'var(--secondary-color-800)',
           900: 'var(--secondary-color-900)',
           950: 'var(--secondary-color-950)',
+        },
+        tertiary: {
+          50: 'var(--tertiary-color-50)',
+          100: 'var(--tertiary-color-100)',
+          200: 'var(--tertiary-color-200)',
+          300: 'var(--tertiary-color-300)',
+          400: 'var(--tertiary-color-400)',
+          500: 'var(--tertiary-color-500)',
+          600: 'var(--tertiary-color-600)',
+          700: 'var(--tertiary-color-700)',
+          800: 'var(--tertiary-color-800)',
+          900: 'var(--tertiary-color-900)',
+          950: 'var(--tertiary-color-950)',
         },
       }
     },

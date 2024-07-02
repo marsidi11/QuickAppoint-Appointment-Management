@@ -79,8 +79,10 @@ class Admin extends BaseController
             $this->createSettingArg('break_start'),
             $this->createSettingArg('break_end'),
             $this->createSettingArg('enable_email_confirmation'),
+            $this->createSettingArg('background_color'),
             $this->createSettingArg('primary_color'),
             $this->createSettingArg('secondary_color'),
+            $this->createSettingArg('text_color'),
         ];
 
         $this->settings->setSettings($args);
@@ -120,8 +122,10 @@ class Admin extends BaseController
             $this->createFieldArg('open_days', 'Open Days', 'amOpenDays', 'select-allowed-dates'),
             $this->createFieldArg('break_start', 'Break Start', 'amBreakStart', 'select-time'),
             $this->createFieldArg('break_end', 'Break End', 'amBreakEnd', 'select-time'),
+            $this->createFieldArg('background_color', 'Background Color', 'amBackgroundColor', 'select-color'),
             $this->createFieldArg('primary_color', 'Primary Color', 'amPrimaryColor', 'select-color'),
             $this->createFieldArg('secondary_color', 'Secondary Color', 'amSecondaryColor', 'select-color'),
+            $this->createFieldArg('text_color', 'Text Color', 'amTextColor', 'select-color'),
         ];
 
         $this->settings->setFields($args);

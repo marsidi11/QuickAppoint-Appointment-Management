@@ -991,6 +991,10 @@ video {
   border-color: transparent;
 }
 
+.bg-background-600 {
+  background-color: var(--background-color-600);
+}
+
 .bg-blue-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
@@ -1032,6 +1036,10 @@ video {
 
 .bg-secondary-300 {
   background-color: var(--secondary-color-300);
+}
+
+.bg-secondary-50 {
+  background-color: var(--secondary-color-50);
 }
 
 .bg-secondary-500 {
@@ -1294,6 +1302,18 @@ video {
 
 .text-secondary-600 {
   color: var(--secondary-color-600);
+}
+
+.text-tertiary-200 {
+  color: var(--tertiary-color-200);
+}
+
+.text-tertiary-400 {
+  color: var(--tertiary-color-400);
+}
+
+.text-tertiary-600 {
+  color: var(--tertiary-color-600);
 }
 
 .text-white {

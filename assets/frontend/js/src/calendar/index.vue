@@ -21,11 +21,9 @@
 </template>
 
 <script>
-import tinycolor from 'tinycolor2';
 import moment from 'moment';
 
 import { generateCalendar, calculateEndTime } from './CalendarUtils.js';
-import { getPrimaryColor, getSecondaryColor } from './apiService.js';
 import CalendarBody from './CalendarBody.vue';
 import CalendarServices from './CalendarServices.vue';
 import CalendarTime from './CalendarTime.vue';
@@ -63,10 +61,6 @@ export default {
             },
 
 			currencySymbol: null,
-
-			primaryColor: '',
-      		secondaryColor: '',
-
 		}
 	},
 
@@ -170,47 +164,9 @@ export default {
 		prevCalendarUserData() {
 			this.showCalendarUserDataComponent = false;
 			this.showCalendarTimeComponent = true;
-		},
-
-		async fetchColors() {
-			this.primaryColor = await getPrimaryColor();
-			this.secondaryColor = await getSecondaryColor();
-			this.applyColors();
-		},
-
-		applyColors() {
-			const primaryColors = this.generateColorShades(this.primaryColor);
-			const secondaryColors = this.generateColorShades(this.secondaryColor);
-
-			for (const [key, value] of Object.entries(primaryColors)) {
-				document.documentElement.style.setProperty(`--primary-color-${key}`, value);
-			}
-
-			for (const [key, value] of Object.entries(secondaryColors)) {
-				document.documentElement.style.setProperty(`--secondary-color-${key}`, value);
-			}
-		},
-
-		generateColorShades(baseColor) {
-			return {
-				50: tinycolor(baseColor).lighten(50).toString(),
-				100: tinycolor(baseColor).lighten(40).toString(),
-				200: tinycolor(baseColor).lighten(30).toString(),
-				300: tinycolor(baseColor).lighten(20).toString(),
-				400: tinycolor(baseColor).lighten(10).toString(),
-				500: tinycolor(baseColor).lighten(5).toString(),
-				600: baseColor,
-				700: tinycolor(baseColor).darken(10).toString(),
-				800: tinycolor(baseColor).darken(20).toString(),
-				900: tinycolor(baseColor).darken(30).toString(),
-				950: tinycolor(baseColor).darken(40).toString(),
-			};
 		}
 
 	},
 
-	created() {
-		this.fetchColors();
-	}
 }
 </script>
