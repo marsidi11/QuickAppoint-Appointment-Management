@@ -15,7 +15,62 @@
 }
 
 .calendar-section {
-    @apply bg-background-600 w-full sm:w-[31.25rem] md:w-[37.5rem] lg:w-[44rem] xl:w-[50rem] 2xl:w-[56.25rem] sm:h-[33rem] md:h-[31rem] lg:h-[31.25rem] xl:h-[31.25rem] 2xl:h-[43.75rem] mx-auto p-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
+    @apply bg-background-600 w-full mx-auto p-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
+    height: auto; /* Allow content to determine height on mobile */
+    min-height: 24rem; /* Minimum height for very small screens */
+    max-height: 100vh; /* Prevent overflow on small screens */
+}
+
+/* Extra small devices (phones, 640px and down) */
+@media (max-width: 640px) {
+    .calendar-section {
+        @apply p-2; /* Reduce padding on very small screens */
+    }
+}
+
+/* Small devices (large phones, 640px and up) */
+@media (min-width: 640px) {
+    .calendar-section {
+        @apply w-[31.25rem];
+        height: 33rem;
+    }
+}
+
+@media (min-width: 768px) { /* md */
+    .calendar-section {
+        @apply w-[37.5rem];
+        height: 31rem;
+    }
+}
+
+@media (min-width: 1024px) { /* lg */
+    .calendar-section {
+        @apply w-[44rem];
+        height: 31.25rem;
+    }
+}
+
+@media (min-width: 1280px) { /* xl */
+    .calendar-section {
+        @apply w-[50rem];
+        height: 31.25rem;
+    }
+}
+
+@media (min-width: 1536px) { /* 2xl */
+    .calendar-section {
+        @apply w-[56.25rem] max-w-[56.25rem];
+        height: 43.75rem;
+    }
+}
+
+/* Adjust height for landscape orientation on mobile */
+@media (max-width: 640px) and (orientation: landscape) {
+    .calendar-section {
+        height: auto;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
 }
 
 .calendar-wrapper,
