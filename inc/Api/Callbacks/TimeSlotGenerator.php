@@ -29,7 +29,7 @@ class TimeSlotGenerator
         $this->slotDuration = $this->getSlotDuration();
     }
 
-    public function generateAvailableTimeSlots(array $params): array
+    public function generateOptimizedTimeSlots(array $params): array
     {
         try {
             $this->validateParams($params);
@@ -47,24 +47,72 @@ class TimeSlotGenerator
             $availableSlots = [];
             $currentTime = $openTime;
 
+            error_log("Starting optimization for date: $date, service duration: $serviceDuration minutes");
+            error_log("Reserved slots: " . print_r($reservedSlots, true));
+            error_log("Break times: " . print_r($breakTimes, true));
+            error_log("Buffer time: " . $this->bufferTime);
+            error_log("Slot duration: " . $this->slotDuration);
+
             while ($currentTime + $serviceDuration <= $closeTime) {
-                $slotEnd = $currentTime + $serviceDuration;
-                
-                if ($this->isTimeSlotAvailable($currentTime, $slotEnd, $reservedSlots, $breakTimes)) {
+                $nextSlotStart = $this->roundToNearestSlot($currentTime);
+                $slotEnd = $nextSlotStart + $this->slotDuration;
+
+                // Check for regular slots
+                if ($this->isTimeSlotAvailable($nextSlotStart, $slotEnd, $reservedSlots, $breakTimes)) {
                     $availableSlots[] = [
-                        'start' => $this->minutesToTime($currentTime),
+                        'start' => $this->minutesToTime($nextSlotStart),
                         'end' => $this->minutesToTime($slotEnd)
                     ];
+                    error_log("Added regular slot: " . $this->minutesToTime($nextSlotStart) . " - " . $this->minutesToTime($slotEnd));
                 }
 
-                $currentTime += $this->slotDuration;
+                // Check for optimized slots
+                $this->addOptimizedSlots($currentTime, $slotEnd, $serviceDuration, $reservedSlots, $breakTimes, $availableSlots);
+
+                $currentTime = $slotEnd;
             }
 
+            error_log("Finished generating slots. Total slots: " . count($availableSlots));
             return $availableSlots;
         } catch (Exception $e) {
-            error_log("Error generating available time slots: " . $e->getMessage());
+            error_log("Error generating optimized time slots: " . $e->getMessage());
             return [];
         }
+    }
+
+    private function addOptimizedSlots(int $start, int $endTime, int $serviceDuration, array $reservedSlots, array $breakTimes, array &$availableSlots): void
+    {
+        foreach ($reservedSlots as $slot) {
+            if ($slot['end'] > $start && $slot['end'] <= $endTime) {
+                $gapStart = $this->roundUpToNearest5Minutes($slot['end']);
+                $gapEnd = $endTime;
+
+                error_log("Checking gap: " . $this->minutesToTime($gapStart) . " - " . $this->minutesToTime($gapEnd));
+
+                while ($gapStart + $serviceDuration + $this->bufferTime <= $gapEnd) {
+                    $potentialSlotEnd = $gapStart + $serviceDuration;
+                    if ($this->isTimeSlotAvailable($gapStart, $potentialSlotEnd, $reservedSlots, $breakTimes)) {
+                        $availableSlots[] = [
+                            'start' => $this->minutesToTime($gapStart),
+                            'end' => $this->minutesToTime($potentialSlotEnd)
+                        ];
+                        error_log("Added optimized slot: " . $this->minutesToTime($gapStart) . " - " . $this->minutesToTime($potentialSlotEnd));
+                        return; // Exit after adding the first available optimized slot
+                    }
+                    $gapStart += 5; // Move in 5-minute increments
+                }
+            }
+        }
+    }
+
+    private function roundToNearestSlot(int $minutes): int
+    {
+        return ceil($minutes / $this->slotDuration) * $this->slotDuration;
+    }
+
+    private function roundUpToNearest5Minutes(int $minutes): int
+    {
+        return ceil($minutes / 5) * 5;
     }
 
     private function isTimeSlotAvailable(int $start, int $end, array $reservedSlots, array $breakTimes): bool
@@ -72,6 +120,7 @@ class TimeSlotGenerator
         // Check if the slot overlaps with any reserved slots
         foreach ($reservedSlots as $slot) {
             if ($start < $slot['end'] && $end > $slot['start']) {
+                error_log("Slot {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with reserved slot {$this->minutesToTime($slot['start'])} - {$this->minutesToTime($slot['end'])}");
                 return false;
             }
         }
@@ -79,6 +128,7 @@ class TimeSlotGenerator
         // Check if the slot overlaps with any break times
         foreach ($breakTimes as $break) {
             if ($start < $break['end'] && $end > $break['start']) {
+                error_log("Slot {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with break time {$this->minutesToTime($break['start'])} - {$this->minutesToTime($break['end'])}");
                 return false;
             }
         }
@@ -171,7 +221,7 @@ class TimeSlotGenerator
                     throw new Exception("Error executing database query: " . $this->wpdb->last_error);
                 }
 
-                $slots = array_map(function($slot) {
+                $slots = array_map(function ($slot) {
                     return [
                         'start' => $this->timeToMinutes($slot->startTime),
                         'end' => $this->timeToMinutes($slot->endTime) + $this->bufferTime
@@ -179,7 +229,6 @@ class TimeSlotGenerator
                 }, $results);
 
                 $this->cache['reserved_slots'][$date] = $this->mergeOverlappingSlots($slots);
-
             } catch (Exception $e) {
                 error_log("Error retrieving reserved time slots: " . $e->getMessage());
                 return [];
@@ -195,7 +244,7 @@ class TimeSlotGenerator
             return [];
         }
 
-        usort($slots, function($a, $b) {
+        usort($slots, function ($a, $b) {
             return $a['start'] - $b['start'];
         });
 

@@ -30,7 +30,7 @@ class AppointmentReportingService
             'date' => $date,
             'serviceDuration' => $serviceDuration,
         ];
-        return $this->timeSlotGenerator->generateAvailableTimeSlots($params);
+        return $this->timeSlotGenerator->generateOptimizedTimeSlots($params);
     }
 
     public function searchAppointments(?string $search, ?array $dateFilters, ?string $dateRange, int $page): array
