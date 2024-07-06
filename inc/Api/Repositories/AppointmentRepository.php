@@ -185,13 +185,15 @@ class AppointmentRepository
         $where_clauses = [];
         $where_params = [];
 
-        if (!empty($search)) {
+        if (!empty($search)) 
+        {
             $search_term = '%' . $this->wpdb->esc_like($search) . '%';
             $where_clauses[] = "(a.name LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
             $where_params = array_merge($where_params, [$search_term, $search_term, $search_term]);
         }
 
-        if (!empty($dateFilters)) {
+        if (!empty($dateFilters)) 
+        {
             $date_filter_clauses = $this->buildDateFilterClauses($dateFilters, $where_params);
             if (!empty($date_filter_clauses)) {
                 $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
@@ -257,7 +259,8 @@ class AppointmentRepository
 
     private function buildDateRangeClause(string $dateRange, array &$where_params): ?string
     {
-        switch ($dateRange) {
+        switch ($dateRange) 
+        {
             case 'nextMonth':
                 $start_date = date('Y-m-01', strtotime('+1 month'));
                 $end_date = date('Y-m-t', strtotime('+1 month'));
@@ -294,5 +297,48 @@ class AppointmentRepository
         );
 
         return $this->wpdb->get_results($query);
+    }
+
+    public function getAppointmentByToken($token)
+    {
+        $query = $this->wpdb->prepare(
+            "SELECT a.*, 
+        DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+        DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+        GROUP_CONCAT(s.id SEPARATOR ',') as service_id,
+        GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+        COALESCE(SUM(s.price), 0) as total_price
+        FROM {$this->appointments_table} a
+        LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+        LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+        WHERE a.token = %s
+        GROUP BY a.id",
+            $token
+        );
+
+        $result = $this->wpdb->get_row($query, ARRAY_A);
+
+        if ($result) 
+        {
+            $result['service_id'] = explode(',', $result['service_id']);
+            return new Appointment($result);
+        } else 
+        {
+            return new WP_Error('appointment_not_found', 'Appointment not found');
+        }
+    }
+
+    public function updateAppointmentStatus($token, $status)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'am_appointments';
+        $result = $wpdb->update($table_name, ['status' => $status], ['token' => $token]);
+
+        if ($result === false) 
+        {
+            return new WP_Error('update_failed', 'Failed to update appointment status');
+        }
+
+        return true;
     }
 }

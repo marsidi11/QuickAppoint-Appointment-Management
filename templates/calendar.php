@@ -1,2 +1,2 @@
 <h1>Book an Appointment</h1>
-<div id="app"></div>
+<div id="am-app"></div>

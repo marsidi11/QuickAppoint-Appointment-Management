@@ -45,6 +45,12 @@ class AppointmentController extends WP_REST_Controller
                 'permission_callback' => [$this, 'can_edit_posts']
             ],
             [
+                'route' => '/(?P<id>\d+)',
+                'methods' => 'GET',
+                'callback' => 'get_appointment_data',
+                'permission_callback' => '__return_true'
+            ],
+            [
                 'route' => '/delete/(?P<id>\d+)',
                 'methods' => 'DELETE',
                 'callback' => 'delete_appointment_data',

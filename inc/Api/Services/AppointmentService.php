@@ -48,16 +48,27 @@ class AppointmentService
         $appointment = new Appointment($appointmentData);
         $result = $this->appointmentRepository->createAppointment($appointment);
 
-        if (is_wp_error($result)) {
+        if (is_wp_error($result)) 
+        {
             return $result;
         }
 
         // Send confirmation email to user
-        $this->emailSender->send_confirmation_email_to_user($appointment->getEmail(), $token);
+        $user_email_result = $this->emailSender->send_confirmation_email_to_user($appointment->getEmail(), $token);
+        if (is_wp_error($user_email_result)) 
+        {
+            // Log the error, but don't stop the process
+            error_log('Failed to send user confirmation email: ' . $user_email_result->get_error_message());
+        }
 
         // Notify admin about the new appointment
         $admin_email = get_option('admin_email');
-        $this->emailSender->notify_admin_about_appointment($admin_email, $appointmentData, $token);
+        $admin_email_result = $this->emailSender->notify_admin_about_appointment($admin_email, $appointmentData, $token);
+        if (is_wp_error($admin_email_result)) 
+        {
+            // Log the error, but don't stop the process
+            error_log('Failed to send admin notification email: ' . $admin_email_result->get_error_message());
+        }
 
         return true;
     }

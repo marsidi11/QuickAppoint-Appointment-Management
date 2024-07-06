@@ -159,8 +159,8 @@ class AppointmentReportingController extends WP_REST_Controller
         // $startDate = $request->get_param('start_date');
         // $endDate = $request->get_param('end_date');
 
-        $startDate = "2024-06-01";
-        $endDate = "2024-06-30";
+        $endDate = date("Y-m-d"); // Current date
+        $startDate = date("Y-m-d", strtotime("-1 year")); // 1 year before the current date
 
         if (!$startDate || !$endDate) {
             return new WP_Error('missing_params', 'Start date and end date are required', ['status' => 400]);

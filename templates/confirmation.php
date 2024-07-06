@@ -1,54 +1,91 @@
-<div id="am_confirmation">
-    <?php
-    if (isset($_GET['token']) && isset($_GET['status'])) {
-        $token = sanitize_text_field($_GET['token']);
-        $status = sanitize_text_field($_GET['status']);
+<?php
+$appointment_repository = new Inc\Api\Repositories\AppointmentRepository();
 
-        if ($status === 'confirmed') {
-            global $wpdb;
-            $table_name = $wpdb->prefix . 'am_appointments';
-            $services_table = $wpdb->prefix . 'am_services';
-            $mapping_table = $wpdb->prefix . 'am_mapping';
+if (isset($_GET['token'])) {
+    $token = sanitize_text_field($_GET['token']);
+    $appointment = $appointment_repository->getAppointmentByToken($token);
 
-            $appointment = $wpdb->get_row($wpdb->prepare(
-                "SELECT a.*, 
-                    GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
-                    SUM(s.price) as total_price
-                FROM $table_name a
-                LEFT JOIN $mapping_table m ON a.id = m.appointment_id
-                LEFT JOIN $services_table s ON m.service_id = s.id
-                WHERE a.token = %s
-                GROUP BY a.id",
-                $token
-            ));
-
-            if ($appointment) {
-    ?>
-                <h3>Appointment Details</h3>
-                <p class="confirmation-message">Your appointment has been confirmed successfully. Here are the details:</p>
-                <ul>
-                    <li><strong>Full Name:</strong> <?php echo esc_html($appointment->name . ' ' . $appointment->surname); ?></li>
-                    <li><strong>Phone:</strong> <?php echo esc_html($appointment->phone); ?></li>
-                    <li><strong>Email:</strong> <?php echo esc_html($appointment->email); ?></li>
-                    <li><strong>Services:</strong> <?php echo esc_html($appointment->service_names); ?></li>
-                    <li><strong>Date:</strong> <?php echo esc_html($appointment->date); ?></li>
-                    <li><strong>Time:</strong> 
-                        <?php echo date('H:i', strtotime(esc_html($appointment->startTime)));?>
-                         - 
-                        <?php echo date('H:i', strtotime(esc_html($appointment->endTime))); ?>
-                    </li>
-                    <li><strong>Total Price:</strong> <?php echo esc_html(get_option('currency_symbol') . $appointment->total_price); ?></li>
-                    <li><strong>Status:</strong> <?php echo esc_html($appointment->status); ?></li>
-                </ul>
-    <?php
+    if (!is_wp_error($appointment)) {
+        // Handle form submissions
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
+            $result = $appointment_repository->updateAppointmentStatus($token, 'Cancelled');
+            if (!is_wp_error($result)) {
+                echo '<div class="am-message am-message--success">Your appointment has been cancelled successfully.</div>';
+                // Refresh appointment data after cancellation
+                $appointment = $appointment_repository->getAppointmentByToken($token);
             } else {
-                echo '<p class="error-message">Invalid token. Please try again.</p>';
+                echo '<div class="am-message am-message--error">Failed to cancel the appointment. Please try again later or contact support.</div>';
             }
-        } else {
-            echo '<p class="error-message">Verification failed or expired token. Please try again.</p>';
         }
+
+        // Check if the appointment is in the past
+        $appointment_datetime = new DateTime($appointment->getDate() . ' ' . $appointment->getEndTime());
+        $is_past = $appointment_datetime < new DateTime();
+
+        // Ensure we're using the correct status from the database
+        $status = strtolower($appointment->getStatus());
+        $is_cancelled = $status === 'cancelled';
+        ?>
+        <div class="am-confirmation">
+            <h2 class="am-confirmation__title">Appointment Details</h2>
+            <div class="am-confirmation__content">
+                <div class="am-confirmation__info">
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Full Name:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getName() . ' ' . $appointment->getSurname()); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Phone:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getPhone()); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Email:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getEmail()); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Services:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html(implode(', ', $appointment->getServiceNames()) ?: 'No services specified'); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Date:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getDate()); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Time:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getStartTime() . ' - ' . $appointment->getEndTime()); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Total Price:</span>
+                        <span class="am-confirmation__value"><?php echo esc_html(get_option('currency_symbol', '€') . number_format($appointment->getTotalPrice(), 2)); ?></span>
+                    </div>
+                    <div class="am-confirmation__row">
+                        <span class="am-confirmation__label">Status:</span>
+                        <span class="am-confirmation__value">
+                            <span class="am-status am-status--<?php echo $status; ?>"><?php echo esc_html(ucfirst($status)); ?></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="am-confirmation__actions">
+                <?php if ($is_past): ?>
+                    <p class="am-message am-message--info">This appointment has already passed and cannot be modified.</p>
+                <?php elseif ($is_cancelled): ?>
+                    <p class="am-message am-message--info">This appointment has been cancelled and cannot be modified further.</p>
+                <?php else: ?>
+                    <form method="post" class="am-confirmation__form">
+                        <input type="hidden" name="token" value="<?php echo esc_attr($token); ?>">
+                        <button type="submit" name="action" value="cancel" class="am-btn am-btn--danger" onclick="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
+                            Cancel Appointment
+                        </button>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
     } else {
-        echo '<p class="error-message">No token provided.</p>';
+        echo '<div class="am-message am-message--error">Appointment details not found. Please check your link and try again.</div>';
     }
-    ?>
-</div>
+} else {
+    echo '<div class="am-message am-message--error">No appointment token provided. Please use the link from your confirmation email.</div>';
+}
+?>

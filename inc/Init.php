@@ -68,7 +68,9 @@ final class Init {
                 $timeSlotGenerator = new \Inc\Api\Callbacks\TimeSlotGenerator();
                 $reportingService = new \Inc\Api\Services\AppointmentReportingService($appointmentRepository, $timeSlotGenerator);
                 return new $class($reportingService);
-
+            case 'Inc\\EmailConfirmation\\ConfirmationHandler':
+                $appointmentRepository = new \Inc\Api\Repositories\AppointmentRepository();
+                return new $class($appointmentRepository);
             default:
                 return new $class();
         }

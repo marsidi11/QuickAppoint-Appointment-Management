@@ -2,42 +2,63 @@
 /**
  * @package AppointmentManagementPlugin
  */
-
 namespace Inc\EmailConfirmation;
 
-class ConfirmationHandler 
+use Inc\Base\BaseController;
+use Inc\Api\Repositories\AppointmentRepository;
+use WP_Error;
+
+class ConfirmationHandler extends BaseController
 {
-    public function register() 
+    private $appointmentRepository;
+
+    public function __construct(AppointmentRepository $appointmentRepository)
+    {
+        parent::__construct();
+        $this->appointmentRepository = $appointmentRepository;
+    }
+
+    public function register()
     {
         add_action('init', array($this, 'handle_confirmation_request'));
     }
 
-    public function handle_confirmation_request() 
+    public function handle_confirmation_request()
     {
-        if (isset($_GET['action']) && $_GET['action'] === 'verify_appointment' && isset($_GET['token'])) 
+        if (isset($_GET['action']) && $_GET['action'] === 'verify_appointment' && isset($_GET['token']))
         {
             $this->verify_appointment($_GET);
         }
     }
 
-    public function verify_appointment($request) 
+    public function verify_appointment($request)
     {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
         $token = sanitize_text_field($request['token']);
+        
+        $result = $this->appointmentRepository->getAppointmentByToken($token);
 
-        $appointment = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE token = %s",
-            $token
-        ));
+        if (is_wp_error($result)) {
+            wp_redirect(home_url('/appointment-confirmation?status=error&message=' . urlencode($result->get_error_message())));
+            exit;
+        }
 
-        if ($appointment && $appointment->status === 'Pending') 
+        if ($result && $result->getStatus() === 'Pending')
         {
-            $wpdb->update($table_name, ['status' => 'Confirmed'], ['token' => $token]);
-            \wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
-        } else 
+            $update_result = $this->appointmentRepository->updateAppointmentStatus($token, 'Confirmed');
+            
+            if (is_wp_error($update_result)) {
+                wp_redirect(home_url('/appointment-confirmation?status=error&message=' . urlencode($update_result->get_error_message())));
+                exit;
+            }
+
+            // Send confirmation email to user
+            $emailSender = new EmailSender();
+            $emailSender->send_appointment_confirmed_email($result->getEmail(), $token);
+
+            wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
+        } else
         {
-            \wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
+            wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=check_appointment_info'));
         }
         exit;
     }

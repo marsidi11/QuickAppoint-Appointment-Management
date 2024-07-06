@@ -14,7 +14,10 @@ class Appointment
     private $endTime;
     private $status;
     private $token;
-    private $serviceIds;
+    private $serviceIds = [];
+    private $serviceNames = [];
+    private $totalPrice = 0.0;
+
 
     public function __construct(array $data)
     {
@@ -27,7 +30,9 @@ class Appointment
         $this->endTime = $data['endTime'];
         $this->status = $data['status'] ?? 'Pending';
         $this->token = $data['token'] ?? '';
-        $this->serviceIds = $data['service_id'];
+        $this->serviceIds = isset($data['service_id']) ? (is_array($data['service_id']) ? $data['service_id'] : explode(',', $data['service_id'])) : [];
+        $this->serviceNames = isset($data['service_names']) ? explode(', ', $data['service_names']) : [];
+        $this->totalPrice = floatval($data['total_price'] ?? 0.0);
     }
 
     public function getId()
@@ -90,6 +95,16 @@ class Appointment
         return $this->serviceIds;
     }
 
+    public function getServiceNames()
+    {
+        return $this->serviceNames;
+    }
+
+    public function getTotalPrice()
+    {
+        return $this->totalPrice;
+    }
+
     public function toArray()
     {
         return [
@@ -104,6 +119,8 @@ class Appointment
             'status' => $this->status,
             'token' => $this->token,
             'service_id' => $this->serviceIds,
+            'service_names' => $this->serviceNames,
+            'total_price' => $this->totalPrice,
         ];
     }
 }
