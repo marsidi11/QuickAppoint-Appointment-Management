@@ -120,5 +120,6 @@ export default {
     created() {
         this.fetchAndSetTimes();
     },
+
 }
 </script>

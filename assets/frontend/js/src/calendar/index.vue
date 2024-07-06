@@ -49,6 +49,7 @@ export default {
 			currentDate: new Date(),
 			daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
 			selectedTime: null,
+			selectedServices: [],
 
 			showCalendarBodyComponent: true,
 			showCalendarServicesComponent: false,
