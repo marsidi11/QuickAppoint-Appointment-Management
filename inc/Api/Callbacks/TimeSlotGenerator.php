@@ -3,7 +3,6 @@
 namespace Inc\Api\Callbacks;
 
 use DateTime;
-use DateInterval;
 use Exception;
 use InvalidArgumentException;
 

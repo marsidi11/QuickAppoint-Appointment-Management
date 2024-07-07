@@ -123,6 +123,7 @@ class AppointmentRepository
         }
     }
 
+    // TODO: Implement edit appointment only for some fields
     public function updateAppointment(Appointment $appointment)
     {
         $this->wpdb->query('START TRANSACTION');
@@ -227,7 +228,8 @@ class AppointmentRepository
 
         return $this->wpdb->get_results($query);
     }
-
+    
+    // TODO: Add filter method to show only confirmed, cancelled, or pending appointments
     private function buildDateFilterClauses(array $dateFilters, array &$where_params): array
     {
         $date_filter_clauses = [];
