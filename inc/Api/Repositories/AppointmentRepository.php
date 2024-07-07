@@ -181,7 +181,7 @@ class AppointmentRepository
         return $this->wpdb->get_results($query);
     }
 
-    public function searchAppointments(?string $search, ?array $dateFilters, ?string $dateRange, int $itemsPerPage, int $offset): array
+    public function filterAppointments(?string $search, ?array $dateFilters, ?string $dateRange, ?array $statusFilters, int $itemsPerPage, int $offset): array
     {
         $where_clauses = [];
         $where_params = [];
@@ -208,6 +208,14 @@ class AppointmentRepository
             }
         }
 
+        if (!empty($statusFilters)) 
+        {
+            $status_filter_clauses = $this->buildStatusFilterClauses($statusFilters, $where_params);
+            if (!empty($status_filter_clauses)) {
+                $where_clauses[] = '(' . implode(' OR ', $status_filter_clauses) . ')';
+            }
+        }
+
         $where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
 
         $query = $this->wpdb->prepare(
@@ -229,7 +237,6 @@ class AppointmentRepository
         return $this->wpdb->get_results($query);
     }
     
-    // TODO: Add filter method to show only confirmed, cancelled, or pending appointments
     private function buildDateFilterClauses(array $dateFilters, array &$where_params): array
     {
         $date_filter_clauses = [];
@@ -277,6 +284,30 @@ class AppointmentRepository
         $where_params[] = $start_date;
         $where_params[] = $end_date;
         return "a.date BETWEEN %s AND %s";
+    }
+
+    // TODO: Add filter method to show only confirmed, cancelled, or pending appointments
+    private function buildStatusFilterClauses(array $statusFilters, array &$where_params): array
+    {
+        $status_filter_clauses = [];
+        foreach ($statusFilters as $status) {
+            switch ($status) {
+                case 'confirmed':
+                    $status_filter_clauses[] = "a.status = %s";
+                    $where_params[] = 'Confirmed';
+                    break;
+                case 'cancelled':
+                    $status_filter_clauses[] = "a.status = %s";
+                    $where_params[] = 'Cancelled';
+                    break;
+                case 'pending':
+                    $status_filter_clauses[] = "a.status = %s";
+                    $where_params[] = 'Pending';
+                    break;
+            }
+        }
+
+        return $status_filter_clauses;
     }
 
     public function getAppointmentsForReport($startDate, $endDate)

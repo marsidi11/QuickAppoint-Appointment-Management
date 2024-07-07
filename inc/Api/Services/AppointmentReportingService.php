@@ -33,12 +33,12 @@ class AppointmentReportingService
         return $this->timeSlotGenerator->generateOptimizedTimeSlots($params);
     }
 
-    public function searchAppointments(?string $search, ?array $dateFilters, ?string $dateRange, int $page): array
+    public function filterAppointments(?string $search, ?array $dateFilters, ?string $dateRange, ?array $statusFilters, int $page): array
     {
         $itemsPerPage = 10;
         $offset = ($page - 1) * $itemsPerPage;
 
-        return $this->appointmentRepository->searchAppointments($search, $dateFilters, $dateRange, $itemsPerPage, $offset);
+        return $this->appointmentRepository->filterAppointments($search, $dateFilters, $dateRange, $statusFilters, $itemsPerPage, $offset);
     }
 
     public function generateReport($startDate, $endDate)

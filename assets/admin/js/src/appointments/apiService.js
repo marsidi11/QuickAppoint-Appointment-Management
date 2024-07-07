@@ -101,7 +101,7 @@ export async function deleteAppointment(appointmentId) {
  * @param {Object} appointmentData - Search query, filter date and page number for pagination
  * @returns {Promise<Object>}
  */
-export async function getAppointmentsBySearch(searchTerm = '', page = 1, dateFilters = []) {
+export async function getAppointmentsByFilter(searchTerm = '', page = 1, dateFilters = [], statusFilters = []) {
     const params = { page };
 
     if (searchTerm) {
@@ -111,6 +111,11 @@ export async function getAppointmentsBySearch(searchTerm = '', page = 1, dateFil
     if (dateFilters.length > 0) {
         params.dateFilters = dateFilters;
     }
+
+    if (statusFilters.length > 0) {
+        params.statusFilters = statusFilters;
+    }
+    
     const queryParams = new URLSearchParams(params).toString();
     return apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
 }

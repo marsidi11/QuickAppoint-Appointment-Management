@@ -56,7 +56,7 @@ class AppointmentReportingController extends WP_REST_Controller
             [
                 'route' => '/search',
                 'methods' => 'GET',
-                'callback' => 'get_searched_appointments',
+                'callback' => 'get_filtered_appointments',
                 'permission_callback' => [$this, 'can_edit_posts'],
                 'args' => [
                     'search' => [
@@ -68,6 +68,10 @@ class AppointmentReportingController extends WP_REST_Controller
                     ],
                     'dateRange' => [
                         'required' => false,
+                    ],
+                    'statusFilters' => [
+                        'required' => false,
+                        'type' => 'array',
                     ],
                     'page' => [
                         'required' => false,
@@ -132,7 +136,7 @@ class AppointmentReportingController extends WP_REST_Controller
         return new WP_REST_Response($reserved_time_slots, 200);
     }
 
-    public function get_searched_appointments($request)
+    public function get_filtered_appointments($request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -142,9 +146,10 @@ class AppointmentReportingController extends WP_REST_Controller
         $search = $request->get_param('search');
         $date_filters = $request->get_param('dateFilters');
         $date_range = $request->get_param('dateRange');
+        $status_filters = $request->get_param('statusFilters');
         $page = $request->get_param('page') ?: 1;
 
-        $appointments = $this->reportingService->searchAppointments($search, $date_filters, $date_range, $page);
+        $appointments = $this->reportingService->filterAppointments($search, $date_filters, $date_range, $status_filters, $page);
 
         return new WP_REST_Response($appointments, 200);
     }
@@ -159,8 +164,8 @@ class AppointmentReportingController extends WP_REST_Controller
         // $startDate = $request->get_param('start_date');
         // $endDate = $request->get_param('end_date');
 
-        $endDate = date("Y-m-d"); // Current date
         $startDate = date("Y-m-d", strtotime("-1 year")); // 1 year before the current date
+        $endDate = date("Y-m-d", strtotime("+1 year")); // 1 year after the current date
 
         if (!$startDate || !$endDate) {
             return new WP_Error('missing_params', 'Start date and end date are required', ['status' => 400]);

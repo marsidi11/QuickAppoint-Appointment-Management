@@ -11,6 +11,7 @@
             class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
             <div class="flex items-center space-x-3 w-full md:w-auto">
               <FilterDropdown @filters-updated="updateDateFilter" />
+              <StatusDropdown @statuses-updated="updateStatusFilter" />
               <ReportsButton />
             </div>
           </div>
@@ -30,9 +31,10 @@
 </template>
 
 <script>
-import { getAllAppointments, getCurrencySymbol, getAppointmentsBySearch } from './apiService.js';
+import { getAllAppointments, getCurrencySymbol, getAppointmentsByFilter } from './apiService.js';
 import SearchForm from './components/SearchForm.vue';
 import FilterDropdown from './components/FilterDropdown.vue';
+import StatusDropdown from './components/StatusDropdown.vue';
 import ReportsButton from './components/ReportsButton.vue';
 import Table from './components/Table.vue';
 
@@ -52,12 +54,14 @@ export default {
       searchActive: false,
       searchQuery: '',
       dateFilters: ['upcoming'],
+      statusFilters: ['confirmed', 'pending', 'cancelled'],
     };
   },
 
   components: {
     SearchForm,
     FilterDropdown,
+    StatusDropdown,
     ReportsButton,
     Table
   },
@@ -99,10 +103,10 @@ export default {
     },
 
     // Fetch appointments by search query and filter
-    async fetchAppointmentsBySearch() {
+    async fetchAppointmentsByFilter() {
       try {
         this.loading = true;
-        const response = await getAppointmentsBySearch(this.searchQuery, this.page, this.dateFilters);
+        const response = await getAppointmentsByFilter(this.searchQuery, this.page, this.dateFilters, this.statusFilters);
 
         if (this.page === 1) {
           this.users = response;
@@ -123,14 +127,21 @@ export default {
       this.searchQuery = query;
       this.page = 1;
       this.searchActive = true;
-      this.fetchAppointmentsBySearch();
+      this.fetchAppointmentsByFilter();
     },
 
     updateDateFilter(filters) {
       this.dateFilters = filters;
       this.page = 1;
       this.searchActive = true;
-      this.fetchAppointmentsBySearch();
+      this.fetchAppointmentsByFilter();
+    },
+
+    updateStatusFilter(status) {
+      this.statusFilters = status;
+      this.page = 1;
+      this.searchActive = true;
+      this.fetchAppointmentsByFilter();
     },
 
     emptySearch() {
@@ -151,7 +162,7 @@ export default {
       if (!this.searchActive) {
         this.fetchAllAppointments();
       } else {
-        this.fetchAppointmentsBySearch();
+        this.fetchAppointmentsByFilter();
       }
     },
   },
