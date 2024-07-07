@@ -58,7 +58,10 @@ class TimeSlotGenerator
                 $slotEnd = $nextSlotStart + $this->slotDuration;
 
                 // Check for regular slots
-                if ($this->isTimeSlotAvailable($nextSlotStart, $slotEnd, $reservedSlots, $breakTimes)) {
+                if (
+                    $this->isTimeSlotAvailable($nextSlotStart, $slotEnd, $reservedSlots, $breakTimes) &&
+                    !$this->isNewAppointmentOverlapping($nextSlotStart, $serviceDuration, $reservedSlots)
+                ) {
                     $availableSlots[] = [
                         'start' => $this->minutesToTime($nextSlotStart),
                         'end' => $this->minutesToTime($slotEnd)
@@ -146,6 +149,20 @@ class TimeSlotGenerator
             throw new InvalidArgumentException("Invalid or missing serviceDuration parameter");
         }
     }
+
+    private function isNewAppointmentOverlapping(int $start, int $duration, array $reservedSlots): bool
+    {
+        $end = $start + $duration;
+
+        foreach ($reservedSlots as $slot) {
+            if ($start < $slot['end'] && $end > $slot['start']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     private function isValidDate(string $date): bool
     {
