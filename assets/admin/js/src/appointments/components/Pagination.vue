@@ -1,15 +1,15 @@
-<!-- <template>
+<template>
   <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
     aria-label="Table navigation">
     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
       Showing
-      <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
+      <span class="font-semibold text-gray-900 dark:text-white">{{ startItem }}-{{ endItem }}</span>
       of
-      <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+      <span class="font-semibold text-gray-900 dark:text-white">{{ totalItems }}</span>
     </span>
     <ul class="inline-flex items-stretch -space-x-px">
       <li>
-        <a href="#"
+        <a href="#" @click.prevent="changePage(currentPage - 1)" :class="{ 'pointer-events-none': currentPage === 1 }"
           class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           <span class="sr-only">Previous</span>
           <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -20,28 +20,16 @@
           </svg>
         </a>
       </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+      <li v-for="page in displayedPages" :key="page">
+        <a href="#" @click.prevent="changePage(page)"
+          :class="{ 'bg-primary-50 text-primary-600 border-primary-300': page === currentPage, 'bg-white text-gray-500': page !== currentPage }"
+          class="flex items-center justify-center text-sm py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          {{ page }}
+        </a>
       </li>
       <li>
-        <a href="#"
-          class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-      </li>
-      <li>
-        <a href="#" aria-current="page"
-          class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-      </li>
-      <li>
-        <a href="#"
-          class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-      </li>
-      <li>
-        <a href="#"
+        <a href="#" @click.prevent="changePage(currentPage + 1)"
+          :class="{ 'pointer-events-none': currentPage === totalPages }"
           class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           <span class="sr-only">Next</span>
           <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -59,5 +47,46 @@
 <script>
 export default {
   name: 'Pagination',
+  props: {
+    currentPage: {
+      type: Number,
+      required: true
+    },
+    totalPages: {
+      type: Number,
+      required: true
+    },
+    totalItems: {
+      type: Number,
+      required: true
+    },
+    itemsPerPage: {
+      type: Number,
+      required: true
+    }
+  },
+  computed: {
+    startItem() {
+      return (this.currentPage - 1) * this.itemsPerPage + 1;
+    },
+    endItem() {
+      return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+    },
+    displayedPages() {
+      const range = 2;
+      const pages = [];
+      for (let i = Math.max(1, this.currentPage - range); i <= Math.min(this.totalPages, this.currentPage + range); i++) {
+        pages.push(i);
+      }
+      return pages;
+    }
+  },
+  methods: {
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.$emit('page-changed', page);
+      }
+    }
+  }
 };
-</script> -->
+</script>

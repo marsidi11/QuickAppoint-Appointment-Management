@@ -80,11 +80,20 @@ async function apiDelete(url, params = {}) {
 
 /**
  * Get All Appointments
- * @param {Object} appointmentData - Page number for pagination
+ * @param {number} page - Page number for pagination
+ * @param {number} itemsPerPage - Number of items per page
  * @returns {Promise<Object>}
  */
-export async function getAllAppointments(page) {
-    return apiGet(`${window.wpApiSettings.apiUrlAppointments}`, { page });
+export async function getAllAppointments(page = 1, itemsPerPage = 10) {
+    const params = { page, per_page: itemsPerPage };
+    const queryParams = new URLSearchParams(params).toString();
+    const response = await apiGet(`${window.wpApiSettings.apiUrlAppointments}?${queryParams}`);
+    
+    return {
+        data: response.appointments,
+        total: response.total,
+        totalPages: response.total_pages
+    };
 }
 
 /**
@@ -97,27 +106,37 @@ export async function deleteAppointment(appointmentId) {
 }
 
 /**
- * Get Appointment By Search & Filter Date
- * @param {Object} appointmentData - Search query, filter date and page number for pagination
- * @returns {Promise<Object>}
- */
-export async function getAppointmentsByFilter(searchTerm = '', page = 1, dateFilters = [], statusFilters = []) {
-    const params = { page };
+* Get Appointment By Search & Filter Date
+* @param {string} searchTerm - Search query
+* @param {number} page - Page number for pagination
+* @param {number} itemsPerPage - Number of items per page
+* @param {string[]} dateFilters - Array of date filters
+* @param {string[]} statusFilters - Array of status filters
+* @returns {Promise<Object>}
+*/
+export async function getAppointmentsByFilter(searchTerm = '', page = 1, itemsPerPage = 10, dateFilters = [], statusFilters = []) {
+   const params = { page, per_page: itemsPerPage };
 
-    if (searchTerm) {
-        params.search = searchTerm;
-    }
+   if (searchTerm) {
+       params.search = searchTerm;
+   }
 
-    if (dateFilters.length > 0) {
-        params.dateFilters = dateFilters;
-    }
+   if (dateFilters.length > 0) {
+       params.dateFilters = dateFilters.join(',');
+   }
 
-    if (statusFilters.length > 0) {
-        params.statusFilters = statusFilters;
-    }
-    
-    const queryParams = new URLSearchParams(params).toString();
-    return apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
+   if (statusFilters.length > 0) {
+       params.statusFilters = statusFilters.join(',');
+   }
+   
+   const queryParams = new URLSearchParams(params).toString();
+   const response = await apiGet(`${window.wpApiSettings.apiUrlAppointments}/search?${queryParams}`);
+   
+   return {
+       data: response.appointments,
+       total: response.total,
+       totalPages: response.total_pages
+   };
 }
 
 /**

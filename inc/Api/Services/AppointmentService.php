@@ -27,9 +27,9 @@ class AppointmentService
         $this->emailSender = $emailSender;
     }
 
-    public function getAllAppointments($page)
+    public function getAllAppointments($page, $per_page)
     {
-        return $this->appointmentRepository->getAllAppointments($page);
+        return $this->appointmentRepository->getAllAppointments($page, $per_page);
     }
 
     public function createAppointment($appointmentData)

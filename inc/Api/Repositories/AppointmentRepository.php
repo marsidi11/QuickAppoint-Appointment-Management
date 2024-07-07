@@ -30,28 +30,36 @@ class AppointmentRepository
         $this->services_table = $wpdb->prefix . 'am_services';
     }
 
-    public function getAllAppointments($page)
+    public function getAllAppointments($page, $per_page)
     {
-        $items_per_page = 10;
-        $offset = ($page - 1) * $items_per_page;
+        $offset = ($page - 1) * $per_page;
 
         $current_date = current_time('Y-m-d');
         $current_time = current_time('H:i:s');
 
-        $query = "SELECT a.*, 
-                    DATE_FORMAT(a.startTime, '%H:%i') as startTime,
-                    DATE_FORMAT(a.endTime, '%H:%i') as endTime,
-                    GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
-                    SUM(s.price) as total_price
-                FROM {$this->appointments_table} a
-                LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
-                LEFT JOIN {$this->services_table} s ON m.service_id = s.id
-                WHERE a.date > '$current_date' OR (a.date = '$current_date' AND a.endTime > '$current_time')
-                GROUP BY a.id
-                ORDER BY a.date ASC, a.startTime ASC
-                LIMIT $items_per_page OFFSET $offset";
+        $query = "SELECT SQL_CALC_FOUND_ROWS a.*, 
+                DATE_FORMAT(a.startTime, '%H:%i') as startTime,
+                DATE_FORMAT(a.endTime, '%H:%i') as endTime,
+                GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+                SUM(s.price) as total_price
+            FROM {$this->appointments_table} a
+            LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+            LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+            WHERE a.date > '$current_date' OR (a.date = '$current_date' AND a.endTime > '$current_time')
+            GROUP BY a.id
+            ORDER BY a.date ASC, a.startTime ASC
+            LIMIT $per_page OFFSET $offset";
 
-        return $this->wpdb->get_results($query);
+        $appointments = $this->wpdb->get_results($query);
+
+        $total_query = "SELECT FOUND_ROWS() as total";
+        $total = $this->wpdb->get_var($total_query);
+
+        return [
+            'appointments' => $appointments,
+            'total' => (int)$total,
+            'total_pages' => ceil($total / $per_page)
+        ];
     }
 
     public function createAppointment(Appointment $appointment)
@@ -181,7 +189,7 @@ class AppointmentRepository
         return $this->wpdb->get_results($query);
     }
 
-    public function filterAppointments(?string $search, ?array $dateFilters, ?string $dateRange, ?array $statusFilters, int $itemsPerPage, int $offset): array
+    public function filterAppointments(?string $search, ?array $dateFilters, ?string $dateRange, ?array $statusFilters, int $per_page, int $offset): array
     {
         $where_clauses = [];
         $where_params = [];
@@ -196,14 +204,17 @@ class AppointmentRepository
         if (!empty($dateFilters)) 
         {
             $date_filter_clauses = $this->buildDateFilterClauses($dateFilters, $where_params);
-            if (!empty($date_filter_clauses)) {
+            if (!empty($date_filter_clauses)) 
+            {
                 $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
             }
         }
 
-        if (!empty($dateRange)) {
+        if (!empty($dateRange)) 
+        {
             $date_range_clause = $this->buildDateRangeClause($dateRange, $where_params);
-            if ($date_range_clause) {
+            if ($date_range_clause) 
+            {
                 $where_clauses[] = $date_range_clause;
             }
         }
@@ -211,7 +222,8 @@ class AppointmentRepository
         if (!empty($statusFilters)) 
         {
             $status_filter_clauses = $this->buildStatusFilterClauses($statusFilters, $where_params);
-            if (!empty($status_filter_clauses)) {
+            if (!empty($status_filter_clauses)) 
+            {
                 $where_clauses[] = '(' . implode(' OR ', $status_filter_clauses) . ')';
             }
         }
@@ -219,22 +231,31 @@ class AppointmentRepository
         $where_sql = !empty($where_clauses) ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
 
         $query = $this->wpdb->prepare(
-            "SELECT a.*, 
-            DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
-            DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
-            GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
-            SUM(s.price) as total_price
-            FROM {$this->appointments_table} a
-            LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
-            LEFT JOIN {$this->services_table} s ON m.service_id = s.id
-            $where_sql
-            GROUP BY a.id
-            ORDER BY a.date ASC, a.startTime ASC
-            LIMIT %d OFFSET %d",
-            array_merge($where_params, [$itemsPerPage, $offset])
+            "SELECT SQL_CALC_FOUND_ROWS a.*, 
+        DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+        DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+        GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+        SUM(s.price) as total_price
+        FROM {$this->appointments_table} a
+        LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+        LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+        $where_sql
+        GROUP BY a.id
+        ORDER BY a.date ASC, a.startTime ASC
+        LIMIT %d OFFSET %d",
+            array_merge($where_params, [$per_page, $offset])
         );
 
-        return $this->wpdb->get_results($query);
+        $appointments = $this->wpdb->get_results($query);
+
+        $total_query = "SELECT FOUND_ROWS() as total";
+        $total = $this->wpdb->get_var($total_query);
+
+        return [
+            'appointments' => $appointments,
+            'total' => (int)$total,
+            'total_pages' => ceil($total / $per_page)
+        ];
     }
     
     private function buildDateFilterClauses(array $dateFilters, array &$where_params): array

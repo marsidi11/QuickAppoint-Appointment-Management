@@ -19,9 +19,9 @@
         <Table :columns="columns" :users="users" :currencySymbol="currencySymbol" @appointment-deleted="handleAppointmentDelete" />
 
         <div class="pl-4">
-          <button @click="loadMore" v-if="!loading"
-            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 my-5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Load
-            More</button>
+          <Pagination  :currentPage="currentPage" :totalPages="totalPages" :totalItems="totalItems" 
+            :itemsPerPage="itemsPerPage" @page-changed="handlePageChange"
+          />
           <div v-if="loading">Loading...</div>
           <div v-if="errorMessage">{{ errorMessage }}</div>
         </div>
@@ -37,6 +37,7 @@ import FilterDropdown from './components/FilterDropdown.vue';
 import StatusDropdown from './components/StatusDropdown.vue';
 import ReportsButton from './components/ReportsButton.vue';
 import Table from './components/Table.vue';
+import Pagination from './components/Pagination.vue';
 
 export default {
   name: 'AllAppointments',
@@ -49,7 +50,10 @@ export default {
       users: [],
       loading: false,
       errorMessage: null,
-      page: 1,
+      currentPage: 1,
+      totalPages: 1,
+      totalItems: 0,
+      itemsPerPage: 10,
       currencySymbol: '$', // Default currency symbol
       searchActive: false,
       searchQuery: '',
@@ -63,7 +67,8 @@ export default {
     FilterDropdown,
     StatusDropdown,
     ReportsButton,
-    Table
+    Table,
+    Pagination,
   },
 
   methods: {
@@ -84,17 +89,12 @@ export default {
     async fetchAllAppointments() {
       try {
         this.loading = true;
-        const response = await getAllAppointments(this.page);
+        const response = await getAllAppointments(this.currentPage, this.itemsPerPage);
 
-        if (this.page === 1) {
-          this.users = response;
-        } else {
-          this.users = [...this.users, ...response];
-        }
+        this.users = response.data;
+        this.totalItems = response.total;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
-        if (response.length === 0) {
-          this.errorMessage = 'No more appointments to load';
-        }
       } catch (error) {
         this.errorMessage = error.message || 'Failed to load appointments';
       } finally {
@@ -106,20 +106,25 @@ export default {
     async fetchAppointmentsByFilter() {
       try {
         this.loading = true;
-        const response = await getAppointmentsByFilter(this.searchQuery, this.page, this.dateFilters, this.statusFilters);
+        const response = await getAppointmentsByFilter(this.searchQuery, this.currentPage, this.itemsPerPage, this.dateFilters, this.statusFilters);
 
-        if (this.page === 1) {
-          this.users = response;
-        } else {
-          this.users = [...this.users, ...response];
-        }
-        if (response.length === 0) {
-          this.errorMessage = 'No more appointments to load';
-        }
+        this.users = response.data;
+        this.totalItems = response.total;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+
       } catch (error) {
         this.errorMessage = error.message || 'Failed to load appointments';
       } finally {
         this.loading = false;
+      }
+    },
+
+    handlePageChange(newPage) {
+      this.currentPage = newPage;
+      if (this.searchActive) {
+        this.fetchAppointmentsByFilter();
+      } else {
+        this.fetchAllAppointments();
       }
     },
 

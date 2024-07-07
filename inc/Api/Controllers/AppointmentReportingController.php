@@ -136,7 +136,7 @@ class AppointmentReportingController extends WP_REST_Controller
         return new WP_REST_Response($reserved_time_slots, 200);
     }
 
-    public function get_filtered_appointments($request)
+    public function get_filtered_appointments(WP_REST_Request $request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -148,10 +148,17 @@ class AppointmentReportingController extends WP_REST_Controller
         $date_range = $request->get_param('dateRange');
         $status_filters = $request->get_param('statusFilters');
         $page = $request->get_param('page') ?: 1;
+        $per_page = $request->get_param('per_page') ?: 10;
 
-        $appointments = $this->reportingService->filterAppointments($search, $date_filters, $date_range, $status_filters, $page);
+        $result = $this->reportingService->filterAppointments($search, $date_filters, $date_range, $status_filters, $page, $per_page);
 
-        return new WP_REST_Response($appointments, 200);
+        return new WP_REST_Response([
+            'appointments' => $result['appointments'],
+            'total' => $result['total'],
+            'total_pages' => $result['total_pages']
+        ],
+            200
+        );
     }
 
     public function get_data_report(WP_REST_Request $request)

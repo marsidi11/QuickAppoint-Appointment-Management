@@ -94,17 +94,25 @@ class AppointmentController extends WP_REST_Controller
         return true;
     }
 
-    public function get_all_appointments(WP_REST_Request $request) 
+    public function get_all_appointments(WP_REST_Request $request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
             return $nonce_validation;
         }
-        
-        $page = $request->get_param('page');
-        $appointments = $this->appointmentService->getAllAppointments($page);
-        
-        return new WP_REST_Response($appointments, 200);
+
+        $page = $request->get_param('page') ?: 1;
+        $per_page = $request->get_param('per_page') ?: 10;
+
+        $result = $this->appointmentService->getAllAppointments($page, $per_page);
+
+        return new WP_REST_Response([
+            'appointments' => $result['appointments'],
+            'total' => $result['total'],
+            'total_pages' => $result['total_pages']
+        ],
+            200
+        );
     }
 
     public function post_appointment_data(WP_REST_Request $request)
