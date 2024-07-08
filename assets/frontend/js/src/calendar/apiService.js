@@ -23,7 +23,7 @@ function handleError(error) {
 
 // Check if API Settings are set
 function checkApiSettings() {
-	if (!window.wpApiSettings || !window.wpApiSettings.nonce) {
+	if (!window.am_plugin_api_settings || !window.am_plugin_api_settings.nonce) {
 		console.log('Nonce is not set');
 		return false;
 	}
@@ -33,7 +33,7 @@ function checkApiSettings() {
 // Helper function to get headers
 function getHeaders() {
 	return {
-		'X-WP-Nonce': window.wpApiSettings.nonce,
+		'X-WP-Nonce': window.am_plugin_api_settings.nonce,
 	};
 }
 
@@ -72,7 +72,7 @@ async function apiPost(url, data) {
  * @returns {Promise<Object>}
  */
 export async function createAppointment(appointmentData) {
-	return apiPost(window.wpApiSettings.apiUrlAppointments + '/create', appointmentData);
+	return apiPost(window.am_plugin_api_settings.apiUrlAppointments + '/create', appointmentData);
 }
 
 /**
@@ -80,7 +80,7 @@ export async function createAppointment(appointmentData) {
  * @returns {Promise<Object>}
  */
 export async function getServices() {
-	return apiGet(window.wpApiSettings.apiUrlServices);
+	return apiGet(window.am_plugin_api_settings.apiUrlServices);
 }
 
 /**
@@ -88,7 +88,7 @@ export async function getServices() {
  * @returns {Promise<Object>}
  */
 export async function getDatesRange() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/dates-range');
+	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/dates-range');
 }
 
 /**
@@ -96,7 +96,7 @@ export async function getDatesRange() {
  * @returns {Promise<Object>}
  */
 export async function getOpenDays() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/open-days');
+	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/open-days');
 }
 
 /**
@@ -105,7 +105,7 @@ export async function getOpenDays() {
  * @returns {Promise<Object>}
  */
 export async function getAvailableTimeSlots(date, serviceDuration) {
-	return apiGet(window.wpApiSettings.apiUrlAppointments + '/available-time-slots', { date, serviceDuration });
+	return apiGet(window.am_plugin_api_settings.apiUrlAppointments + '/available-time-slots', { date, serviceDuration });
 }
 
 /**
@@ -113,5 +113,5 @@ export async function getAvailableTimeSlots(date, serviceDuration) {
  * @returns {Promise<Object>}
  */
 export async function getCurrencySymbol() {
-	return apiGet(window.wpApiSettings.apiUrlOptions + '/currency-symbol');
+	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/currency-symbol');
 }
