@@ -15,6 +15,15 @@
     line-height: 1.5;
 }
 
+#am-app button {
+    @apply border-0 h-[40px] leading-4 rounded-md;
+}
+
+#am-app input {
+    @apply min-h-11 px-5 py-1 rounded-md;
+
+}
+
 #am-app .calendar-container {
     @apply flex items-center justify-center w-full p-2 my-10 rounded;
 }
@@ -172,7 +181,7 @@
 /* Calendar Services Style */
 
 .calendar-services {
-    @apply md:px-6 rounded-lg transition-all duration-300 ease-in-out flex flex-col items-center;
+    @apply md:px-6 rounded-md transition-all duration-300 ease-in-out flex flex-col items-center;
 }
 
 .calendar-services > .calendar-services-header {
@@ -184,7 +193,7 @@
 }
 
 .service-box {
-    @apply flex flex-col justify-between h-full max-w-sm px-6 py-4 bg-background-600 border-4 border-primary-400 rounded-lg shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply flex flex-col justify-between h-full max-w-sm px-6 py-4 bg-background-600 border-4 border-primary-400 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 
@@ -234,7 +243,7 @@
 /* Calendar Time Style */
 
 .calendar-time {
-    @apply md:px-6 rounded-lg transition-all duration-300 ease-in-out flex flex-col items-center; 
+    @apply md:px-6 rounded-md transition-all duration-300 ease-in-out flex flex-col items-center; 
 }
   
 .calendar-time > .calendar-time-header {
@@ -242,7 +251,7 @@
 }
   
 .calendar-time-body {
-    @apply bg-background-600 rounded-lg grid gap-6 m-auto w-full p-6;
+    @apply bg-background-600 rounded-md grid gap-6 m-auto w-full p-6;
 }
 
 .calendar-time-row {
@@ -250,7 +259,7 @@
 }
 
 .calendar-time-item {
-    @apply bg-background-600 p-4 w-full max-w-sm rounded-lg cursor-pointer text-center border-4 border-primary-400 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply bg-background-600 p-4 w-full max-w-sm rounded-md cursor-pointer text-center border-4 border-primary-400 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 
@@ -273,7 +282,7 @@
 /* Calendar User Data Style */
 
 .input-form {
-    @apply md:px-6 rounded-lg transition-all duration-300 ease-in-out flex flex-col items-center;
+    @apply md:px-6 rounded-md transition-all duration-300 ease-in-out flex flex-col items-center;
 }
 
 .input-form > .form-title {
@@ -281,7 +290,7 @@
 }
 
 .user-details {
-    @apply w-full mx-auto bg-background-600 shadow-sm border-2 border-primary-600 rounded-lg p-4 mb-4;
+    @apply w-full mx-auto bg-background-600 shadow-sm border-2 border-primary-600 rounded-md p-4 mb-4;
 }
 
 .user-details-row {
@@ -320,8 +329,8 @@
     @apply block mb-2 text-sm font-medium text-tertiary-600;
 }
 
-.form-group input {
-    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-sm rounded-lg focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
+#am-app .form-group input {
+    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-sm rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
 }
 
 /* Navigation Buttons */
@@ -332,7 +341,7 @@
   
 .nav-previous,
 .nav-next {
-    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-tertiary-50 bg-primary-600 rounded-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
+    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-tertiary-50 bg-primary-600 rounded-md hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
 }
 
 .nav-previous {
@@ -340,7 +349,7 @@
 }
   
 .button-appointment {
-    @apply px-3 py-2 text-tertiary-50 text-sm font-medium text-center rounded-lg bg-secondary-600 hover:bg-secondary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
+    @apply px-3 py-2 text-tertiary-50 text-sm font-medium text-center rounded-md bg-secondary-600 hover:bg-secondary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
 }
 
 /* Messages */

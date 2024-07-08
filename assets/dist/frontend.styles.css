@@ -703,6 +703,10 @@ video {
   height: 1.25rem;
 }
 
+.h-\[40px\] {
+  height: 40px;
+}
+
 .h-\[416px\] {
   height: 416px;
 }
@@ -757,6 +761,10 @@ video {
 
 .max-h-screen {
   max-height: 100vh;
+}
+
+.min-h-11 {
+  min-height: 2.75rem;
 }
 
 .w-11 {
@@ -1007,6 +1015,10 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-0 {
+  border-width: 0px;
 }
 
 .border-2 {
@@ -1301,6 +1313,10 @@ video {
   text-transform: uppercase;
 }
 
+.leading-4 {
+  line-height: 1rem;
+}
+
 .leading-tight {
   line-height: 1.25;
 }
@@ -1477,6 +1493,22 @@ video {
 #am-app {
   font-size: 16px;
   line-height: 1.5;
+}
+
+#am-app button {
+  height: 40px;
+  border-radius: 0.375rem;
+  border-width: 0px;
+  line-height: 1rem;
+}
+
+#am-app input {
+  min-height: 2.75rem;
+  border-radius: 0.375rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 #am-app .calendar-container {
@@ -1788,7 +1820,7 @@ video {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1825,7 +1857,7 @@ video {
   cursor: pointer;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   border-width: 4px;
   border-color: var(--primary-color-400);
   background-color: var(--background-color-600);
@@ -1921,7 +1953,7 @@ video {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1947,7 +1979,7 @@ video {
   display: grid;
   width: 100%;
   gap: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background-color: var(--background-color-600);
   padding: 1.5rem;
 }
@@ -1963,7 +1995,7 @@ video {
   width: 100%;
   max-width: 24rem;
   cursor: pointer;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   border-width: 4px;
   border-color: var(--primary-color-400);
   background-color: var(--background-color-600);
@@ -2026,7 +2058,7 @@ video {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -2052,7 +2084,7 @@ video {
   margin-right: auto;
   margin-bottom: 1rem;
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   border-width: 2px;
   border-color: var(--primary-color-600);
   background-color: var(--background-color-600);
@@ -2122,10 +2154,10 @@ video {
   color: var(--tertiary-color-600);
 }
 
-.form-group input {
+#am-app .form-group input {
   display: block;
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   border-width: 1px;
   border-color: var(--primary-color-600);
   background-color: var(--background-color-600);
@@ -2135,7 +2167,7 @@ video {
   color: var(--tertiary-color-600);
 }
 
-.form-group input:focus {
+#am-app .form-group input:focus {
   border-color: var(--secondary-color-600);
   --tw-ring-color: var(--secondary-color-600);
 }
@@ -2161,7 +2193,7 @@ video {
 .nav-next {
   display: inline-flex;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background-color: var(--primary-color-600);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -2194,7 +2226,7 @@ video {
 }
 
 .button-appointment {
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background-color: var(--secondary-color-600);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
