@@ -31,7 +31,6 @@
 
         <form @submit.prevent="submitForm" class="form">
 
-
             <div class="form-group">
                 <label for="name" class="label">Name:</label>
                 <input type="text" id="name" v-model="name" placeholder="Name" required class="input">

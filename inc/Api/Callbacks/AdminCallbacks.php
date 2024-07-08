@@ -57,6 +57,16 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
+    public function amNotificationsEmail(): void
+    {
+        $this->renderInputField('notifications_email', 'text', get_option('notifications_email'), 'Notifications Email');
+    }
+
+    /**
+     * Renders the currency symbol input field.
+     *
+     * @return void
+     */
     public function amCurrencySymbol(): void
     {
         $this->renderInputField('currency_symbol', 'text', '$', 'Currency Symbol');

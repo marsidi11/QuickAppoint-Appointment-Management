@@ -36,7 +36,8 @@ class AppointmentService
     {
         // Validate the appointment data
         $validation = $this->validateAppointmentData($appointmentData);
-        if (is_wp_error($validation)) {
+        if (is_wp_error($validation)) 
+        {
             return $validation;
         }
 
@@ -70,7 +71,15 @@ class AppointmentService
             error_log('Failed to send admin notification email: ' . $admin_email_result->get_error_message());
         }
 
-        return true;
+        // Generate the confirmation URL with the full website address
+        $site_url = get_site_url();
+        $confirmation_url = $site_url . "/appointment-confirmation?token={$token}&action=check_appointment_info";
+
+        return [
+            'success' => true,
+            'message' => 'Appointment created successfully. Please check your email for confirmation.',
+            'confirmation_url' => $confirmation_url
+        ];
     }
 
     public function deleteAppointment($appointmentId)

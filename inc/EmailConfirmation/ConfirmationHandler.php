@@ -46,7 +46,8 @@ class ConfirmationHandler extends BaseController
         {
             $update_result = $this->appointmentRepository->updateAppointmentStatus($token, 'Confirmed');
             
-            if (is_wp_error($update_result)) {
+            if (is_wp_error($update_result)) 
+            {
                 wp_redirect(home_url('/appointment-confirmation?status=error&message=' . urlencode($update_result->get_error_message())));
                 exit;
             }

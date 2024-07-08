@@ -72,7 +72,21 @@ async function apiPost(url, data) {
  * @returns {Promise<Object>}
  */
 export async function createAppointment(appointmentData) {
-	return apiPost(window.am_plugin_api_settings.apiUrlAppointments + '/create', appointmentData);
+	try {
+        const response = await apiPost(window.am_plugin_api_settings.apiUrlAppointments + '/create', appointmentData);
+        
+        return {
+            success: true,
+            message: response.message,
+            confirmationUrl: response.confirmation_url
+        };
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        return {
+            success: false,
+            message: error.message || 'An unexpected error occurred. Please try again later.'
+        };
+    }
 }
 
 /**

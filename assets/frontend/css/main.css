@@ -61,7 +61,7 @@
     .calendar-services,
     .calendar-time,
     .input-form {
-        @apply h-[448px];
+        @apply h-[418px];
     }
 }
 
@@ -358,11 +358,19 @@
 }
 
 .success-message {
-    @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+    @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-14;
 }
 
 .loading-message {
     @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+}
+
+.view-appointment-link {
+    @apply block mt-1.5 text-secondary-700 no-underline;
+}
+
+.view-appointment-link:hover {
+    @apply underline;
 }
 
 /* Loading */

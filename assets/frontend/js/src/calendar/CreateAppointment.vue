@@ -4,7 +4,12 @@
         <button class="button-appointment" @click="createAppointment">Submit</button>
     </div>
     <div v-if="loading" class="loading-message">Loading...</div>
-    <div v-if="messageInfo" :class="messageInfo.class">{{ messageInfo.message }}</div>
+    <div v-if="messageInfo" :class="messageInfo.class">
+        {{ messageInfo.message }}
+        <a v-if="messageInfo.confirmationUrl" :href="messageInfo.confirmationUrl" class="view-appointment-link">
+            View Appointment
+        </a>
+    </div>
 </template>
 
 <script>
@@ -20,6 +25,7 @@ export default {
             loading: false,
             errorMessage: null,
             successMessage: null,
+            confirmationUrl: null,
         };
     },
 
@@ -35,10 +41,16 @@ export default {
                 this.loading = true;
                 this.errorMessage = null;
                 this.successMessage = null;
+                this.confirmationUrl = null;
 
-                await createAppointment(this.appointmentData);
+                const result = await createAppointment(this.appointmentData);
 
-                this.successMessage = 'Appointment created successfully';
+                if (result.success) {
+                    this.successMessage = result.message;
+                    this.confirmationUrl = result.confirmationUrl;
+                } else {
+                    this.errorMessage = result.message;
+                }
 
             } catch (error) {
                 this.errorMessage = `Error creating appointment: ${error.message}`;
@@ -54,7 +66,11 @@ export default {
             if (this.errorMessage) {
                 return { message: this.errorMessage, class: 'error-message' };
             } else if (this.successMessage) {
-                return { message: this.successMessage, class: 'success-message' };
+                return { 
+                    message: this.successMessage, 
+                    class: 'success-message',
+                    confirmationUrl: this.confirmationUrl
+                };
             }
             return null;
         },

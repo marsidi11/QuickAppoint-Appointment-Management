@@ -129,7 +129,14 @@ class AppointmentController extends WP_REST_Controller
             return $result;
         }
 
-        return new WP_REST_Response('Appointment created successfully. Please check your email for confirmation', 201);
+        if ($result['success']) {
+            return new WP_REST_Response([
+                'message' => $result['message'],
+                'confirmation_url' => $result['confirmation_url']
+            ], 201);
+        } else {
+            return new WP_Error('appointment_creation_failed', 'Failed to create appointment', ['status' => 500]);
+        }
     }
 
     public function delete_appointment_data(WP_REST_Request $request) 

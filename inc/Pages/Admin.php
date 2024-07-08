@@ -70,6 +70,7 @@ class Admin extends BaseController
     private function setSettings() 
     {
         $args = [
+            $this->createSettingArg('notifications_email'),
             $this->createSettingArg('currency_symbol'),
             $this->createSettingArg('open_time'),
             $this->createSettingArg('close_time'),
@@ -115,6 +116,7 @@ class Admin extends BaseController
     private function setFields() 
     {
         $args = [
+            $this->createFieldArg('notifications_email', 'Notifications Email (, multipe)', 'amNotificationsEmail', 'notifications-email'),
             $this->createFieldArg('currency_symbol', 'Currency Symbol ($)', 'amCurrencySymbol', 'currency-symbol'),
             $this->createFieldArg('open_time', 'Open Time', 'amOpenTime', 'select-time'),
             $this->createFieldArg('close_time', 'Close Time', 'amCloseTime', 'select-time'),
