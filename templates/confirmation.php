@@ -1,19 +1,33 @@
 <?php
-$appointment_repository = new Inc\Api\Repositories\AppointmentRepository();
 
-if (isset($_GET['token'])) {
+use Inc\Api\Repositories\AppointmentRepository;
+use Inc\EmailConfirmation\EmailSender;
+
+$appointment_repository = new AppointmentRepository();
+$email_sender = new EmailSender();
+
+if (isset($_GET['token'])) 
+{
     $token = sanitize_text_field($_GET['token']);
     $appointment = $appointment_repository->getAppointmentByToken($token);
 
     if (!is_wp_error($appointment)) {
         // Handle form submissions
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') 
+        {
             $result = $appointment_repository->updateAppointmentStatus($token, 'Cancelled');
-            if (!is_wp_error($result)) {
+            if (!is_wp_error($result)) 
+            {
                 echo '<div class="am-message am-message--success">Your appointment has been cancelled successfully.</div>';
+                
+                // Send cancellation email to user and admin
+                $emailSender->appointment_cancelled_user($appointment->getEmail(), $token);
+                $emailSender->appointment_cancelled_admin($token);
+
                 // Refresh appointment data after cancellation
                 $appointment = $appointment_repository->getAppointmentByToken($token);
-            } else {
+            } else 
+            {
                 echo '<div class="am-message am-message--error">Failed to cancel the appointment. Please try again later or contact support.</div>';
             }
         }
@@ -80,12 +94,18 @@ if (isset($_GET['token'])) {
                     </form>
                 <?php endif; ?>
             </div>
+            <p>Notes <br>
+            1. If your status is "Pending" and you haven't received an email (check spam), your appointment is considered confirmed. If you did receive an email, please click the link within to confirm. A pending status without email is treated as confirmed. <br>
+            2. If you cancel your appointment, it cannot be restored - you must create a new one. Also to change the time or services, cancel this appointment and create a new one.
+            </p>
         </div>
         <?php
-    } else {
+    } else 
+    {
         echo '<div class="am-message am-message--error">Appointment details not found. Please check your link and try again.</div>';
     }
-} else {
+} else 
+{
     echo '<div class="am-message am-message--error">No appointment token provided. Please use the link from your confirmation email.</div>';
 }
 ?>

@@ -386,7 +386,7 @@
 /* Appointment Confirmation Page */
 
 .am-confirmation {
-    @apply w-full max-w-2xl mx-auto mt-8 p-8 bg-white rounded-lg shadow-lg border border-gray-200;
+    @apply w-full max-w-2xl mx-auto mt-8 px-8 pt-8 pb-4 bg-white rounded-lg shadow-lg border border-gray-200;
 }
 
 .am-confirmation__title {
@@ -426,7 +426,7 @@
 }
 
 .am-btn--danger {
-    @apply bg-red-500 text-white hover:bg-red-600 focus:ring-red-500;
+    @apply bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 mb-8;
 }
 
 .am-message {
@@ -459,4 +459,8 @@
 
 .am-status--cancelled {
     @apply bg-red-100 text-red-800;
+}
+
+.am-confirmation > p {
+    @apply text-sm;
 }

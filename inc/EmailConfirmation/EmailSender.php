@@ -7,7 +7,16 @@ namespace Inc\EmailConfirmation;
 use Inc\Base\BaseController;
 use WP_Error;
 
-class EmailSender extends BaseController {
+class EmailSender extends BaseController 
+{   
+    private $admin_emails = [];
+
+    public function __construct() 
+    {
+        parent::__construct(); 
+        $this->admin_emails = $this->get_admin_emails();
+    }
+
     /**
      * Send confirmation email to the user
      *
@@ -15,7 +24,7 @@ class EmailSender extends BaseController {
      * @param string $token The verification token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function send_confirmation_email_to_user($user_email, $token) {
+    public function new_appointment_user($user_email, $token) {
         if (!is_email($user_email)) {
             return new WP_Error('invalid_email', 'Invalid email address');
         }
@@ -25,8 +34,8 @@ class EmailSender extends BaseController {
             'action' => 'verify_appointment'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('amp_confirmation_email_subject', 'Please verify your appointment');
-        $message = $this->get_email_template('user_confirmation', [
+        $subject = apply_filters('am_new_appointment_user_subject', 'Please verify your appointment');
+        $message = $this->get_email_template('new_appointment_user', [
             'confirmation_url' => $confirmation_url
         ]);
 
@@ -36,15 +45,15 @@ class EmailSender extends BaseController {
     /**
      * Notify admin about a new appointment
      *
-     * @param string $admin_email The admin's email address
      * @param array $appointment_data The appointment details
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function notify_admin_about_appointment($admin_email, $appointment_data, $token) 
+    public function new_appointment_admin($appointment_data, $token) 
     {
-        if (!is_email($admin_email)) {
-            return new WP_Error('invalid_email', 'Invalid admin email address');
+        if (empty($this->admin_emails)) 
+        {
+            return new WP_Error('no_admin_emails', 'No valid admin email addresses found');
         }
 
         $check_info_url = esc_url(add_query_arg([
@@ -52,36 +61,132 @@ class EmailSender extends BaseController {
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('amp_admin_notification_subject', 'New Appointment');
-        $message = $this->get_email_template('admin_notification', [
+        $subject = apply_filters('am_new_appointment_admin_subject', 'New Appointment');
+        $message = $this->get_email_template('new_appointment_admin', [
             'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
         ]);
 
-        return $this->send_email($admin_email, $subject, $message);
+        foreach ($this->admin_emails as $admin_email) 
+        {
+            if (is_email($admin_email)) {
+                $this->send_email($admin_email, $subject, $message);
+            }
+        }
+    
+        return true;
     }
 
     /**
-     * Send an email to when the appointment is confirmed to the user
+     * Send an email when the appointment is confirmed to the user
      *
      * @param string $user_email The user's email address
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function send_appointment_confirmed_email($user_email, $token)
+    public function appointment_confirmed_user($user_email, $token)
     {
         $check_info_url = esc_url(add_query_arg([
             'token' => urlencode($token),
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('amp_appointment_confirmed_subject', 'Your appointment has been confirmed');
-        $message = $this->get_email_template('appointment_confirmed', [
+        $subject = apply_filters('am_appointment_confirmed_user_subject', 'Your appointment has been confirmed');
+        $message = $this->get_email_template('appointment_confirmed_user', [
             'user_email' => $user_email,
             'check_info_url' => $check_info_url
         ]);
 
         return $this->send_email($user_email, $subject, $message);
+    }
+
+    /**
+     * Send an email when the appointment is confirmed to the admin
+     *
+     * @param string $token The appointment token
+     * @return bool|WP_Error True on success, WP_Error on failure
+     */
+    public function appointment_confirmed_admin($token)
+    {
+        if (empty($this->admin_emails)) {
+            return new WP_Error('no_admin_emails', 'No valid admin email addresses found');
+        }
+
+        $check_info_url = esc_url(add_query_arg([
+            'token' => urlencode($token),
+            'action' => 'check_appointment_info'
+        ], home_url('/appointment-confirmation')));
+
+        $subject = apply_filters('am_appointment_confirmed_admin_subject', 'An appointment has been confirmed');
+        $message = $this->get_email_template('appointment_confirmed_admin', [
+            'check_info_url' => $check_info_url
+        ]);
+
+        foreach ($this->admin_emails as $admin_email) 
+        {
+            if (is_email($admin_email)) 
+            {
+                $this->send_email($admin_email, $subject, $message);
+            }
+        }
+
+        return true; 
+    }
+
+    /**
+     * Send an email when the appointment is cancelled to the user
+     *
+     * @param string $user_email The user's email address
+     * @param string $token The appointment token
+     * @return bool|WP_Error True on success, WP_Error on failure
+     */
+    public function appointment_cancelled_user($user_email, $token)
+    {
+        $check_info_url = esc_url(add_query_arg([
+            'token' => urlencode($token),
+            'action' => 'check_appointment_info'
+        ], home_url('/appointment-confirmation')));
+
+        $subject = apply_filters('am_appointment_cancelled_user_subject', 'Your appointment has been successfully cancelled.');
+        $message = $this->get_email_template('appointment_cancelled_user', [
+            'user_email' => $user_email,
+            'check_info_url' => $check_info_url
+        ]);
+
+        return $this->send_email($user_email, $subject, $message);
+    }
+
+    /**
+     * Send an email when the appointment is cancelled to the admin
+     *
+     * @param string $token The appointment token
+     * @return bool|WP_Error True on success, WP_Error on failure
+     */
+    public function appointment_cancelled_admin($token)
+    {
+        if (empty($this->admin_emails)) {
+            return new WP_Error('no_admin_emails', 'No valid admin email addresses found');
+        }
+
+        $check_info_url = esc_url(add_query_arg([
+            'token' => urlencode($token),
+            'action' => 'check_appointment_info'
+        ], home_url('/appointment-confirmation')));
+
+        $subject = apply_filters('am_appointment_cancelled_admin_subject', 'An appointment has been cancelled.');
+        $message = $this->get_email_template('appointment_cancelled_admin', [
+            'check_info_url' => $check_info_url
+        ]);
+
+        foreach ($this->admin_emails as $admin_email) 
+        {
+            if (is_email($admin_email)) 
+            {
+                $this->send_email($admin_email, $subject, $message);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -93,9 +198,10 @@ class EmailSender extends BaseController {
      */
     private function get_email_template($template_name, $data) 
     {
-        $template_path = apply_filters('amp_email_template_path', $this->plugin_path . "templates/emails/{$template_name}.php");
+        $template_path = apply_filters('am_email_template_path', $this->plugin_path . "templates/emails/{$template_name}.php");
         
-        if (!file_exists($template_path)) {
+        if (!file_exists($template_path)) 
+        {
             return '';
         }
 
@@ -128,5 +234,22 @@ class EmailSender extends BaseController {
         }
 
         return true;
+    }
+
+    /**
+     * Get admin emails
+     * 
+     * @return array Admin emails
+     */
+    public function get_admin_emails() 
+    {
+        $emails = get_option('notifications_email');
+        if (!$emails) 
+        {
+            return [];
+        }
+        $email_array = explode(',', $emails);
+        $email_array = array_map('trim', $email_array);
+        return array_filter($email_array, 'is_email');
     }
 }

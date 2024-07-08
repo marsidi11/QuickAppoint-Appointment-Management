@@ -55,7 +55,7 @@ class AppointmentService
         }
 
         // Send confirmation email to user
-        $user_email_result = $this->emailSender->send_confirmation_email_to_user($appointment->getEmail(), $token);
+        $user_email_result = $this->emailSender->new_appointment_user($appointment->getEmail(), $token);
         if (is_wp_error($user_email_result)) 
         {
             // Log the error, but don't stop the process
@@ -63,8 +63,7 @@ class AppointmentService
         }
 
         // Notify admin about the new appointment
-        $admin_email = get_option('admin_email');
-        $admin_email_result = $this->emailSender->notify_admin_about_appointment($admin_email, $appointmentData, $token);
+        $admin_email_result = $this->emailSender->new_appointment_admin($appointmentData, $token);
         if (is_wp_error($admin_email_result)) 
         {
             // Log the error, but don't stop the process
@@ -77,7 +76,7 @@ class AppointmentService
 
         return [
             'success' => true,
-            'message' => 'Appointment created successfully. Please check your email for confirmation.',
+            'message' => 'Appointment created successfully.',
             'confirmation_url' => $confirmation_url
         ];
     }
