@@ -831,8 +831,8 @@ video {
   max-width: 42rem;
 }
 
-.max-w-\[80\%\] {
-  max-width: 80%;
+.max-w-\[50\%\] {
+  max-width: 50%;
 }
 
 .max-w-sm {
@@ -1264,10 +1264,6 @@ video {
   text-align: center;
 }
 
-.text-right {
-  text-align: right;
-}
-
 .font-\[sans-serif\] {
   font-family: sans-serif;
 }
@@ -1574,7 +1570,7 @@ video {
     .calendar-time,
     .input-form {
     height: calc(100vh - 4rem);
-    max-height: 410px;
+    max-height: 412px;
   }
 }
 
@@ -1867,6 +1863,10 @@ video {
   padding: 1rem;
 }
 
+.services-container {
+  width: 100%;
+}
+
 .service-box {
   display: flex;
   height: 100%;
@@ -2119,11 +2119,13 @@ video {
 
 .user-details-item {
   display: flex;
+  max-width: 50%;
   align-items: center;
 }
 
 .detail-label {
   margin-right: 0.25rem;
+  flex-shrink: 0;
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
@@ -2131,18 +2133,14 @@ video {
 }
 
 .detail-value {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 600;
   color: var(--tertiary-color-600);
-}
-
-.detail-services {
-  max-width: 80%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: right;
 }
 
 .detail-total {

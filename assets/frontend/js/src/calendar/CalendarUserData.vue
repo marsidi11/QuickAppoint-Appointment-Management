@@ -3,7 +3,6 @@
 
         <h2 class="form-title">Your Information</h2>
 
-
         <div class="user-details">
             <div class="user-details-row">
                 <div class="user-details-item">

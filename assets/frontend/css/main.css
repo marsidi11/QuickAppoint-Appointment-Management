@@ -48,7 +48,7 @@
     .calendar-time,
     .input-form {
         @apply h-[calc(100vh-4rem)];
-        max-height: 410px;
+        max-height: 412px;
     }
 }
 
@@ -192,6 +192,10 @@
     @apply grid gap-4 m-auto w-full p-4;
 }
 
+.services-container {
+    @apply w-full;
+}
+
 .service-box {
     @apply flex flex-col justify-between h-full px-6 py-4 bg-background-600 border-2 border-primary-400 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
@@ -298,19 +302,15 @@
 }
 
 .user-details-item {
-    @apply flex items-center;
+    @apply flex items-center max-w-[50%];
 }
 
 .detail-label {
-    @apply text-xs font-medium text-tertiary-600 mr-1;
+    @apply text-xs font-medium text-tertiary-600 mr-1 shrink-0;
 }
 
 .detail-value {
-    @apply text-sm font-semibold text-tertiary-600;
-}
-
-.detail-services {
-    @apply text-right max-w-[80%] truncate;
+    @apply text-sm font-semibold text-tertiary-600 truncate flex-grow;
 }
 
 .detail-total {
