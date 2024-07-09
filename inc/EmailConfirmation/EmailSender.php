@@ -81,10 +81,11 @@ class EmailSender extends BaseController
      * Send an email when the appointment is confirmed to the user
      *
      * @param string $user_email The user's email address
+     * @param array $appointment_data The appointment details
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function appointment_confirmed_user($user_email, $token)
+    public function appointment_confirmed_user($user_email, $appointment_data, $token)
     {
         $check_info_url = esc_url(add_query_arg([
             'token' => urlencode($token),
@@ -94,6 +95,7 @@ class EmailSender extends BaseController
         $subject = apply_filters('am_appointment_confirmed_user_subject', 'Your appointment has been confirmed');
         $message = $this->get_email_template('appointment_confirmed_user', [
             'user_email' => $user_email,
+            'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
         ]);
 
@@ -103,10 +105,11 @@ class EmailSender extends BaseController
     /**
      * Send an email when the appointment is confirmed to the admin
      *
+     * @param array $appointment_data The appointment details
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function appointment_confirmed_admin($token)
+    public function appointment_confirmed_admin($appointment_data, $token)
     {
         if (empty($this->admin_emails)) {
             return new WP_Error('no_admin_emails', 'No valid admin email addresses found');
@@ -119,6 +122,7 @@ class EmailSender extends BaseController
 
         $subject = apply_filters('am_appointment_confirmed_admin_subject', 'An appointment has been confirmed');
         $message = $this->get_email_template('appointment_confirmed_admin', [
+            'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
         ]);
 
@@ -137,10 +141,11 @@ class EmailSender extends BaseController
      * Send an email when the appointment is cancelled to the user
      *
      * @param string $user_email The user's email address
+     * @param array $appointment_data The appointment details
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function appointment_cancelled_user($user_email, $token)
+    public function appointment_cancelled_user($user_email, $appointment_data, $token)
     {
         $check_info_url = esc_url(add_query_arg([
             'token' => urlencode($token),
@@ -150,6 +155,7 @@ class EmailSender extends BaseController
         $subject = apply_filters('am_appointment_cancelled_user_subject', 'Your appointment has been successfully cancelled.');
         $message = $this->get_email_template('appointment_cancelled_user', [
             'user_email' => $user_email,
+            'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
         ]);
 
@@ -159,10 +165,11 @@ class EmailSender extends BaseController
     /**
      * Send an email when the appointment is cancelled to the admin
      *
+     * @param array $appointment_data The appointment details
      * @param string $token The appointment token
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public function appointment_cancelled_admin($token)
+    public function appointment_cancelled_admin($appointment_data, $token)
     {
         if (empty($this->admin_emails)) {
             return new WP_Error('no_admin_emails', 'No valid admin email addresses found');
@@ -175,6 +182,7 @@ class EmailSender extends BaseController
 
         $subject = apply_filters('am_appointment_cancelled_admin_subject', 'An appointment has been cancelled.');
         $message = $this->get_email_template('appointment_cancelled_admin', [
+            'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
         ]);
 

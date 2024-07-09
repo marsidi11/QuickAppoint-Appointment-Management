@@ -54,8 +54,8 @@ class ConfirmationHandler extends BaseController
 
             // Send confirmation email to user and admin
             $emailSender = new EmailSender();
-            $emailSender->appointment_confirmed_user($result->getEmail(), $token);
-            $emailSender->appointment_confirmed_admin($result->toArray(), $token);
+            $emailSender->appointment_confirmed_user($result->getEmail(), $result, $token);
+            $emailSender->appointment_confirmed_admin($result, $token);
 
             wp_redirect(home_url('/appointment-confirmation?token=' . $token . '&status=confirmed'));
         } else

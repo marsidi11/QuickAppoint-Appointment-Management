@@ -21,8 +21,8 @@ if (isset($_GET['token']))
                 echo '<div class="am-message am-message--success">Your appointment has been cancelled successfully.</div>';
                 
                 // Send cancellation email to user and admin
-                $emailSender->appointment_cancelled_user($appointment->getEmail(), $token);
-                $emailSender->appointment_cancelled_admin($token);
+                $email_sender->appointment_cancelled_user($appointment->getEmail(), $appointment, $token);
+                $email_sender->appointment_cancelled_admin($appointment, $token);
 
                 // Refresh appointment data after cancellation
                 $appointment = $appointment_repository->getAppointmentByToken($token);

@@ -58,7 +58,6 @@ class AppointmentService
         $user_email_result = $this->emailSender->new_appointment_user($appointment->getEmail(), $token);
         if (is_wp_error($user_email_result)) 
         {
-            // Log the error, but don't stop the process
             error_log('Failed to send user confirmation email: ' . $user_email_result->get_error_message());
         }
 
@@ -66,7 +65,6 @@ class AppointmentService
         $admin_email_result = $this->emailSender->new_appointment_admin($appointmentData, $token);
         if (is_wp_error($admin_email_result)) 
         {
-            // Log the error, but don't stop the process
             error_log('Failed to send admin notification email: ' . $admin_email_result->get_error_message());
         }
 
