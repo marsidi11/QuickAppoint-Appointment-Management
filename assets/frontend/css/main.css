@@ -48,7 +48,7 @@
     .calendar-time,
     .input-form {
         @apply h-[calc(100vh-4rem)];
-        max-height: 408px;
+        max-height: 410px;
     }
 }
 
@@ -193,7 +193,7 @@
 }
 
 .service-box {
-    @apply flex flex-col justify-between h-full px-6 py-4 bg-background-600 border-4 border-primary-400 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply flex flex-col justify-between h-full px-6 py-4 bg-background-600 border-2 border-primary-400 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 
@@ -259,7 +259,7 @@
 }
 
 .calendar-time-item {
-    @apply bg-background-600 p-4 w-full max-w-sm rounded-md cursor-pointer text-center border-4 border-primary-400 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply bg-background-600 p-4 w-full max-w-sm rounded-md cursor-pointer text-center border-2 border-primary-400 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 

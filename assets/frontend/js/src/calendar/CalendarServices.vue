@@ -16,8 +16,8 @@
                 ]">
                     <h3 class="service-name">{{ service.name }}</h3>
                     <p class="service-description">{{ service.description }}</p>
-                    <p class="service-duration">Duration: {{ service.duration }} minutes</p>
-                    <p class="service-price">Price: {{ currencySymbol }}{{ service.price }}</p>
+                    <p class="service-duration">{{ service.duration }} minutes</p>
+                    <p class="service-price">{{ currencySymbol }}{{ service.price }}</p>
                 </div>
             </div>
         </div>
