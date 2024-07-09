@@ -7,13 +7,17 @@
 
         <div :class="['services-list', gridColumnsClass]">
 
-            <div class="services-container" v-for="service in services" :key="service.id" @click="selectService(service)">
-                <div class="service-box"
-                    :class="{ 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }">
+            <div :class="['services-container', only1ServiceContainer]" v-for="service in services" :key="service.id"
+                @click="selectService(service)">
+                <div :class="[
+                    'service-box',
+                    only1ServiceBox,
+                    { 'selected-service': selectedServices.some(selectedService => selectedService.id === service.id) }
+                ]">
                     <h3 class="service-name">{{ service.name }}</h3>
                     <p class="service-description">{{ service.description }}</p>
-                    <p class="service-duration">{{ service.duration }} minutes</p>
-                    <p class="service-price">{{ currencySymbol }}{{ service.price }}</p>
+                    <p class="service-duration">Duration: {{ service.duration }} minutes</p>
+                    <p class="service-price">Price: {{ currencySymbol }}{{ service.price }}</p>
                 </div>
             </div>
         </div>
@@ -49,12 +53,24 @@ export default {
             const classes = [
                 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
                 'grid-cols-1',
-                'grid-cols-2',
+                'grid-cols-1 md:grid-cols-2',
                 'grid-cols-2 md:grid-cols-3',
                 'grid-cols-2 md:grid-cols-3 lg:grid-cols-2',
                 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3',
             ];
             return classes[Math.min(this.services.length, 5)];
+        },
+
+        only1ServiceContainer() {
+            if (this.services.length === 1) {
+                return 'flex justify-center';
+            }
+        },
+
+        only1ServiceBox() {
+            if (this.services.length === 1) {
+                return 'md:w-1/2';
+            }
         },
     },
 
