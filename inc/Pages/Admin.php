@@ -42,8 +42,8 @@ class Admin extends BaseController
     {
         $this->pages = [
             [
-                'page_title' => 'Appointment Management',
-                'menu_title' => 'Appointment',
+                'page_title' => 'QuickAppoint - Appointment Management',
+                'menu_title' => 'QuickAppoint',
                 'capability' => 'manage_options',
                 'menu_slug' => 'appointment_management',
                 'callback' => [$this->callbacks, 'adminDashboard'],

@@ -130,7 +130,7 @@ class Enqueue extends BaseController
         if (!function_exists('get_plugin_data')) {
             require_once(ABSPATH . 'wp-admin/includes/plugin.php');
         }
-        $plugin_data = get_plugin_data($this->plugin_path . 'appointment.php');
+        $plugin_data = get_plugin_data($this->plugin_path . 'quickappoint.php');
         return $plugin_data['Version'];
     }
 }
