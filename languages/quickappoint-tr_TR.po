@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Bir randevu iptal edildi."
+
+msgid "Name:"
+msgstr "İsim:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "E-posta:"
+
+msgid "Date:"
+msgstr "Tarih:"
+
+msgid "Start Time:"
+msgstr "Başlangıç Saati:"
+
+msgid "End Time:"
+msgstr "Bitiş Saati:"
+
+msgid "Status:"
+msgstr "Durum:"
+
+msgid "Check the appointment information here:"
+msgstr "Randevu bilgilerini buradan kontrol edin:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Randevunuz başarıyla iptal edildi."
+
+msgid "An appointment has been confirmed."
+msgstr "Bir randevu onaylandı."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Randevunuz onaylandı. Hizmetimizi kullandığınız için teşekkür ederiz."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Herhangi bir sorunuz varsa, lütfen bizimle iletişime geçmekten çekinmeyin."
+
+msgid "A new appointment has been scheduled."
+msgstr "Yeni bir randevu planlandı."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Lütfen randevunuzu doğrulamak için aşağıdaki bağlantıya tıklayın:"

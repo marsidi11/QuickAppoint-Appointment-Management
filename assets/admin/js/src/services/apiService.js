@@ -2,20 +2,13 @@ import axios from 'axios';
 
 // Helper function to handle errors
 function handleError(error) {
-	console.error('Error:', error);
-
-	if (error.response) {
-		console.log(error.response.data);
-		console.log(error.response.status);
-		console.log(error.response.headers);
-		return `Error: ${error.response.data.message || 'An error occurred.'}`;
-	} else if (error.request) {
-		console.log(error.request);
-		return 'Error: No response from server.';
-	} else {
-		console.log('Error', error.message);
-		return `Error: ${error.message}`;
-	}
+    if (error.response && error.response.data && error.response.data.error) {
+        return new Error(error.response.data.error);
+    } else if (error.message) {
+        return new Error(error.message);
+    } else {
+        return new Error('An unknown error occurred');
+    }
 }
 
 // Check if API Settings are set
@@ -41,7 +34,7 @@ async function apiGet(url, params = {}) {
     try {
         const response = await axios.get(url, {
             headers: getHeaders(),
-            params,
+            params: params,
         });
         return response.data;
     } catch (error) {

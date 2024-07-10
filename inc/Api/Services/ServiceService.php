@@ -26,7 +26,7 @@ class ServiceService
         $this->serviceRepository = $serviceRepository;
     }
 
-    /**
+     /**
      * Retrieve all services.
      *
      * @return array|WP_Error List of services or WP_Error on failure.
@@ -34,9 +34,17 @@ class ServiceService
     public function getAllServices()
     {
         $services = $this->serviceRepository->getAll();
-        if (is_wp_error($services)) {
+        
+        if (is_wp_error($services)) 
+        {
             return $services;
         }
+
+        if (empty($services)) 
+        {
+            return new WP_Error('no_services', 'No services found.', ['status' => 404]);
+        }
+
         return $services;
     }
 

@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Wizyta została anulowana."
+
+msgid "Name:"
+msgstr "Imię i nazwisko:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "E-mail:"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Start Time:"
+msgstr "Czas rozpoczęcia:"
+
+msgid "End Time:"
+msgstr "Czas zakończenia:"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Check the appointment information here:"
+msgstr "Sprawdź informacje o wizycie tutaj:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Twoja wizyta została pomyślnie anulowana."
+
+msgid "An appointment has been confirmed."
+msgstr "Wizyta została potwierdzona."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Twoja wizyta została potwierdzona. Dziękujemy za korzystanie z naszej usługi."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Jeśli masz jakiekolwiek pytania, nie wahaj się z nami skontaktować."
+
+msgid "A new appointment has been scheduled."
+msgstr "Zaplanowano nową wizytę."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Kliknij poniższy link, aby zweryfikować swoją wizytę:"

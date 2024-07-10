@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Schůzka byla zrušena."
+
+msgid "Name:"
+msgstr "Jméno:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "E-mail:"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Start Time:"
+msgstr "Čas začátku:"
+
+msgid "End Time:"
+msgstr "Čas konce:"
+
+msgid "Status:"
+msgstr "Stav:"
+
+msgid "Check the appointment information here:"
+msgstr "Zkontrolujte informace o schůzce zde:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Vaše schůzka byla úspěšně zrušena."
+
+msgid "An appointment has been confirmed."
+msgstr "Schůzka byla potvrzena."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Vaše schůzka byla potvrzena. Děkujeme, že využíváte naši službu."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Pokud máte jakékoli dotazy, neváhejte nás kontaktovat."
+
+msgid "A new appointment has been scheduled."
+msgstr "Byla naplánována nová schůzka."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Klikněte prosím na následující odkaz pro ověření vaší schůzky:"

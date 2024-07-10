@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Ένα ραντεβού έχει ακυρωθεί."
+
+msgid "Name:"
+msgstr "Όνομα:"
+
+msgid "Phone:"
+msgstr "Τηλέφωνο:"
+
+msgid "Email:"
+msgstr "Email:"
+
+msgid "Date:"
+msgstr "Ημερομηνία:"
+
+msgid "Start Time:"
+msgstr "Ώρα έναρξης:"
+
+msgid "End Time:"
+msgstr "Ώρα λήξης:"
+
+msgid "Status:"
+msgstr "Κατάσταση:"
+
+msgid "Check the appointment information here:"
+msgstr "Ελέγξτε τις πληροφορίες του ραντεβού εδώ:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Το ραντεβού σας έχει ακυρωθεί επιτυχώς."
+
+msgid "An appointment has been confirmed."
+msgstr "Ένα ραντεβού έχει επιβεβαιωθεί."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Το ραντεβού σας έχει επιβεβαιωθεί. Σας ευχαριστούμε που χρησιμοποιείτε την υπηρεσία μας."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Εάν έχετε οποιεσδήποτε ερωτήσεις, μη διστάσετε να επικοινωνήσετε μαζί μας."
+
+msgid "A new appointment has been scheduled."
+msgstr "Ένα νέο ραντεβού έχει προγραμματιστεί."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Παρακαλούμε κάντε κλικ στον παρακάτω σύνδεσμο για να επιβεβαιώσετε το ραντεβού σας:"

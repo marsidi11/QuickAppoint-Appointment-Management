@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Встреча была отменена."
+
+msgid "Name:"
+msgstr "Имя:"
+
+msgid "Phone:"
+msgstr "Телефон:"
+
+msgid "Email:"
+msgstr "Электронная почта:"
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Start Time:"
+msgstr "Время начала:"
+
+msgid "End Time:"
+msgstr "Время окончания:"
+
+msgid "Status:"
+msgstr "Статус:"
+
+msgid "Check the appointment information here:"
+msgstr "Проверьте информацию о встрече здесь:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Ваша встреча была успешно отменена."
+
+msgid "An appointment has been confirmed."
+msgstr "Встреча была подтверждена."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Ваша встреча подтверждена. Спасибо за использование нашего сервиса."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Если у вас есть вопросы, пожалуйста, не стесняйтесь обращаться к нам."
+
+msgid "A new appointment has been scheduled."
+msgstr "Была назначена новая встреча."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Пожалуйста, нажмите на следующую ссылку, чтобы подтвердить вашу встречу:"

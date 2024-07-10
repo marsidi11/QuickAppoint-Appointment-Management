@@ -88,6 +88,12 @@ class ServiceController extends WP_REST_Controller
         return true;
     }
 
+    private function create_error_response(WP_Error $error)
+    {
+        $status_code = $error->get_error_data('status') ?? 400;
+        return new WP_REST_Response(['error' => $error->get_error_message()], $status_code);
+    }
+
     public function get_all_services(WP_REST_Request $request)
     {
         $nonce_validation = $this->validate_nonce($request);
@@ -96,7 +102,12 @@ class ServiceController extends WP_REST_Controller
         }
 
         $services = $this->serviceService->getAllServices();
-        return new WP_REST_Response($services, 200);
+        
+        if (is_wp_error($services)) {
+            return $this->create_error_response($services);
+        }
+
+        return new WP_REST_Response(['data' => $services], 200);
     }
 
     public function post_service_data(WP_REST_Request $request)

@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Een afspraak is geannuleerd."
+
+msgid "Name:"
+msgstr "Naam:"
+
+msgid "Phone:"
+msgstr "Telefoon:"
+
+msgid "Email:"
+msgstr "E-mail:"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Start Time:"
+msgstr "Starttijd:"
+
+msgid "End Time:"
+msgstr "Eindtijd:"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Check the appointment information here:"
+msgstr "Controleer de afspraakinformatie hier:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Uw afspraak is succesvol geannuleerd."
+
+msgid "An appointment has been confirmed."
+msgstr "Een afspraak is bevestigd."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Uw afspraak is bevestigd. Bedankt voor het gebruik van onze service."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Als u vragen heeft, aarzel dan niet om contact met ons op te nemen."
+
+msgid "A new appointment has been scheduled."
+msgstr "Er is een nieuwe afspraak gepland."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Klik op de volgende link om uw afspraak te verifiëren:"

@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "O programare a fost anulată."
+
+msgid "Name:"
+msgstr "Nume:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "Email:"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Start Time:"
+msgstr "Ora de început:"
+
+msgid "End Time:"
+msgstr "Ora de sfârșit:"
+
+msgid "Status:"
+msgstr "Stare:"
+
+msgid "Check the appointment information here:"
+msgstr "Verificați informațiile programării aici:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Programarea dumneavoastră a fost anulată cu succes."
+
+msgid "An appointment has been confirmed."
+msgstr "O programare a fost confirmată."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Programarea dumneavoastră a fost confirmată. Vă mulțumim pentru utilizarea serviciului nostru."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Dacă aveți întrebări, nu ezitați să ne contactați."
+
+msgid "A new appointment has been scheduled."
+msgstr "O nouă programare a fost înregistrată."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Vă rugăm să faceți clic pe următorul link pentru a vă verifica programarea:"

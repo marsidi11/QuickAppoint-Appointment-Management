@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Varaus on peruutettu."
+
+msgid "Name:"
+msgstr "Nimi:"
+
+msgid "Phone:"
+msgstr "Puhelin:"
+
+msgid "Email:"
+msgstr "Sähköposti:"
+
+msgid "Date:"
+msgstr "Päivämäärä:"
+
+msgid "Start Time:"
+msgstr "Alkamisaika:"
+
+msgid "End Time:"
+msgstr "Päättymisaika:"
+
+msgid "Status:"
+msgstr "Tila:"
+
+msgid "Check the appointment information here:"
+msgstr "Tarkista varauksen tiedot täältä:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Varauksesi on peruutettu onnistuneesti."
+
+msgid "An appointment has been confirmed."
+msgstr "Varaus on vahvistettu."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Varauksesi on vahvistettu. Kiitos, että käytät palveluamme."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Jos sinulla on kysyttävää, älä epäröi ottaa yhteyttä meihin."
+
+msgid "A new appointment has been scheduled."
+msgstr "Uusi varaus on tehty."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Klikkaa seuraavaa linkkiä vahvistaaksesi varauksesi:"

@@ -5,21 +5,15 @@ import axios from 'axios';
 
 // Helper function to handle errors
 function handleError(error) {
-    console.error('Error:', error);
-
-    if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-        throw new Error(error.response.data.message || 'An error occurred.');
-    } else if (error.request) {
-        console.log(error.request);
-        throw new Error('No response from server.');
+    if (error.response && error.response.data && error.response.data.error) {
+        return new Error(error.response.data.error);
+    } else if (error.message) {
+        return new Error(error.message);
     } else {
-        console.log('Error', error.message);
-        throw new Error(error.message);
+        return new Error('An unknown error occurred');
     }
 }
+
 
 // Check if API Settings are set
 function checkApiSettings() {

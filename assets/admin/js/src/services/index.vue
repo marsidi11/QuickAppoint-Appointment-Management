@@ -159,7 +159,7 @@ export default {
     },
 
     async handleServiceUpdated() {
-      this.$refs.getServicesRef.getServices();
+      this.$refs.getServicesRef.fetchServices();
       this.editingServiceId = null;
     },
 

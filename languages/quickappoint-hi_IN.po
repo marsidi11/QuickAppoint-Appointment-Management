@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "एक अपॉइंटमेंट रद्द कर दी गई है।"
+
+msgid "Name:"
+msgstr "नाम:"
+
+msgid "Phone:"
+msgstr "फोन:"
+
+msgid "Email:"
+msgstr "ईमेल:"
+
+msgid "Date:"
+msgstr "तिथि:"
+
+msgid "Start Time:"
+msgstr "प्रारंभ समय:"
+
+msgid "End Time:"
+msgstr "समाप्ति समय:"
+
+msgid "Status:"
+msgstr "स्थिति:"
+
+msgid "Check the appointment information here:"
+msgstr "अपॉइंटमेंट की जानकारी यहाँ देखें:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "आपकी अपॉइंटमेंट सफलतापूर्वक रद्द कर दी गई है।"
+
+msgid "An appointment has been confirmed."
+msgstr "एक अपॉइंटमेंट की पुष्टि की गई है।"
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "आपकी अपॉइंटमेंट की पुष्टि हो गई है। हमारी सेवा का उपयोग करने के लिए धन्यवाद।"
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "यदि आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करने में संकोच न करें।"
+
+msgid "A new appointment has been scheduled."
+msgstr "एक नई अपॉइंटमेंट निर्धारित की गई है।"
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "कृपया अपनी अपॉइंटमेंट की पुष्टि करने के लिए निम्नलिखित लिंक पर क्लिक करें:"

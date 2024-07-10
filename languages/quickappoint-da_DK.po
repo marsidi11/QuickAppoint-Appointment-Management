@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "En aftale er blevet aflyst."
+
+msgid "Name:"
+msgstr "Navn:"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "E-mail:"
+
+msgid "Date:"
+msgstr "Dato:"
+
+msgid "Start Time:"
+msgstr "Starttidspunkt:"
+
+msgid "End Time:"
+msgstr "Sluttidspunkt:"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Check the appointment information here:"
+msgstr "Tjek aftaleinformationen her:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Din aftale er blevet aflyst."
+
+msgid "An appointment has been confirmed."
+msgstr "En aftale er blevet bekræftet."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Din aftale er blevet bekræftet. Tak fordi du bruger vores service."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Hvis du har spørgsmål, er du velkommen til at kontakte os."
+
+msgid "A new appointment has been scheduled."
+msgstr "En ny aftale er blevet planlagt."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Klik venligst på følgende link for at bekræfte din aftale:"

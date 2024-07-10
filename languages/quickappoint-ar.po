@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "تم إلغاء موعد."
+
+msgid "Name:"
+msgstr "الاسم:"
+
+msgid "Phone:"
+msgstr "الهاتف:"
+
+msgid "Email:"
+msgstr "البريد الإلكتروني:"
+
+msgid "Date:"
+msgstr "التاريخ:"
+
+msgid "Start Time:"
+msgstr "وقت البدء:"
+
+msgid "End Time:"
+msgstr "وقت الانتهاء:"
+
+msgid "Status:"
+msgstr "الحالة:"
+
+msgid "Check the appointment information here:"
+msgstr "تحقق من معلومات الموعد هنا:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "تم إلغاء موعدك بنجاح."
+
+msgid "An appointment has been confirmed."
+msgstr "تم تأكيد موعد."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "تم تأكيد موعدك. شكرا لاستخدامك خدمتنا."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "إذا كان لديك أي أسئلة، فلا تتردد في الاتصال بنا."
+
+msgid "A new appointment has been scheduled."
+msgstr "تم جدولة موعد جديد."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "يرجى النقر على الرابط التالي للتحقق من موعدك:"

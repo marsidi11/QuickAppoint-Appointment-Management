@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "予約がキャンセルされました。"
+
+msgid "Name:"
+msgstr "名前："
+
+msgid "Phone:"
+msgstr "電話番号："
+
+msgid "Email:"
+msgstr "メールアドレス："
+
+msgid "Date:"
+msgstr "日付："
+
+msgid "Start Time:"
+msgstr "開始時間："
+
+msgid "End Time:"
+msgstr "終了時間："
+
+msgid "Status:"
+msgstr "ステータス："
+
+msgid "Check the appointment information here:"
+msgstr "予約情報はこちらでご確認ください："
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "予約は正常にキャンセルされました。"
+
+msgid "An appointment has been confirmed."
+msgstr "予約が確認されました。"
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "予約が確認されました。サービスをご利用いただきありがとうございます。"
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "ご質問がある場合は、お気軽にお問い合わせください。"
+
+msgid "A new appointment has been scheduled."
+msgstr "新しい予約が登録されました。"
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "以下のリンクをクリックして予約を確認してください："

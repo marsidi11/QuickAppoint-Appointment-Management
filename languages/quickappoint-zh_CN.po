@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "预约已取消。"
+
+msgid "Name:"
+msgstr "姓名："
+
+msgid "Phone:"
+msgstr "电话："
+
+msgid "Email:"
+msgstr "电子邮件："
+
+msgid "Date:"
+msgstr "日期："
+
+msgid "Start Time:"
+msgstr "开始时间："
+
+msgid "End Time:"
+msgstr "结束时间："
+
+msgid "Status:"
+msgstr "状态："
+
+msgid "Check the appointment information here:"
+msgstr "在此查看预约信息："
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "您的预约已成功取消。"
+
+msgid "An appointment has been confirmed."
+msgstr "预约已确认。"
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "您的预约已确认。感谢您使用我们的服务。"
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "如果您有任何问题，请随时与我们联系。"
+
+msgid "A new appointment has been scheduled."
+msgstr "新的预约已安排。"
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "请点击以下链接验证您的预约："

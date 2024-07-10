@@ -1,0 +1,44 @@
+msgid "An appointment has been cancelled."
+msgstr "Un appuntamento è stato cancellato."
+
+msgid "Name:"
+msgstr "Nome:"
+
+msgid "Phone:"
+msgstr "Telefono:"
+
+msgid "Email:"
+msgstr "Email:"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Start Time:"
+msgstr "Ora di inizio:"
+
+msgid "End Time:"
+msgstr "Ora di fine:"
+
+msgid "Status:"
+msgstr "Stato:"
+
+msgid "Check the appointment information here:"
+msgstr "Controlla le informazioni sull'appuntamento qui:"
+
+msgid "Your appointment has been successfully cancelled."
+msgstr "Il tuo appuntamento è stato cancellato con successo."
+
+msgid "An appointment has been confirmed."
+msgstr "Un appuntamento è stato confermato."
+
+msgid "Your appointment has been confirmed. Thank you for using our service."
+msgstr "Il tuo appuntamento è stato confermato. Grazie per aver utilizzato il nostro servizio."
+
+msgid "If you have any questions, please don't hesitate to contact us."
+msgstr "Se hai domande, non esitare a contattarci."
+
+msgid "A new appointment has been scheduled."
+msgstr "È stato programmato un nuovo appuntamento."
+
+msgid "Please click the following link to verify your appointment:"
+msgstr "Clicca sul seguente link per verificare il tuo appuntamento:"

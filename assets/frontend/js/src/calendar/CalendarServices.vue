@@ -80,11 +80,14 @@ export default {
         async fetchServices() {
             try {
                 this.loading = true;
+                this.errorMessage = null;
                 const response = await getServices();
-                this.services = response;
+                this.services = response.data;
 
             } catch (error) {
-                this.errorMessage = error;
+                this.errorMessage = error.message || 'An error occurred while fetching services';
+            } finally {
+                this.loading = false;
             }
         },
 
@@ -100,6 +103,7 @@ export default {
 
             } catch (error) {
                 this.errorMessage = error;
+                
             } finally {
                 this.loading = false;
             }

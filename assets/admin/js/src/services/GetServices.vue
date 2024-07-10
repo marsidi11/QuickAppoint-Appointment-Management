@@ -21,20 +21,21 @@ export default {
 
     methods: {
 
-        async getServices() {
+        async fetchServices() {
             try {
+                this.errorMessage = null;
                 const response = await getServices();
-                this.$emit('get-services', response);
+                this.$emit('get-services', response.data);
 
             } catch (error) {
-                this.errorMessage = error;
+                this.errorMessage = error.message || 'An error occurred while fetching services';
             }
         },
         
     },
 
     created() {
-        this.getServices();
+        this.fetchServices();
     },
 }
 
