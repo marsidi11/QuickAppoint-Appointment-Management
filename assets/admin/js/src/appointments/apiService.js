@@ -49,6 +49,20 @@ async function apiGet(url, params = {}) {
     }
 }
 
+// Helper function to make UPDATE requests
+async function apiUpdate(url, data) {
+    if (!checkApiSettings()) return;
+
+    try {
+        const response = await axios.put(url, data, {
+            headers: getHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        throw handleError(error);
+    }
+}
+
 // Helper function to make DELETE requests
 async function apiDelete(url, params = {}) {
     if (!checkApiSettings()) return;
@@ -94,6 +108,15 @@ export async function getAllAppointments(page = 1, itemsPerPage = 10) {
         total: response.total,
         totalPages: response.total_pages
     };
+}
+
+/**
+ * Update Appointment
+ * @param {Object} appointmentId - Appointment Id to delete
+ * @returns {Promise<Object>}
+ */
+export async function updateAppointment(appointmentId) {
+	return apiUpdate(window.am_plugin_api_settings.apiUrlAppointments + '/update/' + appointmentId);
 }
 
 /**

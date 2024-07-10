@@ -771,6 +771,10 @@ video {
   min-height: 2.75rem;
 }
 
+.min-h-36 {
+  min-height: 9rem;
+}
+
 .w-11 {
   width: 2.75rem;
 }
@@ -831,8 +835,8 @@ video {
   max-width: 42rem;
 }
 
-.max-w-\[80\%\] {
-  max-width: 80%;
+.max-w-\[50\%\] {
+  max-width: 50%;
 }
 
 .max-w-sm {
@@ -1264,10 +1268,6 @@ video {
   text-align: center;
 }
 
-.text-right {
-  text-align: right;
-}
-
 .font-\[sans-serif\] {
   font-family: sans-serif;
 }
@@ -1501,11 +1501,28 @@ video {
 
 /* Admin Dashboard Style */
 
-.wrap-am {
+.quickappoint {
   margin-right: 1.25rem;
+  line-height: 1.5;
 }
 
-.wrap-am > h1 {
+.quickappoint button {
+  height: 40px;
+  border-radius: 0.375rem;
+  border-width: 0px;
+  line-height: 1rem;
+}
+
+.quickappoint input {
+  min-height: 2.75rem;
+  border-radius: 0.375rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.quickappoint > h1 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
   font-size: 1.875rem;
@@ -1514,13 +1531,13 @@ video {
 }
 
 @media (prefers-color-scheme: dark) {
-  .wrap-am > h1 {
+  .quickappoint > h1 {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
   }
 }
 
-.nav-tabs {
+.quickappoint .nav-tabs {
   display: flex;
   flex-wrap: wrap;
   border-bottom-width: 1px;

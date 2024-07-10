@@ -4,15 +4,20 @@
 
 /* Admin Dashboard Style */
 
-.wrap-am {
+.quickappoint {
     @apply mr-5;
+    line-height: 1.5;
 }
 
-.wrap-am > h1 {
+.quickappoint input {
+    @apply px-5 py-1 rounded-md;
+}
+
+.quickappoint > h1 {
     @apply my-5 text-3xl font-bold dark:text-white;
 }
 
-.nav-tabs {
+.quickappoint .nav-tabs {
     @apply flex flex-wrap border-b border-gray-300;
 }
 

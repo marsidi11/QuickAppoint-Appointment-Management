@@ -21,7 +21,6 @@
 
 #am-app input {
     @apply min-h-11 px-5 py-1 rounded-md;
-
 }
 
 #am-app .calendar-container {

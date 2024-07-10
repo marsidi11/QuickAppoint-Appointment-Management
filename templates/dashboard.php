@@ -1,4 +1,4 @@
-<div class="wrap-am">
+<div class="quickappoint">
     <h1>Dashboard</h1>
     <?php settings_errors(); ?>
 
