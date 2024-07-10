@@ -9,6 +9,8 @@
  * Version: 0.9.0
  * Author: Marsid Zyberi
  * Plugin URI: https://marketingon.al/plugins/appointment-management-plugin
+ * Text Domain: quickappoint
+ * Domain Path: /languages
  */
 
 // Check the script is being executed within the WordPress environment
@@ -26,16 +28,16 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) )
 
 
 // Activation and deactivation hooks
-function activate_appointment_management() 
+function activate_quickappoint() 
 {
     Inc\Base\Activate::activate();
 }
-function deactivate_appointment_management() 
+function deactivate_quickappoint() 
 {
     Inc\Base\Deactivate::deactivate();
 }
-register_activation_hook( __FILE__, 'activate_appointment_management' ); // Activation
-register_deactivation_hook( __FILE__, 'deactivate_appointment_management' ); // Deactivation
+register_activation_hook( __FILE__, 'activate_quickappoint' ); // Activation
+register_deactivation_hook( __FILE__, 'deactivate_quickappoint' ); // Deactivation
 
 
 // Initialize the core classes of the plugin
@@ -43,3 +45,10 @@ if ( class_exists( 'Inc\\Init' ) )
 {
     Inc\Init::register_services();
 }
+
+// Load the plugin text domain
+function quickappoint_load_textdomain() 
+{
+    load_plugin_textdomain('quickappoint', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('plugins_loaded', 'quickappoint_load_textdomain');

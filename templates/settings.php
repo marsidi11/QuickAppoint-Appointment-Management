@@ -6,7 +6,7 @@
     <form method="post" action="options.php">
         <?php
             settings_fields('am_options_data');
-            do_settings_sections('appointment_management');
+            do_settings_sections('quickappoint');
             submit_button();
         ?>
     </form>

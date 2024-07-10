@@ -1,2 +1,2 @@
-<p>Please click the following link to verify your appointment:</p>
-<p><a href="<?php echo $confirmation_url; ?>"><?php echo $confirmation_url; ?></a></p>
+<p><?php _e('Please click the following link to verify your appointment:', 'quickappoint'); ?></p>
+<p><a href="<?php echo esc_url($confirmation_url); ?>"><?php echo esc_url($confirmation_url); ?></a></p>

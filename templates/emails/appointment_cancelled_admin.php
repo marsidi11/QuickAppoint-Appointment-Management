@@ -1,9 +1,17 @@
-<p>An appointment has been cancelled.</p>
-<p><strong>Name:</strong> <?php echo esc_html($appointment_data->getName() . ' ' . $appointment_data->getSurname()); ?><br>
-<strong>Phone:</strong> <?php echo esc_html($appointment_data->getPhone()); ?><br>
-<strong>Email:</strong> <?php echo esc_html($appointment_data->getEmail()); ?><br>
-<strong>Date:</strong> <?php echo esc_html($appointment_data->getDate()); ?><br>
-<strong>Start Time:</strong> <?php echo esc_html($appointment_data->getStartTime()); ?><br>
-<strong>End Time:</strong> <?php echo esc_html($appointment_data->getEndTime()); ?></p>
-<strong>Status:</strong> <?php echo esc_html(ucfirst($appointment_data->getStatus())); ?></p>
-<p>Check the appointment information here: <a href="<?php echo $check_info_url; ?>"><?php echo $check_info_url; ?></a></p>
+<p><?php _e('An appointment has been cancelled.', 'quickappoint'); ?></p>
+<p>
+    <strong><?php _e('Name:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getName() . ' ' . $appointment_data->getSurname()); ?><br>
+    <strong><?php _e('Phone:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getPhone()); ?><br>
+    <strong><?php _e('Email:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getEmail()); ?><br>
+    <strong><?php _e('Date:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getDate()); ?><br>
+    <strong><?php _e('Start Time:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getStartTime()); ?><br>
+    <strong><?php _e('End Time:', 'quickappoint'); ?></strong> <?php echo esc_html($appointment_data->getEndTime()); ?><br>
+    <strong><?php _e('Status:', 'quickappoint'); ?></strong> <?php echo esc_html(ucfirst($appointment_data->getStatus())); ?>
+</p>
+<p>
+<?php 
+_e('Check the appointment information here:', 'quickappoint'); 
+echo ' ';
+?>
+<a href="<?php echo esc_url($check_info_url); ?>"><?php echo esc_url($check_info_url); ?></a>
+</p>

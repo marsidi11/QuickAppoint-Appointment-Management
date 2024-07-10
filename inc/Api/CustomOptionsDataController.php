@@ -30,7 +30,7 @@ class CustomOptionsDataController extends WP_REST_Controller
 
     public function get_namespace()
     {
-        return 'appointment_management/v1';
+        return 'quickappoint/v1';
     }
 
     public function get_base()

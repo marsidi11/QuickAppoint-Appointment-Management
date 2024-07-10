@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'user/appointment_management',
+        'name' => 'user/quickappoint',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
         'reference' => '022cef46a82b6c93d753f31128cec6f13f56d623',
@@ -82,7 +82,7 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'user/appointment_management' => array(
+        'user/quickappoint' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
             'reference' => '022cef46a82b6c93d753f31128cec6f13f56d623',

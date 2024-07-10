@@ -48,17 +48,17 @@ class Enqueue extends BaseController
 
         wp_localize_script($script_handle, self::PREFIX . 'api_settings', [
             'nonce' => wp_create_nonce('wp_rest'),
-            'apiUrlAppointments' => esc_url_raw(rest_url('appointment_management/v1/appointments')),
-            'apiUrlServices' => esc_url_raw(rest_url('appointment_management/v1/services')),
-            'apiUrlOptions' => esc_url_raw(rest_url('appointment_management/v1/options')),
+            'apiUrlAppointments' => esc_url_raw(rest_url('quickappoint/v1/appointments')),
+            'apiUrlServices' => esc_url_raw(rest_url('quickappoint/v1/services')),
+            'apiUrlOptions' => esc_url_raw(rest_url('quickappoint/v1/options')),
         ]);
     }
 
     public function enqueue_backend_scripts($hook_suffix)
     {
         $allowed_pages = [
-            'appointment_page_appointment_management_settings',
-            'toplevel_page_appointment_management'
+            'appointment_page_quickappoint_settings',
+            'toplevel_page_quickappoint'
         ];
         
         if (in_array($hook_suffix, $allowed_pages)) {

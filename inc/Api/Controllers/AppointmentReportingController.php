@@ -24,7 +24,7 @@ class AppointmentReportingController extends WP_REST_Controller
 
     protected function get_namespace() 
     {
-        return 'appointment_management/v1';
+        return 'quickappoint/v1';
     }
 
     protected function get_base() 

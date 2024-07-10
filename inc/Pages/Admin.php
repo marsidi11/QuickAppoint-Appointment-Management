@@ -45,7 +45,7 @@ class Admin extends BaseController
                 'page_title' => 'QuickAppoint - Appointment Management',
                 'menu_title' => 'QuickAppoint',
                 'capability' => 'manage_options',
-                'menu_slug' => 'appointment_management',
+                'menu_slug' => 'quickappoint',
                 'callback' => [$this->callbacks, 'adminDashboard'],
                 'icon_url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzcyIiBoZWlnaHQ9Ijc3MiIgdmlld0JveD0iMCAwIDc3MiA3NzIiIGZpbGw9IiNhN2FhYWQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zODYgNzcyQzU5OS4xODIgNzcyIDc3MiA1OTkuMTgyIDc3MiAzODZDNzcyIDE3Mi44MTggNTk5LjE4MiAwIDM4NiAwQzE3Mi44MTggMCAwIDE3Mi44MTggMCAzODZDMCA1OTkuMTgyIDE3Mi44MTggNzcyIDM4NiA3NzJaTTE1NCAxNTRINjE4VjYxOEgxNTRWMTU0Wk0yMDIgMjUwVjU3MEg1NzBWMjUwSDIwMlpNMjI2IDIyNkg1NDZWMjc0SDIyNlYyMjZaIiBmaWxsPSIjYTdhYWFkIi8+CiAgPHRleHQgeD0iMzg2IiB5PSI0ODAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSIjYTdhYWFkIiBzdHJva2Utd2lkdGg9IjgiPjI5PC90ZXh0Pgo8L3N2Zz4=',
                 'position' => 2
@@ -57,11 +57,11 @@ class Admin extends BaseController
     {
         $this->subpages = [
             [
-                'parent_slug' => 'appointment_management',
+                'parent_slug' => 'quickappoint',
                 'page_title' => 'Settings',
                 'menu_title' => 'Settings',
                 'capability' => 'manage_options',
-                'menu_slug' => 'appointment_management_settings',
+                'menu_slug' => 'quickappoint_settings',
                 'callback' => [$this->callbacks, 'adminSettings']
             ]
         ];
@@ -106,7 +106,7 @@ class Admin extends BaseController
                 'id' => 'am_admin_index',
                 'title' => 'Settings',
                 'callback' => [$this->callbacks, 'amAdminSection'],
-                'page' => 'appointment_management'
+                'page' => 'quickappoint'
             ]
         ];
 
@@ -141,7 +141,7 @@ class Admin extends BaseController
             'id' => $id,
             'title' => __($title, 'appointment-management'),
             'callback' => [$this->callbacks, $callback],
-            'page' => 'appointment_management',
+            'page' => 'quickappoint',
             'section' => 'am_admin_index',
             'args' => [
                 'label_for' => $id,
