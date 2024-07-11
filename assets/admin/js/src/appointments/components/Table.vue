@@ -41,9 +41,9 @@
           </td>
           <td class="px-6 py-4">
             <div class="flex items-center justify-end relative">
-              <button v-if="editingStatus[user.id]" @click="saveStatus(user.id)"
+              <button v-if="editingStatus[user.id]" @click="saveStatus(user.id)" :disabled="savingStatus[user.id]"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all duration-300 ease-in-out">
-                Save
+                {{ savingStatus[user.id] ? 'Saving...' : 'Save' }}
               </button>
               <button v-else @click="toggleDropdown(user.id)" :aria-expanded="dropdownStates[user.id] || false"
                 :aria-controls="'userDropdown-' + user.id"
@@ -92,6 +92,7 @@ export default {
   setup(props) {
     const dropdownStates = reactive({});
     const editingStatus = reactive({});
+    const savingStatus = reactive({}); 
 
     const toggleDropdown = (userId) => {
       if (!editingStatus[userId]) {
@@ -137,6 +138,7 @@ export default {
       try {
         const user = props.users.find(u => u.id === userId);
         if (user) {
+          savingStatus[userId] = true; 
           await updateAppointmentStatus(userId, user.status);
           editingStatus[userId] = false;
         } else {
@@ -144,12 +146,15 @@ export default {
         }
       } catch (error) {
         console.error('Error updating status:', error);
+      } finally {
+        savingStatus[userId] = false;
       }
     };
 
     return {
       dropdownStates,
       editingStatus,
+      savingStatus,
       toggleDropdown,
       closeDropdown,
       handleClickOutside,
