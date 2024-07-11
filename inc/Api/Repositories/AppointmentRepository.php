@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Appointment Repository
  *
@@ -13,7 +14,7 @@ namespace Inc\Api\Repositories;
 
 use Inc\Api\Models\Appointment;
 use WP_Error;
- 
+
 class AppointmentRepository
 {
     private $wpdb;
@@ -60,6 +61,33 @@ class AppointmentRepository
             'total' => (int)$total,
             'total_pages' => ceil($total / $per_page)
         ];
+    }
+
+    public function getAppointmentById(int $appointmentId)
+    {
+        $query = $this->wpdb->prepare(
+            "SELECT a.*, 
+        DATE_FORMAT(a.startTime, '%%H:%%i') as startTime,
+        DATE_FORMAT(a.endTime, '%%H:%%i') as endTime,
+        GROUP_CONCAT(s.id SEPARATOR ',') as service_id,
+        GROUP_CONCAT(s.name SEPARATOR ', ') as service_names,
+        COALESCE(SUM(s.price), 0) as total_price
+        FROM {$this->appointments_table} a
+        LEFT JOIN {$this->mapping_table} m ON a.id = m.appointment_id
+        LEFT JOIN {$this->services_table} s ON m.service_id = s.id
+        WHERE a.id = %d
+        GROUP BY a.id",
+            $appointmentId
+        );
+
+        $result = $this->wpdb->get_row($query, ARRAY_A);
+
+        if ($result) {
+            $result['service_id'] = explode(',', $result['service_id']);
+            return new Appointment($result);
+        } else {
+            return new WP_Error('appointment_not_found', 'Appointment not found');
+        }
     }
 
     public function createAppointment(Appointment $appointment)
@@ -193,36 +221,29 @@ class AppointmentRepository
         $where_clauses = [];
         $where_params = [];
 
-        if (!empty($search)) 
-        {
+        if (!empty($search)) {
             $search_term = '%' . $this->wpdb->esc_like($search) . '%';
             $where_clauses[] = "(a.name LIKE %s OR a.surname LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
             $where_params = array_merge($where_params, [$search_term, $search_term, $search_term, $search_term]);
         }
 
-        if (!empty($dateFilters)) 
-        {
+        if (!empty($dateFilters)) {
             $date_filter_clauses = $this->buildDateFilterClauses($dateFilters, $where_params);
-            if (!empty($date_filter_clauses)) 
-            {
+            if (!empty($date_filter_clauses)) {
                 $where_clauses[] = '(' . implode(' OR ', $date_filter_clauses) . ')';
             }
         }
 
-        if (!empty($dateRange)) 
-        {
+        if (!empty($dateRange)) {
             $date_range_clause = $this->buildDateRangeClause($dateRange, $where_params);
-            if ($date_range_clause) 
-            {
+            if ($date_range_clause) {
                 $where_clauses[] = $date_range_clause;
             }
         }
 
-        if (!empty($statusFilters)) 
-        {
+        if (!empty($statusFilters)) {
             $status_filter_clauses = $this->buildStatusFilterClauses($statusFilters, $where_params);
-            if (!empty($status_filter_clauses)) 
-            {
+            if (!empty($status_filter_clauses)) {
                 $where_clauses[] = '(' . implode(' OR ', $status_filter_clauses) . ')';
             }
         }
@@ -256,7 +277,7 @@ class AppointmentRepository
             'total_pages' => ceil($total / $per_page)
         ];
     }
-    
+
     private function buildDateFilterClauses(array $dateFilters, array &$where_params): array
     {
         $date_filter_clauses = [];
@@ -288,8 +309,7 @@ class AppointmentRepository
 
     private function buildDateRangeClause(string $dateRange, array &$where_params): ?string
     {
-        switch ($dateRange) 
-        {
+        switch ($dateRange) {
             case 'nextMonth':
                 $start_date = date('Y-m-01', strtotime('+1 month'));
                 $end_date = date('Y-m-t', strtotime('+1 month'));
@@ -370,12 +390,10 @@ class AppointmentRepository
 
         $result = $this->wpdb->get_row($query, ARRAY_A);
 
-        if ($result) 
-        {
-            $result['service_id'] = explode(',', $result['service_id']);
+        if ($result) {
+            $result['service_id'] = !empty($result['service_id']) ? explode(',', $result['service_id']) : ['Service Deleted'];
             return new Appointment($result);
-        } else 
-        {
+        } else {
             return new WP_Error('appointment_not_found', 'Appointment not found');
         }
     }
@@ -386,8 +404,7 @@ class AppointmentRepository
         $table_name = $wpdb->prefix . 'am_appointments';
         $result = $wpdb->update($table_name, ['status' => $status], ['token' => $token]);
 
-        if ($result === false) 
-        {
+        if ($result === false) {
             return new WP_Error('update_failed', 'Failed to update appointment status');
         }
 
@@ -400,8 +417,7 @@ class AppointmentRepository
         $table_name = $wpdb->prefix . 'am_appointments';
         $result = $wpdb->update($table_name, ['status' => $status], ['id' => $id]);
 
-        if ($result === false) 
-        {
+        if ($result === false) {
             return new WP_Error('update_failed', 'Failed to update appointment status');
         }
 

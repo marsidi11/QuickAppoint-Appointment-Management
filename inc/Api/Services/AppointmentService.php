@@ -78,7 +78,7 @@ class AppointmentService
         if (is_wp_error($user_email_result)) 
         {
             error_log('Failed to send user confirmation email: ' . $user_email_result->get_error_message());
-        }
+        }   
 
         // Notify admin about the new appointment
         $admin_email_result = $this->emailSender->new_appointment_admin($appointmentData, $token);
@@ -139,13 +139,14 @@ class AppointmentService
     // }
 
     /**
-     * Update the status of an appointment.
+     * Update the status of an appointment and notify relevant parties.
      *
-     * Updates the status of an appointment in the database based on the provided appointment ID.
+     * This method updates the status of an appointment in the database based on the provided appointment ID.
+     * Upon successful update, it sends notification emails to the user and admin, with the content varying depending on the new status of the appointment (Cancelled, Confirmed, Pending).
      *
      * @param int $appointmentId The ID of the appointment to update.
      * @param string $status The new status for the appointment.
-     * @return bool True on successful update, false on failure.
+     * @return bool True on successful update and email notifications, false on failure.
      */
     public function updateAppointmentStatusById(int $appointmentId, string $status)
     {
@@ -153,11 +154,34 @@ class AppointmentService
 
         if (!$updatedAppointment) {
             error_log('Error: Failed to update appointment at ' . date('Y-m-d H:i:s'));
+            return false;
+        }
+
+        $appointmentData = $this->appointmentRepository->getAppointmentById($appointmentId);
+        $email = $appointmentData->getEmail();
+        $token = $appointmentData->getToken();
+
+        switch ($status) {
+            case 'Cancelled':
+                $this->emailSender->appointment_cancelled_user($email, $appointmentData, $token);
+                $this->emailSender->appointment_cancelled_admin($appointmentData, $token);
+                break;
+
+            case 'Confirmed':
+                $this->emailSender->appointment_confirmed_user($email, $appointmentData, $token);
+                $this->emailSender->appointment_confirmed_admin($appointmentData, $token);
+                break;
+
+            case 'Pending':
+                $this->emailSender->new_appointment_user($email, $appointmentData, $token);
+                $this->emailSender->new_appointment_admin($appointmentData, $token);
+                break;
         }
 
         return $updatedAppointment;
     }
-    
+
+
     private function validateAppointmentData($data)
     {
         $required_fields = ['name', 'surname', 'phone', 'email', 'date', 'startTime', 'endTime', 'service_id'];
