@@ -58,14 +58,14 @@ class TimeSlotGenerator
 
                 // Check for regular slots
                 if (
-                    $this->isTimeSlotAvailable($nextSlotStart, $slotEnd, $reservedSlots, $breakTimes) &&
+                    $this->isTimeSlotAvailable($nextSlotStart, $nextSlotStart + $serviceDuration, $reservedSlots, $breakTimes) &&
                     !$this->isNewAppointmentOverlapping($nextSlotStart, $serviceDuration, $reservedSlots)
                 ) {
                     $availableSlots[] = [
                         'start' => $this->minutesToTime($nextSlotStart),
-                        'end' => $this->minutesToTime($slotEnd)
+                        'end' => $this->minutesToTime($nextSlotStart + $serviceDuration)
                     ];
-                    error_log("Added regular slot: " . $this->minutesToTime($nextSlotStart) . " - " . $this->minutesToTime($slotEnd));
+                    error_log("Added regular slot: " . $this->minutesToTime($nextSlotStart) . " - " . $this->minutesToTime($nextSlotStart + $serviceDuration));
                 }
 
                 // Check for optimized slots
@@ -127,10 +127,13 @@ class TimeSlotGenerator
             }
         }
 
-        // Check if the slot overlaps with any break times
+        // Check if any part of the service duration overlaps with any break time
         foreach ($breakTimes as $break) {
-            if ($start < $break['end'] && $end > $break['start']) {
-                error_log("Slot {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with break time {$this->minutesToTime($break['start'])} - {$this->minutesToTime($break['end'])}");
+            if (($start < $break['end'] && $end > $break['start']) ||
+                ($start >= $break['start'] && $start < $break['end']) ||
+                ($end > $break['start'] && $end <= $break['end'])
+            ) {
+                error_log("Service duration {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with break time {$this->minutesToTime($break['start'])} - {$this->minutesToTime($break['end'])}");
                 return false;
             }
         }
