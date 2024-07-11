@@ -41,10 +41,12 @@ class ServiceRepository
             return new WP_Error('database_error', 'Failed to retrieve services.');
         }
 
+        // Convert results to Service objects
         return array_map(function ($data) {
             return new Service($data);
         }, $results);
     }
+
 
     /**
      * Create a new service.
@@ -52,15 +54,15 @@ class ServiceRepository
      * @param Service $serviceData The service data.
      * @return int|WP_Error The created service ID or WP_Error on failure.
      */
-    public function create(Service $serviceData)
+    public function create(Service $service)
     {
-        $time = $this->convertDurationToTime($serviceData->duration);
+        $time = $this->convertDurationToTime($service->getDuration());
 
         $result = $this->wpdb->insert($this->services_table, [
-            'name' => sanitize_text_field($serviceData->name),
-            'description' => sanitize_text_field($serviceData->description),
+            'name' => sanitize_text_field($service->getName()),
+            'description' => sanitize_text_field($service->getDescription()),
             'duration' => $time,
-            'price' => floatval($serviceData->price),
+            'price' => floatval($service->getPrice()),
         ]);
 
         if ($result === false) {
@@ -69,7 +71,6 @@ class ServiceRepository
 
         return $this->wpdb->insert_id;
     }
-
 
     /**
      * Delete a service.
@@ -95,21 +96,21 @@ class ServiceRepository
      * @param array $serviceData The service data.
      * @return bool|WP_Error True on success, WP_Error on failure.
      */
-    public function updateService(int $serviceId, Service $serviceData)
+    public function updateService(int $serviceId, Service $service)
     {
-        $time = $this->convertDurationToTime($serviceData['duration']);
-
+        $time = $this->convertDurationToTime($service->getDuration());
+    
         $result = $this->wpdb->update($this->services_table, [
-            'name' => sanitize_text_field($serviceData['name']),
-            'description' => sanitize_text_field($serviceData['description']),
+            'name' => sanitize_text_field($service->getName()),
+            'description' => sanitize_text_field($service->getDescription()),
             'duration' => $time,
-            'price' => floatval($serviceData['price']),
+            'price' => floatval($service->getPrice()),
         ], ['id' => $serviceId]);
-
+    
         if ($result === false) {
             return new WP_Error('db_update_error', 'Could not update service in the database', ['status' => 500]);
         }
-
+    
         return true;
     }
 

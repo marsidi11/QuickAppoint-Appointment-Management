@@ -150,6 +150,16 @@ class AppointmentService
      */
     public function updateAppointmentStatusById(int $appointmentId, string $status)
     {
+        // Fetch the current appointment data
+        $appointmentData = $this->appointmentRepository->getAppointmentById($appointmentId);
+        $currentStatus = $appointmentData->getStatus();
+
+        // If the new status is the same as the current status, do nothing
+        if ($currentStatus === $status) {
+            return $appointmentData;
+        }
+
+        // Update the appointment status
         $updatedAppointment = $this->appointmentRepository->updateAppointmentStatusById($appointmentId, $status);
 
         if (!$updatedAppointment) {
@@ -157,10 +167,10 @@ class AppointmentService
             return false;
         }
 
-        $appointmentData = $this->appointmentRepository->getAppointmentById($appointmentId);
         $email = $appointmentData->getEmail();
         $token = $appointmentData->getToken();
 
+        // Send appropriate emails based on the new status
         switch ($status) {
             case 'Cancelled':
                 $this->emailSender->appointment_cancelled_user($email, $appointmentData, $token);
@@ -180,6 +190,7 @@ class AppointmentService
 
         return $updatedAppointment;
     }
+
 
 
     private function validateAppointmentData($data)

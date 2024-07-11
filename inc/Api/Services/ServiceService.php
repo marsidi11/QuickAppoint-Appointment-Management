@@ -26,7 +26,7 @@ class ServiceService
         $this->serviceRepository = $serviceRepository;
     }
 
-     /**
+    /**
      * Retrieve all services.
      *
      * @return array|WP_Error List of services or WP_Error on failure.
@@ -34,14 +34,12 @@ class ServiceService
     public function getAllServices()
     {
         $services = $this->serviceRepository->getAll();
-        
-        if (is_wp_error($services)) 
-        {
+
+        if (is_wp_error($services)) {
             return $services;
         }
 
-        if (empty($services)) 
-        {
+        if (empty($services)) {
             return new WP_Error('no_services', 'No services found.', ['status' => 404]);
         }
 
@@ -62,12 +60,12 @@ class ServiceService
         }
 
         $createdService = $this->serviceRepository->create($serviceData);
+        
         if (is_wp_error($createdService)) {
             return $createdService;
         }
         return $createdService;
     }
-
 
     /**
      * Delete a service.
@@ -91,14 +89,13 @@ class ServiceService
      * @param array $serviceData The service data.
      * @return bool|WP_Error True on success, WP_Error on failure.
      */
-    public function updateService(int $serviceId, Service $serviceData)
+    public function updateService(int $serviceId, Service $service)
     {
-        $errors = $this->validateServiceData($serviceData);
+        $errors = $this->validateServiceData($service->toArray());
         if (!empty($errors)) {
             return new WP_Error('invalid_request', implode(', ', $errors), ['status' => 400]);
         }
 
-        $service = new Service($serviceData);
         $updatedService = $this->serviceRepository->updateService($serviceId, $service);
 
         if (is_wp_error($updatedService)) 
@@ -112,10 +109,10 @@ class ServiceService
     /**
      * Validate service data.
      *
-     * @param array $data The service data.
+     * @param Object $data The service data.
      * @return array List of validation errors.
      */
-    private function validateServiceData(array $data)
+    private function validateServiceData($data)
     {
         $errors = [];
 

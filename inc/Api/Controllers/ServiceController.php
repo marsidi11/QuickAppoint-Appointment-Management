@@ -1,4 +1,5 @@
 <?php
+
 namespace Inc\Api\Controllers;
 
 use Inc\Api\Services\ServiceService;
@@ -102,12 +103,16 @@ class ServiceController extends WP_REST_Controller
         }
 
         $services = $this->serviceService->getAllServices();
-        
+
         if (is_wp_error($services)) {
             return $this->create_error_response($services);
         }
 
-        return new WP_REST_Response(['data' => $services], 200);
+        $services_array = array_map(function ($service) {
+            return $service->toArray();
+        }, $services);
+
+        return new WP_REST_Response(['data' => $services_array], 200);
     }
 
     public function post_service_data(WP_REST_Request $request)
@@ -119,7 +124,7 @@ class ServiceController extends WP_REST_Controller
 
         $service_data = $request->get_json_params();
 
-        $service = new Service ($service_data);
+        $service = new Service($service_data);
         $result = $this->serviceService->createService($service);
 
         if (is_wp_error($result)) {
@@ -154,8 +159,10 @@ class ServiceController extends WP_REST_Controller
         }
 
         $service_id = intval($request['id']);
-        $service_data = new Service($request->get_json_params());
-        $result = $this->serviceService->updateService($service_id, $service_data);
+        $service_data = $request->get_json_params();
+
+        $service = new Service($service_data);
+        $result = $this->serviceService->updateService($service_id, $service);
 
         if (is_wp_error($result)) {
             return $result;
