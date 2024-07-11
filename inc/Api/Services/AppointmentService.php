@@ -27,11 +27,30 @@ class AppointmentService
         $this->emailSender = $emailSender;
     }
 
+    /**
+     * Retrieve all appointments.
+     *
+     * Fetches appointments from the database based on the specified page and number of items per  * page.
+     * This can be used to implement pagination in the appointment listing.
+     *
+     * @param int $page The current page number.
+     * @param int $per_page The number of appointments to display per page.
+     * @return array An array of appointments.
+     */
     public function getAllAppointments($page, $per_page)
     {
         return $this->appointmentRepository->getAllAppointments($page, $per_page);
     }
 
+    /**
+     * Create a new appointment.
+     *
+     * Validates the appointment data, generates a confirmation token, creates the appointment,
+     * sends confirmation emails to the user and admin, and returns the confirmation URL.
+     *
+     * @param array $appointmentData The appointment data.
+     * @return array|WP_Error An array with success status, message, and confirmation URL on success, WP_Error on failure.
+     */
     public function createAppointment($appointmentData)
     {
         // Validate the appointment data
@@ -79,23 +98,64 @@ class AppointmentService
         ];
     }
 
+    /**
+     * Delete an appointment.
+     *
+     * Removes an appointment from the database based on the provided appointment ID.
+     *
+     * @param int $appointmentId The ID of the appointment to delete.
+     * @return bool True on successful deletion, false on failure.
+     */
     public function deleteAppointment($appointmentId)
     {
         return $this->appointmentRepository->deleteAppointment($appointmentId);
     }
 
-    public function updateAppointment($appointmentId, $appointmentData)
+    /**
+     * Update an appointment.
+     *
+     * Validates the provided appointment data and updates the appointment in the database.
+     * Returns true on success or WP_Error on failure.
+     *
+     * @param int $appointmentId The ID of the appointment to update.
+     * @param array $appointmentData The new data for the appointment.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
+    // public function updateAppointment(int $appointmentId, Appointment $appointmentData)
+    // {
+    //     $validation = $this->validateAppointmentData($appointmentData);
+    //     if (is_wp_error($validation)) {
+    //         return $validation;
+    //     }
+
+    //     $appointment = new Appointment($appointmentData);
+    //     $updatedAppointment = $this->appointmentRepository->updateAppointment($appointmentId, $appointment);
+
+    //     if (!$updatedAppointment) {
+    //         error_log('Error: Failed to update appointment at ' . date('Y-m-d H:i:s'));
+    //     }
+
+    //     return $updatedAppointment;
+    // }
+
+    /**
+     * Update the status of an appointment.
+     *
+     * Updates the status of an appointment in the database based on the provided appointment ID.
+     *
+     * @param int $appointmentId The ID of the appointment to update.
+     * @param string $status The new status for the appointment.
+     * @return bool True on successful update, false on failure.
+     */
+    public function updateAppointmentStatusById(int $appointmentId, string $status)
     {
-        // Validate the appointment data
-        $validation = $this->validateAppointmentData($appointmentData);
-        if (is_wp_error($validation)) {
-            return $validation;
+        $updatedAppointment = $this->appointmentRepository->updateAppointmentStatusById($appointmentId, $status);
+
+        if (!$updatedAppointment) {
+            error_log('Error: Failed to update appointment at ' . date('Y-m-d H:i:s'));
         }
 
-        $appointment = new Appointment($appointmentData);
-        $appointment->setId($appointmentId);
-
-        return $this->appointmentRepository->updateAppointment($appointment);
+        return $updatedAppointment;
     }
     
     private function validateAppointmentData($data)

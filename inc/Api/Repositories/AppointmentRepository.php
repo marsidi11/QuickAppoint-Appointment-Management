@@ -131,53 +131,53 @@ class AppointmentRepository
         }
     }
 
-    public function updateAppointment(Appointment $appointment)
-    {
-        $this->wpdb->query('START TRANSACTION');
+    // public function updateAppointment(int $appointmentId, Appointment $appointment)
+    // {
+    //     $this->wpdb->query('START TRANSACTION');
 
-        try {
-            $result = $this->wpdb->update($this->appointments_table, [
-                'name' => $appointment->getName(),
-                'surname' => $appointment->getSurname(),
-                'phone' => $appointment->getPhone(),
-                'email' => $appointment->getEmail(),
-                'date' => $appointment->getDate(),
-                'startTime' => $appointment->getStartTime(),
-                'endTime' => $appointment->getEndTime(),
-                'status' => $appointment->getStatus()
-            ], ['id' => $appointment->getId()], 
-            ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'], 
-            ['%d']);
+    //     try {
+    //         $result = $this->wpdb->update($this->appointments_table, [
+    //             'name' => $appointment->getName(),
+    //             'surname' => $appointment->getSurname(),
+    //             'phone' => $appointment->getPhone(),
+    //             'email' => $appointment->getEmail(),
+    //             'date' => $appointment->getDate(),
+    //             'startTime' => $appointment->getStartTime(),
+    //             'endTime' => $appointment->getEndTime(),
+    //             'status' => $appointment->getStatus()
+    //         ], ['id' => $appointment->getId()], 
+    //         ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'], 
+    //         ['%d']);
 
-            if ($result === false) {
-                throw new \Exception('Could not update appointment in the database');
-            }
+    //         if ($result === false) {
+    //             throw new \Exception('Could not update appointment in the database');
+    //         }
 
-            $mapping_result = $this->wpdb->delete($this->mapping_table, ['appointment_id' => $appointment->getId()]);
-            if ($mapping_result === false) {
-                throw new \Exception('Could not delete appointment-service mapping from the database');
-            }
+    //         $mapping_result = $this->wpdb->delete($this->mapping_table, ['appointment_id' => $appointment->getId()]);
+    //         if ($mapping_result === false) {
+    //             throw new \Exception('Could not delete appointment-service mapping from the database');
+    //         }
 
-            foreach ($appointment->getServiceIds() as $service_id) {
-                $mapping_result = $this->wpdb->insert($this->mapping_table, [
-                    'appointment_id' => $appointment->getId(),
-                    'service_id' => $service_id
-                ], ['%d', '%d']);
+    //         foreach ($appointment->getServiceIds() as $service_id) {
+    //             $mapping_result = $this->wpdb->insert($this->mapping_table, [
+    //                 'appointment_id' => $appointment->getId(),
+    //                 'service_id' => $service_id
+    //             ], ['%d', '%d']);
 
-                if ($mapping_result === false) {
-                    throw new \Exception('Could not insert appointment-service mapping into the database');
-                }
-            }
+    //             if ($mapping_result === false) {
+    //                 throw new \Exception('Could not insert appointment-service mapping into the database');
+    //             }
+    //         }
 
-            $this->wpdb->query('COMMIT');
+    //         $this->wpdb->query('COMMIT');
 
-            return true;
-        } catch (\Exception $e) {
-            $this->wpdb->query('ROLLBACK');
-            error_log($e->getMessage());
-            return new WP_Error('db_update_error', $e->getMessage(), ['status' => 500]);
-        }
-    }
+    //         return true;
+    //     } catch (\Exception $e) {
+    //         $this->wpdb->query('ROLLBACK');
+    //         error_log($e->getMessage());
+    //         return new WP_Error('db_update_error', $e->getMessage(), ['status' => 500]);
+    //     }
+    // }
 
     public function getReservedTimeSlots(string $date): array
     {
@@ -380,11 +380,25 @@ class AppointmentRepository
         }
     }
 
-    public function updateAppointmentStatus($token, $status)
+    public function updateAppointmentStatusByToken($token, $status)
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'am_appointments';
         $result = $wpdb->update($table_name, ['status' => $status], ['token' => $token]);
+
+        if ($result === false) 
+        {
+            return new WP_Error('update_failed', 'Failed to update appointment status');
+        }
+
+        return true;
+    }
+
+    public function updateAppointmentStatusById($id, $status)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'am_appointments';
+        $result = $wpdb->update($table_name, ['status' => $status], ['id' => $id]);
 
         if ($result === false) 
         {

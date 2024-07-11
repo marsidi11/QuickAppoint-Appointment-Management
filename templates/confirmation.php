@@ -15,7 +15,7 @@ if (isset($_GET['token']))
         // Handle form submissions
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') 
         {
-            $result = $appointment_repository->updateAppointmentStatus($token, 'Cancelled');
+            $result = $appointment_repository->updateAppointmentStatusByToken($token, 'Cancelled');
             if (!is_wp_error($result)) 
             {
                 echo '<div class="am-message am-message--success">Your appointment has been cancelled successfully.</div>';

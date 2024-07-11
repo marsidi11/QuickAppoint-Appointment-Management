@@ -154,7 +154,7 @@ class ServiceController extends WP_REST_Controller
         }
 
         $service_id = intval($request['id']);
-        $service_data = $request->get_json_params();
+        $service_data = new Service($request->get_json_params());
         $result = $this->serviceService->updateService($service_id, $service_data);
 
         if (is_wp_error($result)) {

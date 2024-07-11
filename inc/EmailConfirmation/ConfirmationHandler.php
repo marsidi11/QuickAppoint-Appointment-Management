@@ -44,7 +44,7 @@ class ConfirmationHandler extends BaseController
 
         if ($result && $result->getStatus() === 'Pending')
         {
-            $update_result = $this->appointmentRepository->updateAppointmentStatus($token, 'Confirmed');
+            $update_result = $this->appointmentRepository->updateAppointmentStatusByToken($token, 'Confirmed');
             
             if (is_wp_error($update_result)) 
             {

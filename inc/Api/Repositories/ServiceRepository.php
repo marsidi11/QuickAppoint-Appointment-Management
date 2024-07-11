@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Service Repository
  *
@@ -35,12 +36,12 @@ class ServiceRepository
     {
         $query = "SELECT id, name, description, FLOOR(TIME_TO_SEC(duration)/60) as duration, price FROM {$this->services_table}";
         $results = $this->wpdb->get_results($query, ARRAY_A);
-        
+
         if ($results === false) {
             return new WP_Error('database_error', 'Failed to retrieve services.');
         }
 
-        return array_map(function($data) {
+        return array_map(function ($data) {
             return new Service($data);
         }, $results);
     }
@@ -94,7 +95,7 @@ class ServiceRepository
      * @param array $serviceData The service data.
      * @return bool|WP_Error True on success, WP_Error on failure.
      */
-    public function update($serviceId, $serviceData)
+    public function updateService(int $serviceId, Service $serviceData)
     {
         $time = $this->convertDurationToTime($serviceData['duration']);
 

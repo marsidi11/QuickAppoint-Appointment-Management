@@ -112,11 +112,12 @@ export async function getAllAppointments(page = 1, itemsPerPage = 10) {
 
 /**
  * Update Appointment
- * @param {Object} appointmentId - Appointment Id to delete
+ * @param {Object} appointmentId - Appointment Id to update
+ * @param {Object} status - New status of the appointment
  * @returns {Promise<Object>}
  */
-export async function updateAppointment(appointmentId) {
-	return apiUpdate(window.am_plugin_api_settings.apiUrlAppointments + '/update/' + appointmentId);
+export async function updateAppointmentStatus(appointmentId, status) {
+    return apiUpdate(window.am_plugin_api_settings.apiUrlAppointments + '/update/' + appointmentId, { status: status });
 }
 
 /**

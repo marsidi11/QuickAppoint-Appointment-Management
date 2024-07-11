@@ -3,6 +3,7 @@
 namespace Inc\Api\Controllers;
 
 use Inc\Api\Services\AppointmentService;
+use Inc\Api\Models\Appointment;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -65,7 +66,7 @@ class AppointmentController extends WP_REST_Controller
             [
                 'route' => '/update/(?P<id>\d+)',
                 'methods' => 'PUT',
-                'callback' => 'update_appointment_data',
+                'callback' => 'update_appointment_status',
                 'permission_callback' => [$this, 'can_edit_posts']
             ],
         ];
@@ -156,7 +157,7 @@ class AppointmentController extends WP_REST_Controller
         return new WP_REST_Response('Appointment deleted successfully', 200);
     }
 
-    public function update_appointment_data(WP_REST_Request $request)
+    public function update_appointment_status(WP_REST_Request $request)
     {
         $nonce_validation = $this->validate_nonce($request);
         if (is_wp_error($nonce_validation)) {
@@ -164,13 +165,22 @@ class AppointmentController extends WP_REST_Controller
         }
 
         $appointment_id = $request['id'];
-        $appointment_data = $request->get_json_params();
-        $result = $this->appointmentService->updateAppointment($appointment_id, $appointment_data);
+        $appointment_status = $request->get_param('status');
+
+        if (!$appointment_id || !is_numeric($appointment_id)) {
+            return new \WP_Error('invalid_id', 'Invalid appointment ID', array('status' => 400));
+        }
+
+        if (!$appointment_status || !is_string($appointment_status)) {
+            return new \WP_Error('invalid_status', 'Invalid status', array('status' => 400));
+        }
+
+        $result = $this->appointmentService->updateAppointmentStatusById($appointment_id, $appointment_status);
 
         if (is_wp_error($result)) {
             return $result;
         }
 
-        return new WP_REST_Response('Appointment updated successfully', 200);
+        return new WP_REST_Response('Appointment status updated successfully', 200);
     }
 }

@@ -91,17 +91,21 @@ class ServiceService
      * @param array $serviceData The service data.
      * @return bool|WP_Error True on success, WP_Error on failure.
      */
-    public function updateService(int $serviceId, array $serviceData)
+    public function updateService(int $serviceId, Service $serviceData)
     {
         $errors = $this->validateServiceData($serviceData);
         if (!empty($errors)) {
             return new WP_Error('invalid_request', implode(', ', $errors), ['status' => 400]);
         }
 
-        $updatedService = $this->serviceRepository->update($serviceId, $serviceData);
-        if (is_wp_error($updatedService)) {
-            return $updatedService;
+        $service = new Service($serviceData);
+        $updatedService = $this->serviceRepository->updateService($serviceId, $service);
+
+        if (is_wp_error($updatedService)) 
+        {
+            error_log('Error: Failed to update service at ' . date('Y-m-d H:i:s'));
         }
+
         return $updatedService;
     }
 
