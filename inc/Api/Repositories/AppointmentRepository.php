@@ -196,8 +196,8 @@ class AppointmentRepository
         if (!empty($search)) 
         {
             $search_term = '%' . $this->wpdb->esc_like($search) . '%';
-            $where_clauses[] = "(a.name LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
-            $where_params = array_merge($where_params, [$search_term, $search_term, $search_term]);
+            $where_clauses[] = "(a.name LIKE %s OR a.surname LIKE %s OR a.phone LIKE %s OR a.email LIKE %s)";
+            $where_params = array_merge($where_params, [$search_term, $search_term, $search_term, $search_term]);
         }
 
         if (!empty($dateFilters)) 
