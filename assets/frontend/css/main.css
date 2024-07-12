@@ -10,24 +10,24 @@
 * tertiary-600 - Tertiary Color set as option on admin (used for text)
 */
 
-#am-app {
+#quickappoint-app {
     font-size: 16px;
     line-height: 1.5;
 }
 
-#am-app button {
+#quickappoint-app button {
     @apply border-0 h-[40px] leading-4 rounded-md;
 }
 
-#am-app input {
+#quickappoint-app input {
     @apply min-h-11 px-5 py-1 rounded-md;
 }
 
-#am-app .calendar-container {
+#quickappoint-app .calendar-container {
     @apply flex items-center justify-center w-full p-2 my-10 rounded;
 }
 
-#am-app .calendar-section {
+#quickappoint-app .calendar-section {
     @apply bg-background-600 w-full mx-auto pt-7 pb-4 px-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
     min-height: 384px;
     max-height: 100vh;
@@ -328,7 +328,7 @@
     @apply block mb-2 text-sm font-medium text-tertiary-600;
 }
 
-#am-app .form-group input {
+#quickappoint-app .form-group input {
     @apply bg-background-600 border border-primary-600 text-tertiary-600 text-sm rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
 }
 
@@ -384,82 +384,82 @@
 
 /* Appointment Confirmation Page */
 
-.am-confirmation {
+.quickappoint-confirmation {
     @apply w-full max-w-2xl mx-auto mt-8 px-8 pt-8 pb-4 bg-white rounded-lg shadow-lg border border-gray-200;
 }
 
-.am-confirmation__title {
+.quickappoint-confirmation__title {
     @apply text-3xl font-bold text-gray-800 mb-8 pb-4 border-b border-gray-200;
 }
 
-.am-confirmation__content {
+.quickappoint-confirmation__content {
     @apply mb-8;
 }
 
-.am-confirmation__info {
+.quickappoint-confirmation__info {
     @apply space-y-4;
 }
 
-.am-confirmation__row {
+.quickappoint-confirmation__row {
     @apply flex items-center justify-between py-2 border-b border-gray-100;
 }
 
-.am-confirmation__label {
+.quickappoint-confirmation__label {
     @apply text-gray-600 font-medium;
 }
 
-.am-confirmation__value {
+.quickappoint-confirmation__value {
     @apply text-gray-900 font-semibold;
 }
 
-.am-confirmation__actions {
+.quickappoint-confirmation__actions {
     @apply mt-8;
 }
 
-.am-confirmation__form {
+.quickappoint-confirmation__form {
     @apply flex justify-center;
 }
 
-.am-btn {
+.quickappoint-btn {
     @apply px-6 py-3 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
 }
 
-.am-btn--danger {
+.quickappoint-btn--danger {
     @apply bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 mb-8;
 }
 
-.am-message {
+.quickappoint-message {
     @apply p-4 mb-6 rounded-md text-sm font-medium;
 }
 
-.am-message--success {
+.quickappoint-message--success {
     @apply bg-green-100 text-green-700 border border-green-400;
 }
 
-.am-message--error {
+.quickappoint-message--error {
     @apply bg-red-100 text-red-700 border border-red-400;
 }
 
-.am-message--info {
+.quickappoint-message--info {
     @apply bg-blue-100 text-blue-700 border border-blue-400;
 }
 
-.am-status {
+.quickappoint-status {
     @apply px-2 py-1 rounded-full text-xs font-semibold;
 }
 
-.am-status--confirmed {
+.quickappoint-status--confirmed {
     @apply bg-green-100 text-green-800;
 }
 
-.am-status--pending {
+.quickappoint-status--pending {
     @apply bg-yellow-100 text-yellow-800;
 }
 
-.am-status--cancelled {
+.quickappoint-status--cancelled {
     @apply bg-red-100 text-red-800;
 }
 
-.am-confirmation > p {
+.quickappoint-confirmation > p {
     @apply text-sm;
 }

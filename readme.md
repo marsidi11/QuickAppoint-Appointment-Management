@@ -15,6 +15,3 @@ Appointment Management is a WordPress plugin that allows you to efficiently mana
 1. Download the plugin zip file.
 2. Extract the contents to the `/wp-content/plugins/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
-
-
-This plugin is licensed under the [MIT License](LICENSE.md).

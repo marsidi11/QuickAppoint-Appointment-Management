@@ -18,7 +18,7 @@ if (isset($_GET['token']))
             $result = $appointment_repository->updateAppointmentStatusByToken($token, 'Cancelled');
             if (!is_wp_error($result)) 
             {
-                echo '<div class="am-message am-message--success">Your appointment has been cancelled successfully.</div>';
+                echo '<div class="quickappoint-message quickappoint-message--success">Your appointment has been cancelled successfully.</div>';
                 
                 // Send cancellation email to user and admin
                 $email_sender->appointment_cancelled_user($appointment->getEmail(), $appointment, $token);
@@ -28,7 +28,7 @@ if (isset($_GET['token']))
                 $appointment = $appointment_repository->getAppointmentByToken($token);
             } else 
             {
-                echo '<div class="am-message am-message--error">Failed to cancel the appointment. Please try again later or contact support.</div>';
+                echo '<div class="quickappoint-message quickappoint-message--error">Failed to cancel the appointment. Please try again later or contact support.</div>';
             }
         }
 
@@ -40,55 +40,55 @@ if (isset($_GET['token']))
         $status = strtolower($appointment->getStatus());
         $is_cancelled = $status === 'cancelled';
         ?>
-        <div class="am-confirmation">
-            <h2 class="am-confirmation__title">Appointment Details</h2>
-            <div class="am-confirmation__content">
-                <div class="am-confirmation__info">
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Full Name:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getName() . ' ' . $appointment->getSurname()); ?></span>
+        <div class="quickappoint-confirmation">
+            <h2 class="quickappoint-confirmation__title">Appointment Details</h2>
+            <div class="quickappoint-confirmation__content">
+                <div class="quickappoint-confirmation__info">
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Full Name:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html($appointment->getName() . ' ' . $appointment->getSurname()); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Phone:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getPhone()); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Phone:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html($appointment->getPhone()); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Email:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getEmail()); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Email:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html($appointment->getEmail()); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Services:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html(implode(', ', $appointment->getServiceNames()) ?: 'No services specified'); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Services:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html(implode(', ', $appointment->getServiceNames()) ?: 'No services specified'); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Date:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getDate()); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Date:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html($appointment->getDate()); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Time:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html($appointment->getStartTime() . ' - ' . $appointment->getEndTime()); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Time:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html($appointment->getStartTime() . ' - ' . $appointment->getEndTime()); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Total Price:</span>
-                        <span class="am-confirmation__value"><?php echo esc_html(get_option('currency_symbol', '€') . number_format($appointment->getTotalPrice(), 2)); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Total Price:</span>
+                        <span class="quickappoint-confirmation__value"><?php echo esc_html(get_option('currency_symbol', '€') . number_format($appointment->getTotalPrice(), 2)); ?></span>
                     </div>
-                    <div class="am-confirmation__row">
-                        <span class="am-confirmation__label">Status:</span>
-                        <span class="am-confirmation__value">
-                            <span class="am-status am-status--<?php echo $status; ?>"><?php echo esc_html(ucfirst($status)); ?></span>
+                    <div class="quickappoint-confirmation__row">
+                        <span class="quickappoint-confirmation__label">Status:</span>
+                        <span class="quickappoint-confirmation__value">
+                            <span class="quickappoint-status quickappoint-status--<?php echo $status; ?>"><?php echo esc_html(ucfirst($status)); ?></span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="am-confirmation__actions">
+            <div class="quickappoint-confirmation__actions">
                 <?php if ($is_past): ?>
-                    <p class="am-message am-message--info">This appointment has already passed and cannot be modified.</p>
+                    <p class="quickappoint-message quickappoint-message--info">This appointment has already passed and cannot be modified.</p>
                 <?php elseif ($is_cancelled): ?>
-                    <p class="am-message am-message--info">This appointment has been cancelled and cannot be modified further.</p>
+                    <p class="quickappoint-message quickappoint-message--info">This appointment has been cancelled and cannot be modified further.</p>
                 <?php else: ?>
-                    <form method="post" class="am-confirmation__form">
+                    <form method="post" class="quickappoint-confirmation__form">
                         <input type="hidden" name="token" value="<?php echo esc_attr($token); ?>">
-                        <button type="submit" name="action" value="cancel" class="am-btn am-btn--danger" onclick="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
+                        <button type="submit" name="action" value="cancel" class="quickappoint-btn quickappoint-btn--danger" onclick="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
                             Cancel Appointment
                         </button>
                     </form>
@@ -102,10 +102,10 @@ if (isset($_GET['token']))
         <?php
     } else 
     {
-        echo '<div class="am-message am-message--error">Appointment details not found. Please check your link and try again.</div>';
+        echo '<div class="quickappoint-message quickappoint-message--error">Appointment details not found. Please check your link and try again.</div>';
     }
 } else 
 {
-    echo '<div class="am-message am-message--error">No appointment token provided. Please use the link from your confirmation email.</div>';
+    echo '<div class="quickappoint-message quickappoint-message--error">No appointment token provided. Please use the link from your confirmation email.</div>';
 }
 ?>

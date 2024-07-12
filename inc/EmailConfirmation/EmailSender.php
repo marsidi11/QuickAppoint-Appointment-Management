@@ -34,7 +34,7 @@ class EmailSender extends BaseController
             'action' => 'verify_appointment'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_new_appointment_user_subject', 'Please verify your appointment');
+        $subject = apply_filters('quickappoint_new_appointment_user_subject', 'Please verify your appointment');
         $message = $this->get_email_template('new_appointment_user', [
             'confirmation_url' => $confirmation_url
         ]);
@@ -61,7 +61,7 @@ class EmailSender extends BaseController
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_new_appointment_admin_subject', 'New Appointment');
+        $subject = apply_filters('quickappoint_new_appointment_admin_subject', 'New Appointment');
         $message = $this->get_email_template('new_appointment_admin', [
             'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
@@ -92,7 +92,7 @@ class EmailSender extends BaseController
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_appointment_confirmed_user_subject', 'Your appointment has been confirmed');
+        $subject = apply_filters('quickappoint_appointment_confirmed_user_subject', 'Your appointment has been confirmed');
         $message = $this->get_email_template('appointment_confirmed_user', [
             'user_email' => $user_email,
             'appointment_data' => $appointment_data,
@@ -120,7 +120,7 @@ class EmailSender extends BaseController
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_appointment_confirmed_admin_subject', 'An appointment has been confirmed');
+        $subject = apply_filters('quickappoint_appointment_confirmed_admin_subject', 'An appointment has been confirmed');
         $message = $this->get_email_template('appointment_confirmed_admin', [
             'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
@@ -152,7 +152,7 @@ class EmailSender extends BaseController
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_appointment_cancelled_user_subject', 'Your appointment has been successfully cancelled.');
+        $subject = apply_filters('quickappoint_appointment_cancelled_user_subject', 'Your appointment has been successfully cancelled.');
         $message = $this->get_email_template('appointment_cancelled_user', [
             'user_email' => $user_email,
             'appointment_data' => $appointment_data,
@@ -180,7 +180,7 @@ class EmailSender extends BaseController
             'action' => 'check_appointment_info'
         ], home_url('/appointment-confirmation')));
 
-        $subject = apply_filters('am_appointment_cancelled_admin_subject', 'An appointment has been cancelled.');
+        $subject = apply_filters('quickappoint_appointment_cancelled_admin_subject', 'An appointment has been cancelled.');
         $message = $this->get_email_template('appointment_cancelled_admin', [
             'appointment_data' => $appointment_data,
             'check_info_url' => $check_info_url
@@ -206,7 +206,7 @@ class EmailSender extends BaseController
      */
     private function get_email_template($template_name, $data) 
     {
-        $template_path = apply_filters('am_email_template_path', $this->plugin_path . "templates/emails/{$template_name}.php");
+        $template_path = apply_filters('quickappoint_email_template_path', $this->plugin_path . "templates/emails/{$template_name}.php");
         
         if (!file_exists($template_path)) 
         {

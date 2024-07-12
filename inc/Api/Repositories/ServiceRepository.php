@@ -24,7 +24,7 @@ class ServiceRepository
     {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->services_table = $wpdb->prefix . 'am_services';
+        $this->services_table = $wpdb->prefix . 'quickappoint_services';
     }
 
     /**

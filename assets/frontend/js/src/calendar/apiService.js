@@ -17,7 +17,7 @@ function handleError(error) {
 
 // Check if API Settings are set
 function checkApiSettings() {
-	if (!window.am_plugin_api_settings || !window.am_plugin_api_settings.nonce) {
+	if (!window.quickappoint_plugin_api_settings || !window.quickappoint_plugin_api_settings.nonce) {
 		console.log('Nonce is not set');
 		return false;
 	}
@@ -27,7 +27,7 @@ function checkApiSettings() {
 // Helper function to get headers
 function getHeaders() {
 	return {
-		'X-WP-Nonce': window.am_plugin_api_settings.nonce,
+		'X-WP-Nonce': window.quickappoint_plugin_api_settings.nonce,
 	};
 }
 
@@ -67,7 +67,7 @@ async function apiPost(url, data) {
  */
 export async function createAppointment(appointmentData) {
 	try {
-        const response = await apiPost(window.am_plugin_api_settings.apiUrlAppointments + '/create', appointmentData);
+        const response = await apiPost(window.quickappoint_plugin_api_settings.apiUrlAppointments + '/create', appointmentData);
         
         return {
             success: true,
@@ -88,7 +88,7 @@ export async function createAppointment(appointmentData) {
  * @returns {Promise<Object>}
  */
 export async function getServices() {
-	return apiGet(window.am_plugin_api_settings.apiUrlServices);
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlServices);
 }
 
 /**
@@ -96,7 +96,7 @@ export async function getServices() {
  * @returns {Promise<Object>}
  */
 export async function getDatesRange() {
-	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/dates-range');
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlOptions + '/dates-range');
 }
 
 /**
@@ -104,7 +104,7 @@ export async function getDatesRange() {
  * @returns {Promise<Object>}
  */
 export async function getOpenDays() {
-	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/open-days');
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlOptions + '/open-days');
 }
 
 /**
@@ -113,7 +113,7 @@ export async function getOpenDays() {
  * @returns {Promise<Object>}
  */
 export async function getAvailableTimeSlots(date, serviceDuration) {
-	return apiGet(window.am_plugin_api_settings.apiUrlAppointments + '/available-time-slots', { date, serviceDuration });
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlAppointments + '/available-time-slots', { date, serviceDuration });
 }
 
 /**
@@ -121,5 +121,5 @@ export async function getAvailableTimeSlots(date, serviceDuration) {
  * @returns {Promise<Object>}
  */
 export async function getCurrencySymbol() {
-	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/currency-symbol');
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlOptions + '/currency-symbol');
 }

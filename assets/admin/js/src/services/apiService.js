@@ -13,7 +13,7 @@ function handleError(error) {
 
 // Check if API Settings are set
 function checkApiSettings() {
-	if (!window.am_plugin_api_settings || !window.am_plugin_api_settings.nonce) {
+	if (!window.quickappoint_plugin_api_settings || !window.quickappoint_plugin_api_settings.nonce) {
 		console.log('Nonce is not set');
 		return false;
 	}
@@ -23,7 +23,7 @@ function checkApiSettings() {
 // Helper function to get headers
 function getHeaders() {
     return {
-        'X-WP-Nonce': window.am_plugin_api_settings.nonce,
+        'X-WP-Nonce': window.quickappoint_plugin_api_settings.nonce,
     };
 }
 
@@ -91,7 +91,7 @@ async function apiUpdate(url, data) {
  * @returns {Promise<Object>}
  */
 export async function createService(serviceData) {
-	return apiPost(window.am_plugin_api_settings.apiUrlServices + '/create', serviceData);
+	return apiPost(window.quickappoint_plugin_api_settings.apiUrlServices + '/create', serviceData);
 }
 
 /**
@@ -99,7 +99,7 @@ export async function createService(serviceData) {
  * @returns {Promise<Object>}
  */
 export async function getServices() {
-	return apiGet(window.am_plugin_api_settings.apiUrlServices);
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlServices);
 }
 
 /**
@@ -108,7 +108,7 @@ export async function getServices() {
  * @returns {Promise<Object>}
  */
 export async function deleteService(serviceId) {
-	return apiDelete(window.am_plugin_api_settings.apiUrlServices + '/delete/' + serviceId);
+	return apiDelete(window.quickappoint_plugin_api_settings.apiUrlServices + '/delete/' + serviceId);
 }
 
 /**
@@ -117,7 +117,7 @@ export async function deleteService(serviceId) {
  * @returns {Promise<Object>}
  */
 export async function updateService(serviceId, data) {
-	return apiUpdate(window.am_plugin_api_settings.apiUrlServices + '/update/' + serviceId, data);
+	return apiUpdate(window.quickappoint_plugin_api_settings.apiUrlServices + '/update/' + serviceId, data);
 }
 
 /**
@@ -125,5 +125,5 @@ export async function updateService(serviceId, data) {
  * @returns {Promise<Object>}
  */
 export async function getCurrencySymbol() {
-	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/currency-symbol');
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlOptions + '/currency-symbol');
 }

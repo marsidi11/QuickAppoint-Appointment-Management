@@ -13,7 +13,7 @@ use \Inc\Api\Callbacks\ColorGenerator;
 class Enqueue extends BaseController 
 {
     // Use a unique prefix for all constants and handles to avoid conflicts
-    const PREFIX = 'am_plugin_';
+    const PREFIX = 'quickappoint_plugin_';
     const BACKEND_STYLE_HANDLE = self::PREFIX . 'backend_style';
     const BACKEND_SCRIPT_HANDLE = self::PREFIX . 'backend_script';
     const FRONTEND_STYLE_HANDLE = self::PREFIX . 'frontend_style';
@@ -73,8 +73,8 @@ class Enqueue extends BaseController
 
     public function conditionally_enqueue_frontend_scripts()
     {
-        if (is_singular() && has_shortcode(get_post()->post_content, 'am_form') || 
-            has_shortcode(get_post()->post_content, 'am_confirmation')) {
+        if (is_singular() && has_shortcode(get_post()->post_content, 'quickappoint_form') || 
+            has_shortcode(get_post()->post_content, 'quickappoint_confirmation')) {
             $this->enqueue_frontend_scripts();
         }
     }

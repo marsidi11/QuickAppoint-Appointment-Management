@@ -18,7 +18,7 @@ class TimeSlotGenerator
     {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->appointments_table = $wpdb->prefix . 'am_appointments';
+        $this->appointments_table = $wpdb->prefix . 'quickappoint_appointments';
         $this->cache = [
             'reserved_slots' => [],
             'business_hours' => [],

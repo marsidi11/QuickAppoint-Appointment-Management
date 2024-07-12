@@ -1,1 +1,1 @@
-<div id="am-app"></div>
+<div id="quickappoint-app"></div>

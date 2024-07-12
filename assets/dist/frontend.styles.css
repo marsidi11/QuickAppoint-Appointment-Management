@@ -1301,11 +1301,6 @@ video {
   padding-bottom: 1rem;
 }
 
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -1584,19 +1579,19 @@ video {
 * tertiary-600 - Tertiary Color set as option on admin (used for text)
 */
 
-#am-app {
+#quickappoint-app {
   font-size: 16px;
   line-height: 1.5;
 }
 
-#am-app button {
+#quickappoint-app button {
   height: 40px;
   border-radius: 0.375rem;
   border-width: 0px;
   line-height: 1rem;
 }
 
-#am-app input {
+#quickappoint-app input {
   min-height: 2.75rem;
   border-radius: 0.375rem;
   padding-left: 1.25rem;
@@ -1605,7 +1600,7 @@ video {
   padding-bottom: 0.25rem;
 }
 
-#am-app .calendar-container {
+#quickappoint-app .calendar-container {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
   display: flex;
@@ -1616,7 +1611,7 @@ video {
   padding: 0.5rem;
 }
 
-#am-app .calendar-section {
+#quickappoint-app .calendar-section {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -2249,7 +2244,7 @@ video {
   color: var(--tertiary-color-600);
 }
 
-#am-app .form-group input {
+#quickappoint-app .form-group input {
   display: block;
   width: 100%;
   border-radius: 0.375rem;
@@ -2262,7 +2257,7 @@ video {
   color: var(--tertiary-color-600);
 }
 
-#am-app .form-group input:focus {
+#quickappoint-app .form-group input:focus {
   border-color: var(--secondary-color-600);
   --tw-ring-color: var(--secondary-color-600);
 }
@@ -2455,7 +2450,7 @@ video {
 
 /* Appointment Confirmation Page */
 
-.am-confirmation {
+.quickappoint-confirmation {
   margin-left: auto;
   margin-right: auto;
   margin-top: 2rem;
@@ -2476,7 +2471,7 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.am-confirmation__title {
+.quickappoint-confirmation__title {
   margin-bottom: 2rem;
   border-bottom-width: 1px;
   --tw-border-opacity: 1;
@@ -2489,17 +2484,17 @@ video {
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
-.am-confirmation__content {
+.quickappoint-confirmation__content {
   margin-bottom: 2rem;
 }
 
-.am-confirmation__info > :not([hidden]) ~ :not([hidden]) {
+.quickappoint-confirmation__info > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
-.am-confirmation__row {
+.quickappoint-confirmation__row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2510,28 +2505,28 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.am-confirmation__label {
+.quickappoint-confirmation__label {
   font-weight: 500;
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
-.am-confirmation__value {
+.quickappoint-confirmation__value {
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
-.am-confirmation__actions {
+.quickappoint-confirmation__actions {
   margin-top: 2rem;
 }
 
-.am-confirmation__form {
+.quickappoint-confirmation__form {
   display: flex;
   justify-content: center;
 }
 
-.am-btn {
+.quickappoint-btn {
   border-radius: 0.375rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -2545,7 +2540,7 @@ video {
   transition-duration: 200ms;
 }
 
-.am-btn:focus {
+.quickappoint-btn:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
@@ -2554,7 +2549,7 @@ video {
   --tw-ring-offset-width: 2px;
 }
 
-.am-btn--danger {
+.quickappoint-btn--danger {
   margin-bottom: 2rem;
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
@@ -2562,17 +2557,17 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.am-btn--danger:hover {
+.quickappoint-btn--danger:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
-.am-btn--danger:focus {
+.quickappoint-btn--danger:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
 }
 
-.am-message {
+.quickappoint-message {
   margin-bottom: 1.5rem;
   border-radius: 0.375rem;
   padding: 1rem;
@@ -2581,7 +2576,7 @@ video {
   font-weight: 500;
 }
 
-.am-message--success {
+.quickappoint-message--success {
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(74 222 128 / var(--tw-border-opacity));
@@ -2591,7 +2586,7 @@ video {
   color: rgb(21 128 61 / var(--tw-text-opacity));
 }
 
-.am-message--error {
+.quickappoint-message--error {
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(248 113 113 / var(--tw-border-opacity));
@@ -2601,7 +2596,7 @@ video {
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 
-.am-message--info {
+.quickappoint-message--info {
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(96 165 250 / var(--tw-border-opacity));
@@ -2611,7 +2606,7 @@ video {
   color: rgb(29 78 216 / var(--tw-text-opacity));
 }
 
-.am-status {
+.quickappoint-status {
   border-radius: 9999px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -2622,28 +2617,28 @@ video {
   font-weight: 600;
 }
 
-.am-status--confirmed {
+.quickappoint-status--confirmed {
   --tw-bg-opacity: 1;
   background-color: rgb(220 252 231 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(22 101 52 / var(--tw-text-opacity));
 }
 
-.am-status--pending {
+.quickappoint-status--pending {
   --tw-bg-opacity: 1;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity));
 }
 
-.am-status--cancelled {
+.quickappoint-status--cancelled {
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity));
 }
 
-.am-confirmation > p {
+.quickappoint-confirmation > p {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }

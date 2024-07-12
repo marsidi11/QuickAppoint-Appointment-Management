@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Appointment Management Plugin Activation
  *
@@ -20,7 +21,8 @@ defined('ABSPATH') || exit; // Prevent direct access
  *
  * @since 1.0.0
  */
-class Activate {
+class Activate
+{
 
     /**
      * Minimum required WordPress version.
@@ -51,37 +53,38 @@ class Activate {
      * @since 1.0.0
      * @return void
      */
-    public static function activate() 
+    public static function activate()
     {
         global $wpdb;
+
+        ob_start();
 
         try {
             self::check_compatibility();
 
             $charset_collate = $wpdb->get_charset_collate();
             $table_names = [
-                'appointments' => $wpdb->prefix . 'am_appointments',
-                'services'     => $wpdb->prefix . 'am_services',
-                'mapping'      => $wpdb->prefix . 'am_mapping',
+                'appointments' => $wpdb->prefix . 'quickappoint_appointments',
+                'services'     => $wpdb->prefix . 'quickappoint_services',
+                'mapping'      => $wpdb->prefix . 'quickappoint_mapping',
             ];
 
-            self::create_tables($wpdb, $charset_collate, $table_names);
+            self::create_or_update_tables($wpdb, $charset_collate, $table_names);
             self::add_foreign_keys($wpdb, $table_names);
             self::create_pages();
 
-            update_option('am_plugin_version', '1.0.0');
+            update_option('quickappoint_plugin_version', '1.0.0');
 
             // Set 'notifications_email' option to the admin email
             $admin_email = get_option('admin_email');
             update_option('notifications_email', $admin_email);
-            
-        } catch (\Exception $e) 
-        {
+
+            ob_end_clean();
+        } catch (\Exception $e) {
+            ob_end_clean();
             self::log_error('Activation failed: ' . $e->getMessage());
             wp_die('Activation failed. Please check the error log for more details.');
         }
-
-        
     }
 
     /**
@@ -91,17 +94,15 @@ class Activate {
      * @throws \Exception If compatibility check fails.
      * @return void
      */
-    private static function check_compatibility() 
+    private static function check_compatibility()
     {
         global $wp_version;
 
-        if (version_compare($wp_version, self::REQUIRED_WP_VERSION, '<')) 
-        {
+        if (version_compare($wp_version, self::REQUIRED_WP_VERSION, '<')) {
             throw new \Exception("WordPress version " . self::REQUIRED_WP_VERSION . " or higher is required.");
         }
 
-        if (version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION, '<')) 
-        {
+        if (version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION, '<')) {
             throw new \Exception("PHP version " . self::REQUIRED_PHP_VERSION . " or higher is required.");
         }
     }
@@ -113,15 +114,17 @@ class Activate {
      * @param \wpdb   $wpdb            WordPress database access abstraction object.
      * @param string  $charset_collate Database charset and collation.
      * @param array   $table_names     Array of table names.
-     * @throws \Exception If table creation fails.
+     * @throws \Exception If table creation or update fails.
      * @return void
      */
-    private static function create_tables($wpdb, $charset_collate, $table_names) 
+    private static function create_or_update_tables($wpdb, $charset_collate, $table_names)
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
+        // Define the expected table structure
         $tables = [
-            "CREATE TABLE {$table_names['appointments']} (
+            'appointments' => "
+            CREATE TABLE {$table_names['appointments']} (
                 id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 name varchar(255) NOT NULL,
                 surname varchar(255) NOT NULL,
@@ -136,7 +139,8 @@ class Activate {
                 updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) $charset_collate;",
 
-            "CREATE TABLE {$table_names['services']} (
+            'services' => "
+            CREATE TABLE {$table_names['services']} (
                 id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 name varchar(255) NOT NULL,
                 description TEXT NOT NULL,
@@ -147,7 +151,8 @@ class Activate {
                 UNIQUE KEY name (name)
             ) $charset_collate;",
 
-            "CREATE TABLE {$table_names['mapping']} (
+            'mapping' => "
+            CREATE TABLE {$table_names['mapping']} (
                 id mediumint(9) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 appointment_id mediumint(9) NOT NULL,
                 service_id mediumint(9) NOT NULL,
@@ -156,12 +161,73 @@ class Activate {
             ) $charset_collate;"
         ];
 
-        foreach ($tables as $sql) 
-        {
-            $result = dbDelta($sql);
-            if (empty($result)) 
-            {
-                throw new \Exception("Failed to create table: $sql");
+        foreach ($tables as $table_name => $sql) {
+            if ($wpdb->get_var("SHOW TABLES LIKE '{$table_names[$table_name]}'") != $table_names[$table_name]) {
+                // Table doesn't exist, create it
+                dbDelta($sql);
+            } else {
+                // Table exists, check and update its structure if necessary
+                self::update_table_structure($wpdb, $table_names[$table_name], $table_name);
+            }
+        }
+    }
+
+    /**
+     * Update the structure of existing tables if necessary.
+     *
+     * @param \wpdb   $wpdb        WordPress database access abstraction object.
+     * @param string  $table_name  Name of the table to update.
+     * @param string  $table_key   Key to identify the table structure.
+     * @throws \Exception If update fails.
+     * @return void
+     */
+    private static function update_table_structure($wpdb, $table_name, $table_key)
+    {
+        // Define the expected structure for updates
+        $expected_columns = [
+            'appointments' => [
+                'id',
+                'name',
+                'surname',
+                'phone',
+                'email',
+                'date',
+                'startTime',
+                'endTime',
+                'status',
+                'token',
+                'created_at',
+                'updated_at'
+            ],
+            'services' => [
+                'id',
+                'name',
+                'description',
+                'duration',
+                'price',
+                'created_at',
+                'updated_at'
+            ],
+            'mapping' => [
+                'id',
+                'appointment_id',
+                'service_id',
+                'created_at'
+            ]
+        ];
+
+        foreach ($expected_columns[$table_key] as $column) {
+            if ($wpdb->get_var("SHOW COLUMNS FROM `{$table_name}` LIKE '{$column}'") === null) {
+                // Column does not exist, you can add it as necessary
+                switch ($column) {
+                    case 'created_at':
+                        $wpdb->query("ALTER TABLE `{$table_name}` ADD `created_at` datetime DEFAULT CURRENT_TIMESTAMP");
+                        break;
+                    case 'updated_at':
+                        $wpdb->query("ALTER TABLE `{$table_name}` ADD `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+                        break;
+                        // Add more cases for other columns as needed
+                }
             }
         }
     }
@@ -175,30 +241,30 @@ class Activate {
      * @throws \Exception If adding foreign keys fails.
      * @return void
      */
-    private static function add_foreign_keys($wpdb, $table_names) 
+    private static function add_foreign_keys($wpdb, $table_names)
     {
         $queries = [
             "ALTER TABLE {$table_names['mapping']}
-            ADD CONSTRAINT fk_appointment_id
-            FOREIGN KEY (appointment_id)
-            REFERENCES {$table_names['appointments']}(id)
-            ON DELETE CASCADE;",
+        ADD CONSTRAINT fk_appointment_id
+        FOREIGN KEY (appointment_id)
+        REFERENCES {$table_names['appointments']}(id)
+        ON DELETE CASCADE;",
 
             "ALTER TABLE {$table_names['mapping']}
-            ADD CONSTRAINT fk_service_id
-            FOREIGN KEY (service_id)
-            REFERENCES {$table_names['services']}(id)
-            ON DELETE CASCADE;"
+        ADD CONSTRAINT fk_service_id
+        FOREIGN KEY (service_id)
+        REFERENCES {$table_names['services']}(id)
+        ON DELETE CASCADE;"
         ];
 
-        foreach ($queries as $query) 
-        {
+        foreach ($queries as $query) {
             $result = $wpdb->query($query);
             if ($result === false) {
                 throw new \Exception('Error executing query: ' . $wpdb->last_error);
             }
         }
     }
+
 
     /**
      * Create necessary pages for the plugin.
@@ -207,18 +273,23 @@ class Activate {
      * @throws \Exception If page creation fails.
      * @return void
      */
-    private static function create_pages() 
+    private static function create_pages()
     {
         $pages = [
-            ['title' => 'Make an Appointment', 'shortcode' => '[am_form]'],
-            ['title' => 'Appointment Confirmation', 'shortcode' => '[am_confirmation]']
+            ['title' => 'Make an Appointment', 'shortcode' => '[quickappoint_form]'],
+            ['title' => 'Appointment Confirmation', 'shortcode' => '[quickappoint_confirmation]']
         ];
 
-        foreach ($pages as $page_info) 
-        {
-            $page = get_page_by_title($page_info['title']);
-            if (!$page) 
-            {
+        foreach ($pages as $page_info) {
+            // Use WP_Query instead of get_page_by_title
+            $query = new \WP_Query([
+                'post_type' => 'page',
+                'post_status' => 'publish',
+                'posts_per_page' => 1,
+                'title' => $page_info['title']
+            ]);
+
+            if (!$query->have_posts()) {
                 $page_id = wp_insert_post([
                     'post_title'    => $page_info['title'],
                     'post_content'  => $page_info['shortcode'],
@@ -226,8 +297,7 @@ class Activate {
                     'post_type'     => 'page'
                 ]);
 
-                if (is_wp_error($page_id)) 
-                {
+                if (is_wp_error($page_id)) {
                     throw new \Exception("Failed to create page: {$page_info['title']}. Error: " . $page_id->get_error_message());
                 }
             }
@@ -241,7 +311,7 @@ class Activate {
      * @param string $message Error message to log.
      * @return void
      */
-    private static function log_error($message) 
+    private static function log_error($message)
     {
         error_log(date('[Y-m-d H:i:s] ') . $message . "\n", 3, self::LOG_FILE);
     }

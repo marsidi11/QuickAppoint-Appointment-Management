@@ -26,9 +26,9 @@ class AppointmentRepository
     {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->appointments_table = $wpdb->prefix . 'am_appointments';
-        $this->mapping_table = $wpdb->prefix . 'am_mapping';
-        $this->services_table = $wpdb->prefix . 'am_services';
+        $this->appointments_table = $wpdb->prefix . 'quickappoint_appointments';
+        $this->mapping_table = $wpdb->prefix . 'quickappoint_mapping';
+        $this->services_table = $wpdb->prefix . 'quickappoint_services';
     }
 
     public function getAllAppointments($page, $per_page)
@@ -401,7 +401,7 @@ class AppointmentRepository
     public function updateAppointmentStatusByToken($token, $status)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
+        $table_name = $wpdb->prefix . 'quickappoint_appointments';
         $result = $wpdb->update($table_name, ['status' => $status], ['token' => $token]);
 
         if ($result === false) {
@@ -414,7 +414,7 @@ class AppointmentRepository
     public function updateAppointmentStatusById($id, $status)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'am_appointments';
+        $table_name = $wpdb->prefix . 'quickappoint_appointments';
         $result = $wpdb->update($table_name, ['status' => $status], ['id' => $id]);
 
         if ($result === false) {

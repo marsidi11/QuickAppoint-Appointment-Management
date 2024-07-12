@@ -20,7 +20,7 @@ function handleError(error) {
 
 // Check if API Settings are set
 function checkApiSettings() {
-	if (!window.am_plugin_api_settings || !window.am_plugin_api_settings.nonce) {
+	if (!window.quickappoint_plugin_api_settings || !window.quickappoint_plugin_api_settings.nonce) {
 		console.log('Nonce is not set');
 		return false;
 	}
@@ -30,7 +30,7 @@ function checkApiSettings() {
 // Helper function to get headers
 function getHeaders() {
     return {
-        'X-WP-Nonce': window.am_plugin_api_settings.nonce,
+        'X-WP-Nonce': window.quickappoint_plugin_api_settings.nonce,
     };
 }
 
@@ -101,7 +101,7 @@ async function apiDelete(url, params = {}) {
 export async function getAllAppointments(page = 1, itemsPerPage = 10) {
     const params = { page, per_page: itemsPerPage };
     const queryParams = new URLSearchParams(params).toString();
-    const response = await apiGet(`${window.am_plugin_api_settings.apiUrlAppointments}?${queryParams}`);
+    const response = await apiGet(`${window.quickappoint_plugin_api_settings.apiUrlAppointments}?${queryParams}`);
 
     if (response.message) {
         return {
@@ -126,7 +126,7 @@ export async function getAllAppointments(page = 1, itemsPerPage = 10) {
  * @returns {Promise<Object>}
  */
 export async function updateAppointmentStatus(appointmentId, status) {
-    return apiUpdate(window.am_plugin_api_settings.apiUrlAppointments + '/update/' + appointmentId, { status: status });
+    return apiUpdate(window.quickappoint_plugin_api_settings.apiUrlAppointments + '/update/' + appointmentId, { status: status });
 }
 
 /**
@@ -135,7 +135,7 @@ export async function updateAppointmentStatus(appointmentId, status) {
  * @returns {Promise<Object>}
  */
 export async function deleteAppointment(appointmentId) {
-	return apiDelete(window.am_plugin_api_settings.apiUrlAppointments + '/delete/' + appointmentId);
+	return apiDelete(window.quickappoint_plugin_api_settings.apiUrlAppointments + '/delete/' + appointmentId);
 }
 
 /**
@@ -163,7 +163,7 @@ export async function getAppointmentsByFilter(searchTerm = '', page = 1, itemsPe
    }
    
    const queryParams = new URLSearchParams(params).toString();
-   const response = await apiGet(`${window.am_plugin_api_settings.apiUrlAppointments}/search?${queryParams}`);
+   const response = await apiGet(`${window.quickappoint_plugin_api_settings.apiUrlAppointments}/search?${queryParams}`);
 
    if (response.message) {
     return {
@@ -186,7 +186,7 @@ export async function getAppointmentsByFilter(searchTerm = '', page = 1, itemsPe
  * @returns {Promise<Object>}
  */
 export async function getCurrencySymbol() {
-	return apiGet(window.am_plugin_api_settings.apiUrlOptions + '/currency-symbol');
+	return apiGet(window.quickappoint_plugin_api_settings.apiUrlOptions + '/currency-symbol');
 }
 
 /**
@@ -195,5 +195,5 @@ export async function getCurrencySymbol() {
  * @returns {Promise<Object>}
  */
 export async function getAppointmentsReport() {
-    return apiGet(window.am_plugin_api_settings.apiUrlAppointments + '/get-data-report');
+    return apiGet(window.quickappoint_plugin_api_settings.apiUrlAppointments + '/get-data-report');
 }

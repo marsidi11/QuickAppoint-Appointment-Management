@@ -93,7 +93,7 @@ class Admin extends BaseController
     private function createSettingArg(string $optionName): array
     {
         return [
-            'option_group' => 'am_options_data',
+            'option_group' => 'quickappoint_options_data',
             'option_name' => $optionName,
             'callback' => [$this->callbacks, 'amOptionsData']
         ];
@@ -103,7 +103,7 @@ class Admin extends BaseController
     {
         $args = [
             [
-                'id' => 'am_admin_index',
+                'id' => 'quickappoint_admin_index',
                 'title' => 'Settings',
                 'callback' => [$this->callbacks, 'amAdminSection'],
                 'page' => 'quickappoint'
@@ -142,7 +142,7 @@ class Admin extends BaseController
             'title' => __($title, 'appointment-management'),
             'callback' => [$this->callbacks, $callback],
             'page' => 'quickappoint',
-            'section' => 'am_admin_index',
+            'section' => 'quickappoint_admin_index',
             'args' => [
                 'label_for' => $id,
                 'class' => $class

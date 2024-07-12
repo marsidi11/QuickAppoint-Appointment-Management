@@ -4,5 +4,5 @@ import CalendarComponent from './calendar/index.vue';
 document.addEventListener('DOMContentLoaded', () => {
     createApp({
         render: () => h(CalendarComponent)
-    }).mount('#am-app');
+    }).mount('#quickappoint-app');
 });

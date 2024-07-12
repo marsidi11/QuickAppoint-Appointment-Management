@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createApp({
         render: () => h(AppointmentsComponent)
-    }).mount('#all-appointments-am');
+    }).mount('#all-appointments-quickappoint');
 
     createApp({
         render: () => h(ServicesComponent)
-    }).mount('#services-am');
+    }).mount('#services-quickappoint');
 
 });
