@@ -278,8 +278,12 @@ class Activate
 
                 $result = $wpdb->query($query);
                 if ($result === false) {
-                    throw new \Exception('Error executing query: ' . $wpdb->last_error);
+                    // Log the error and continue with the next constraint
+                    self::log_error("Failed to add foreign key constraint: $constraint_name. Error: " . $wpdb->last_error);
                 }
+            } else {
+                // Constraint already exists, log this information
+                self::log_error("Foreign key constraint $constraint_name already exists on table {$constraint_info['table']}.");
             }
         }
     }
