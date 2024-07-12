@@ -243,24 +243,43 @@ class Activate
      */
     private static function add_foreign_keys($wpdb, $table_names)
     {
-        $queries = [
-            "ALTER TABLE {$table_names['mapping']}
-        ADD CONSTRAINT fk_appointment_id
-        FOREIGN KEY (appointment_id)
-        REFERENCES {$table_names['appointments']}(id)
-        ON DELETE CASCADE;",
-
-            "ALTER TABLE {$table_names['mapping']}
-        ADD CONSTRAINT fk_service_id
-        FOREIGN KEY (service_id)
-        REFERENCES {$table_names['services']}(id)
-        ON DELETE CASCADE;"
+        $constraints = [
+            'fk_appointment_id' => [
+                'table' => $table_names['mapping'],
+                'column' => 'appointment_id',
+                'reference_table' => $table_names['appointments'],
+                'reference_column' => 'id'
+            ],
+            'fk_service_id' => [
+                'table' => $table_names['mapping'],
+                'column' => 'service_id',
+                'reference_table' => $table_names['services'],
+                'reference_column' => 'id'
+            ]
         ];
 
-        foreach ($queries as $query) {
-            $result = $wpdb->query($query);
-            if ($result === false) {
-                throw new \Exception('Error executing query: ' . $wpdb->last_error);
+        foreach ($constraints as $constraint_name => $constraint_info) {
+            // Check if the constraint already exists
+            $constraint_exists = $wpdb->get_var("
+            SELECT COUNT(1) constraint_exists
+            FROM information_schema.TABLE_CONSTRAINTS
+            WHERE CONSTRAINT_SCHEMA = DATABASE()
+              AND CONSTRAINT_NAME = '$constraint_name'
+              AND TABLE_NAME = '{$constraint_info['table']}'
+        ");
+
+            if ($constraint_exists == 0) {
+                // Constraint doesn't exist, so add it
+                $query = "ALTER TABLE {$constraint_info['table']}
+                ADD CONSTRAINT $constraint_name
+                FOREIGN KEY ({$constraint_info['column']})
+                REFERENCES {$constraint_info['reference_table']}({$constraint_info['reference_column']})
+                ON DELETE CASCADE;";
+
+                $result = $wpdb->query($query);
+                if ($result === false) {
+                    throw new \Exception('Error executing query: ' . $wpdb->last_error);
+                }
             }
         }
     }
