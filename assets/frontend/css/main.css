@@ -28,7 +28,7 @@
 }
 
 #quickappoint-app .calendar-section {
-    @apply bg-background-600 w-full mx-auto pt-7 pb-4 px-4 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
+    @apply bg-background-600 w-full mx-auto pt-5 pb-4 px-2 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] rounded-lg;
     min-height: 384px;
     max-height: 100vh;
 }
@@ -47,7 +47,7 @@
     .calendar-time,
     .input-form {
         @apply h-[calc(100vh-4rem)];
-        max-height: 412px;
+        max-height: 430px;
     }
 }
 
@@ -130,7 +130,7 @@
 }
 
 .calendar-header {
-    @apply flex items-center justify-between px-6 py-1;
+    @apply flex items-center justify-between py-1 px-1 md:px-6 ;
 }
 
 .prev-month-icon, 
@@ -139,7 +139,7 @@
 }
 
 .calendar-header > .current-month {
-    @apply text-[24px] font-semibold m-auto text-tertiary-600;
+    @apply text-[22px] font-semibold m-auto text-tertiary-600;
 }
 
 /* Calendar Body Style */
@@ -149,7 +149,7 @@
 } 
 
 .calendar-week {
-    @apply grid grid-cols-7 gap-2 p-2 w-full;
+    @apply grid grid-cols-7 py-2 px-1 w-full;
 }
 
 .calendar-day-name {
@@ -196,7 +196,7 @@
 }
 
 .service-box {
-    @apply flex flex-col justify-between h-full px-6 py-4 bg-background-600 border-2 border-primary-400 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply flex flex-col justify-between h-full border-2 border-primary-400 px-6 py-4 bg-background-600 rounded-md shadow transition-all duration-300 ease-in-out cursor-pointer active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 
@@ -262,7 +262,7 @@
 }
 
 .calendar-time-item {
-    @apply bg-background-600 p-4 w-full max-w-sm rounded-md cursor-pointer text-center border-2 border-primary-400 font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
+    @apply bg-background-600 p-4 w-full max-w-sm border-2 border-primary-400 rounded-md cursor-pointer text-center font-semibold transition-all duration-300 ease-in-out active:bg-primary-400 active:text-tertiary-50 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-primary-400 text-tertiary-600;
     transition: transform 0.2s;
 }
 
@@ -293,7 +293,7 @@
 }
 
 .user-details {
-    @apply w-full mx-auto bg-background-600 shadow-sm border-2 border-primary-600 rounded-md p-4 mb-4;
+    @apply w-full mx-auto bg-background-600 border-2 border-primary-600 shadow-sm rounded-md p-4 mb-4;
 }
 
 .user-details-row {
@@ -305,11 +305,11 @@
 }
 
 .detail-label {
-    @apply text-[12px] font-medium text-tertiary-600 mr-1 shrink-0;
+    @apply text-[14px] font-medium text-tertiary-600 mr-1 shrink-0;
 }
 
 .detail-value {
-    @apply text-[14px] font-semibold text-tertiary-600 truncate flex-grow;
+    @apply text-[15px] font-semibold text-tertiary-600 truncate flex-grow;
 }
 
 .detail-total {
@@ -329,7 +329,7 @@
 }
 
 #quickappoint-app .form-group input {
-    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-[14px] rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
+    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-[15px] rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
 }
 
 /* Navigation Buttons */

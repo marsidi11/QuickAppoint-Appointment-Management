@@ -22,7 +22,7 @@
       </li>
       <li v-for="page in displayedPages" :key="page">
         <a href="#" @click.prevent="changePage(page)"
-          :class="{ 'bg-primary-50 text-primary-600 border-primary-300': page === currentPage, 'bg-white text-gray-500': page !== currentPage }"
+          :class="{ 'bg-primary-200 text-primary-600 border-primary-300': page === currentPage, 'bg-white text-gray-500': page !== currentPage }"
           class="flex items-center justify-center text-[14px] py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           {{ page }}
         </a>

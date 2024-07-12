@@ -46,12 +46,6 @@ class TimeSlotGenerator
             $availableSlots = [];
             $currentTime = $openTime;
 
-            error_log("Starting optimization for date: $date, service duration: $serviceDuration minutes");
-            error_log("Reserved slots: " . print_r($reservedSlots, true));
-            error_log("Break times: " . print_r($breakTimes, true));
-            error_log("Buffer time: " . $this->bufferTime);
-            error_log("Slot duration: " . $this->slotDuration);
-
             while ($currentTime + $serviceDuration <= $closeTime) {
                 $nextSlotStart = $this->roundToNearestSlot($currentTime);
                 $slotEnd = $nextSlotStart + $this->slotDuration;
@@ -65,7 +59,6 @@ class TimeSlotGenerator
                         'start' => $this->minutesToTime($nextSlotStart),
                         'end' => $this->minutesToTime($nextSlotStart + $serviceDuration)
                     ];
-                    error_log("Added regular slot: " . $this->minutesToTime($nextSlotStart) . " - " . $this->minutesToTime($nextSlotStart + $serviceDuration));
                 }
 
                 // Check for optimized slots
@@ -74,7 +67,6 @@ class TimeSlotGenerator
                 $currentTime = $slotEnd;
             }
 
-            error_log("Finished generating slots. Total slots: " . count($availableSlots));
             return $availableSlots;
         } catch (Exception $e) {
             error_log("Error generating optimized time slots: " . $e->getMessage());
@@ -89,7 +81,6 @@ class TimeSlotGenerator
                 $gapStart = $this->roundUpToNearest5Minutes($slot['end']);
                 $gapEnd = $endTime;
 
-                error_log("Checking gap: " . $this->minutesToTime($gapStart) . " - " . $this->minutesToTime($gapEnd));
 
                 while ($gapStart + $serviceDuration + $this->bufferTime <= $gapEnd) {
                     $potentialSlotEnd = $gapStart + $serviceDuration;
@@ -98,7 +89,7 @@ class TimeSlotGenerator
                             'start' => $this->minutesToTime($gapStart),
                             'end' => $this->minutesToTime($potentialSlotEnd)
                         ];
-                        error_log("Added optimized slot: " . $this->minutesToTime($gapStart) . " - " . $this->minutesToTime($potentialSlotEnd));
+                        // error_log("Added optimized slot: " . $this->minutesToTime($gapStart) . " - " . $this->minutesToTime($potentialSlotEnd));
                         return; // Exit after adding the first available optimized slot
                     }
                     $gapStart += 5; // Move in 5-minute increments
@@ -122,7 +113,7 @@ class TimeSlotGenerator
         // Check if the slot overlaps with any reserved slots
         foreach ($reservedSlots as $slot) {
             if ($start < $slot['end'] && $end > $slot['start']) {
-                error_log("Slot {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with reserved slot {$this->minutesToTime($slot['start'])} - {$this->minutesToTime($slot['end'])}");
+                // error_log("Slot {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with reserved slot {$this->minutesToTime($slot['start'])} - {$this->minutesToTime($slot['end'])}");
                 return false;
             }
         }
@@ -133,7 +124,7 @@ class TimeSlotGenerator
                 ($start >= $break['start'] && $start < $break['end']) ||
                 ($end > $break['start'] && $end <= $break['end'])
             ) {
-                error_log("Service duration {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with break time {$this->minutesToTime($break['start'])} - {$this->minutesToTime($break['end'])}");
+                // error_log("Service duration {$this->minutesToTime($start)} - {$this->minutesToTime($end)} overlaps with break time {$this->minutesToTime($break['start'])} - {$this->minutesToTime($break['end'])}");
                 return false;
             }
         }
