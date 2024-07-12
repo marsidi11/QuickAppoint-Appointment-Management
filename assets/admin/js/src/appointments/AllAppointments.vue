@@ -1,14 +1,12 @@
 <template>
   <section class="bg-gray-50 dark:bg-gray-900">
-    <div class="mx-auto">
-
-      <div class="bg-white dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
-        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 p-6">
           <div class="w-full md:w-1/2">
             <SearchForm @search-updated="updateSearchQuery" />
           </div>
-          <div
-            class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+          <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
             <div class="flex items-center space-x-3 w-full md:w-auto">
               <FilterDropdown @filters-updated="updateDateFilter" />
               <StatusDropdown @statuses-updated="updateStatusFilter" />
@@ -16,14 +14,31 @@
             </div>
           </div>
         </div>
-        <Table :columns="columns" :users="users" :currencySymbol="currencySymbol" @appointment-deleted="handleAppointmentDelete" />
 
-        <div class="pl-4">
-          <Pagination  :currentPage="currentPage" :totalPages="totalPages" :totalItems="totalItems" 
-            :itemsPerPage="itemsPerPage" @page-changed="handlePageChange"
+        <div v-if="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+          <p class="font-bold">Error</p>
+          <p>{{ errorMessage }}</p>
+        </div>
+
+        <Table 
+          :columns="columns" 
+          :users="users" 
+          :currencySymbol="currencySymbol" 
+          @appointment-deleted="handleAppointmentDelete" 
+        />
+
+        <div class="p-6 bg-gray-50 dark:bg-gray-700">
+          <div v-if="loading" class="flex justify-center items-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+          </div>
+          <Pagination 
+            v-else
+            :currentPage="currentPage" 
+            :totalPages="totalPages" 
+            :totalItems="totalItems"
+            :itemsPerPage="itemsPerPage" 
+            @page-changed="handlePageChange"
           />
-          <div v-if="loading">Loading...</div>
-          <div v-if="errorMessage">{{ errorMessage }}</div>
         </div>
       </div>
     </div>
@@ -91,9 +106,17 @@ export default {
         this.loading = true;
         const response = await getAllAppointments(this.currentPage, this.itemsPerPage);
 
-        this.users = response.data;
-        this.totalItems = response.total;
-        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+        if (response.message) {
+            this.users = [];
+            this.totalItems = 0;
+            this.totalPages = 0;
+            this.errorMessage = response.message;
+        } else {
+            this.users = response.data;
+            this.totalItems = response.total;
+            this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+            this.errorMessage = ''; // Clear any previous error message
+        }
 
       } catch (error) {
         this.errorMessage = error.message || 'Failed to load appointments';
@@ -108,9 +131,17 @@ export default {
         this.loading = true;
         const response = await getAppointmentsByFilter(this.searchQuery, this.currentPage, this.itemsPerPage, this.dateFilters, this.statusFilters);
 
-        this.users = response.data;
-        this.totalItems = response.total;
-        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+        if (response.message) {
+            this.users = [];
+            this.totalItems = 0;
+            this.totalPages = 0;
+            this.errorMessage = response.message;
+        } else {
+            this.users = response.data;
+            this.totalItems = response.total;
+            this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+            this.errorMessage = ''; // Clear any previous error message
+        }
 
       } catch (error) {
         this.errorMessage = error.message || 'Failed to load appointments';

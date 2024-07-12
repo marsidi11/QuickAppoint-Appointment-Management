@@ -22,6 +22,7 @@ class CustomOptionsDataController extends WP_REST_Controller
     const DEFAULT_CURRENCY_SYMBOL = '$';
     const DEFAULT_PRIMARY_COLOR = '#6b7280';
     const DEFAULT_SECONDARY_COLOR = '#1d4ed8';
+    const DEFAULT_OPEN_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
     public function register()
     {
@@ -120,7 +121,7 @@ class CustomOptionsDataController extends WP_REST_Controller
             case 'currency_symbol':
                 return self::DEFAULT_CURRENCY_SYMBOL;
             case 'open_days':
-                return [];
+                return self::DEFAULT_OPEN_DAYS;
             case 'break_start':
             case 'break_end':
                 return '';

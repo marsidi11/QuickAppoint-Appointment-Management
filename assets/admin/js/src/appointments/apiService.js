@@ -102,6 +102,15 @@ export async function getAllAppointments(page = 1, itemsPerPage = 10) {
     const params = { page, per_page: itemsPerPage };
     const queryParams = new URLSearchParams(params).toString();
     const response = await apiGet(`${window.am_plugin_api_settings.apiUrlAppointments}?${queryParams}`);
+
+    if (response.message) {
+        return {
+            data: [],
+            total: 0,
+            totalPages: 0,
+            message: response.message
+        };
+    }
     
     return {
         data: response.appointments,
@@ -155,6 +164,15 @@ export async function getAppointmentsByFilter(searchTerm = '', page = 1, itemsPe
    
    const queryParams = new URLSearchParams(params).toString();
    const response = await apiGet(`${window.am_plugin_api_settings.apiUrlAppointments}/search?${queryParams}`);
+
+   if (response.message) {
+    return {
+        data: [],
+        total: 0,
+        totalPages: 0,
+        message: response.message
+    };
+}
    
    return {
        data: response.appointments,

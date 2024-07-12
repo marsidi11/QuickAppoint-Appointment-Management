@@ -81,8 +81,8 @@
 
 
 <script>
-import { ref, reactive } from 'vue';
-import { updateAppointmentStatus, deleteAppointment } from '../apiService.js';
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { updateAppointmentStatus, deleteAppointment as deleteAppointmentApi } from '../apiService.js';
 
 export default {
   name: 'Table',
@@ -123,7 +123,12 @@ export default {
 
     const deleteAppointment = async (appointmentId) => {
       try {
-        await deleteAppointment(appointmentId);
+        await deleteAppointmentApi(appointmentId);
+        // Remove the appointment from the users list after deletion
+        const index = props.users.findIndex(user => user.id === appointmentId);
+        if (index !== -1) {
+          props.users.splice(index, 1);
+        }
       } catch (error) {
         console.error('Error deleting appointment:', error);
       }
@@ -151,6 +156,14 @@ export default {
       }
     };
 
+    onMounted(() => {
+      document.addEventListener('click', handleClickOutside);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', handleClickOutside);
+    });
+
     return {
       dropdownStates,
       editingStatus,
@@ -162,14 +175,7 @@ export default {
       startEditingStatus,
       saveStatus
     };
-  },
-
-  mounted() {
-    document.addEventListener('click', this.handleClickOutside);
-  },
-
-  beforeUnmount() {
-    document.removeEventListener('click', this.handleClickOutside);
-  },
+  }
 };
+
 </script>

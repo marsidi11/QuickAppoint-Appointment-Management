@@ -152,6 +152,15 @@ class AppointmentReportingController extends WP_REST_Controller
 
         $result = $this->reportingService->filterAppointments($search, $date_filters, $date_range, $status_filters, $page, $per_page);
 
+        if (empty($result['appointments'])) {
+            return new WP_REST_Response([
+                'message' => 'No appointments found',
+                'appointments' => [],
+                'total' => 0,
+                'total_pages' => 0
+            ], 200);
+        }
+
         return new WP_REST_Response([
             'appointments' => $result['appointments'],
             'total' => $result['total'],

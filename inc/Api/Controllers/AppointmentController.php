@@ -107,6 +107,15 @@ class AppointmentController extends WP_REST_Controller
 
         $result = $this->appointmentService->getAllAppointments($page, $per_page);
 
+        if (empty($result['appointments'])) {
+            return new WP_REST_Response([
+                'message' => 'No appointments found',
+                'appointments' => [],
+                'total' => 0,
+                'total_pages' => 0
+            ], 200);
+        }
+
         return new WP_REST_Response([
             'appointments' => $result['appointments'],
             'total' => $result['total'],
