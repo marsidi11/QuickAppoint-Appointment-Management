@@ -6,7 +6,7 @@
  * 
  * Plugin Name: QuickAppoint - Appointment Management
  * Description: Efficient WordPress scheduling plugin. Optimize time slots, reduce no-shows, and streamline bookings with our user-friendly interface. Simplify appointment management for any business size.
- * Version: 0.9.0
+ * Version: 1.0.0
  * Author: Marsid Zyberi
  * Plugin URI: https://marketingon.al/quickappoint-appointment-management-plugin/
  * Text Domain: quickappoint
