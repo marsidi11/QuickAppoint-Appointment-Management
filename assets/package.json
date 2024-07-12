@@ -1,6 +1,6 @@
 {
   "name": "quickappoint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Appointment Management is a WordPress plugin that allows you to efficiently manage appointments for your website. With this plugin, you can easily handle reservations, appointments, and scheduling for various services or events. Streamline your appointment process and provide a seamless experience for your users.",
   "main": "index.js",
   "scripts": {

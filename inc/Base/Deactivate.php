@@ -10,6 +10,7 @@ class Deactivate
 {
     public static function deactivate()
     {
+        // TODO: Remove the code that is executed when the plugin is deactivated
         global $wpdb;
 
         // Define table names
