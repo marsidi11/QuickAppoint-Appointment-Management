@@ -254,7 +254,7 @@
 }
   
 .calendar-time-body {
-    @apply bg-background-600 rounded-md grid gap-6 m-auto w-full p-6;
+    @apply bg-background-600 rounded-md grid gap-5 m-auto w-full px-2 py-4 md:p-6;
 }
 
 .calendar-time-row {
@@ -285,7 +285,7 @@
 /* Calendar User Data Style */
 
 .input-form {
-    @apply md:px-6 rounded-md transition-all duration-300 ease-in-out flex flex-col items-center;
+    @apply md:px-6 rounded-md transition-all duration-300 ease-in-out flex flex-col items-center p-2;
 }
 
 .input-form > .form-title {
@@ -335,7 +335,7 @@
 /* Navigation Buttons */
   
 .calendar-nav {
-    @apply flex justify-end items-end py-3 md:px-6;  
+    @apply flex justify-end items-end py-3 px-1 md:px-6;  
 }
   
 .nav-previous,

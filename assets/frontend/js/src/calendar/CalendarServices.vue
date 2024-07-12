@@ -69,7 +69,7 @@ export default {
 
         only1ServiceBox() {
             if (this.services.length === 1) {
-                return 'md:w-1/2';
+                return 'w-full md:w-1/2';
             }
         },
     },
