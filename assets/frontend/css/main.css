@@ -126,7 +126,7 @@
 /* Calendar Header Style */
 
 .reset-month {
-    @apply cursor-pointer bg-primary-600 hover:bg-primary-700 text-tertiary-50 py-2 mb-2 px-4 rounded text-sm transition-colors duration-300 block mx-auto;
+    @apply cursor-pointer bg-primary-600 hover:bg-primary-700 text-tertiary-50 py-2 mb-2 px-4 rounded text-[14px] transition-colors duration-300 block mx-auto;
 }
 
 .calendar-header {
@@ -139,7 +139,7 @@
 }
 
 .calendar-header > .current-month {
-    @apply text-2xl font-semibold m-auto text-tertiary-600;
+    @apply text-[24px] font-semibold m-auto text-tertiary-600;
 }
 
 /* Calendar Body Style */
@@ -184,7 +184,7 @@
 }
 
 .calendar-services > .calendar-services-header {
-    @apply text-2xl font-semibold text-center mb-6 text-tertiary-600;
+    @apply text-[24px] font-semibold text-center mb-6 text-tertiary-600;
 }
 
 .services-list {
@@ -209,7 +209,7 @@
 }
 
 .service-name {
-    @apply text-xl font-semibold text-tertiary-600;
+    @apply text-[20px] font-semibold text-tertiary-600;
 }
 
 .service-description {
@@ -218,7 +218,7 @@
 
 .service-duration,
 .service-price {
-    @apply text-sm text-tertiary-600;
+    @apply text-[14px] text-tertiary-600;
 }
 
 .service-box:hover .service-name,
@@ -250,7 +250,7 @@
 }
   
 .calendar-time > .calendar-time-header {
-    @apply text-2xl font-semibold text-center text-tertiary-600;
+    @apply text-[24px] font-semibold text-center text-tertiary-600;
 }
   
 .calendar-time-body {
@@ -289,7 +289,7 @@
 }
 
 .input-form > .form-title {
-    @apply text-2xl font-semibold text-center text-tertiary-600;
+    @apply text-[24px] font-semibold text-center text-tertiary-600;
 }
 
 .user-details {
@@ -305,15 +305,15 @@
 }
 
 .detail-label {
-    @apply text-xs font-medium text-tertiary-600 mr-1 shrink-0;
+    @apply text-[12px] font-medium text-tertiary-600 mr-1 shrink-0;
 }
 
 .detail-value {
-    @apply text-sm font-semibold text-tertiary-600 truncate flex-grow;
+    @apply text-[14px] font-semibold text-tertiary-600 truncate flex-grow;
 }
 
 .detail-total {
-    @apply text-lg font-bold text-tertiary-600;
+    @apply text-[18px] font-bold text-tertiary-600;
 }
 
 .input-form > .form {
@@ -325,11 +325,11 @@
 }
 
 .from-group label {
-    @apply block mb-2 text-sm font-medium text-tertiary-600;
+    @apply block mb-2 text-[14px] font-medium text-tertiary-600;
 }
 
 #quickappoint-app .form-group input {
-    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-sm rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
+    @apply bg-background-600 border border-primary-600 text-tertiary-600 text-[14px] rounded-md focus:ring-secondary-600 focus:border-secondary-600 block w-full p-2.5;
 }
 
 /* Navigation Buttons */
@@ -340,7 +340,7 @@
   
 .nav-previous,
 .nav-next {
-    @apply px-3 py-2 text-sm font-medium text-center inline-flex items-center text-tertiary-50 bg-primary-600 rounded-md hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
+    @apply px-3 py-2 text-[14px] font-medium text-center inline-flex items-center text-tertiary-50 bg-primary-600 rounded-md hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
 }
 
 .nav-previous {
@@ -348,20 +348,20 @@
 }
   
 .button-appointment {
-    @apply px-3 py-2 text-tertiary-50 text-sm font-medium text-center rounded-md bg-secondary-600 hover:bg-secondary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
+    @apply px-3 py-2 text-tertiary-50 text-[14px] font-medium text-center rounded-md bg-secondary-600 hover:bg-secondary-700 focus:ring-4 focus:outline-none focus:ring-secondary-600;
 }
 
 /* Messages */
 .error-message {
-    @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+    @apply text-tertiary-600 text-[14px] font-semibold text-center mt-2 sm:-mt-10;
 }
 
 .success-message {
-    @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-14;
+    @apply text-tertiary-600 text-[14px] font-semibold text-center mt-2 sm:-mt-14;
 }
 
 .loading-message {
-    @apply text-tertiary-600 text-sm font-semibold text-center mt-2 sm:-mt-10;
+    @apply text-tertiary-600 text-[14px] font-semibold text-center mt-2 sm:-mt-10;
 }
 
 .view-appointment-link {
@@ -421,7 +421,7 @@
 }
 
 .quickappoint-btn {
-    @apply px-6 py-3 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply px-6 py-3 rounded-md text-[14px] font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
 }
 
 .quickappoint-btn--danger {
@@ -429,7 +429,7 @@
 }
 
 .quickappoint-message {
-    @apply p-4 mb-6 rounded-md text-sm font-medium;
+    @apply p-4 mb-6 rounded-md text-[14px] font-medium;
 }
 
 .quickappoint-message--success {
@@ -445,7 +445,7 @@
 }
 
 .quickappoint-status {
-    @apply px-2 py-1 rounded-full text-xs font-semibold;
+    @apply px-2 py-1 rounded-full text-[12px] font-semibold;
 }
 
 .quickappoint-status--confirmed {
@@ -461,5 +461,5 @@
 }
 
 .quickappoint-confirmation > p {
-    @apply text-sm;
+    @apply text-[14px];
 }

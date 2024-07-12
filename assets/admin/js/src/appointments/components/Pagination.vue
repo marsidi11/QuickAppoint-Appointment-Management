@@ -1,7 +1,7 @@
 <template>
   <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
     aria-label="Table navigation">
-    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+    <span class="text-[14px] font-normal text-gray-500 dark:text-gray-400">
       Showing
       <span class="font-semibold text-gray-900 dark:text-white">{{ startItem }}-{{ endItem }}</span>
       of
@@ -23,7 +23,7 @@
       <li v-for="page in displayedPages" :key="page">
         <a href="#" @click.prevent="changePage(page)"
           :class="{ 'bg-primary-50 text-primary-600 border-primary-300': page === currentPage, 'bg-white text-gray-500': page !== currentPage }"
-          class="flex items-center justify-center text-sm py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          class="flex items-center justify-center text-[14px] py-2 px-3 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
           {{ page }}
         </a>
       </li>

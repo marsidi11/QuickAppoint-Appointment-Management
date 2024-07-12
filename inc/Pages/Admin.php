@@ -95,7 +95,7 @@ class Admin extends BaseController
         return [
             'option_group' => 'quickappoint_options_data',
             'option_name' => $optionName,
-            'callback' => [$this->callbacks, 'amOptionsData']
+            'callback' => [$this->callbacks, 'quickappointOptionsData']
         ];
     }
 
@@ -117,19 +117,19 @@ class Admin extends BaseController
     {
         $args = [
             $this->createFieldArg('notifications_email', 'Notifications Email (, multipe)', 'amNotificationsEmail', 'notifications-email'),
-            $this->createFieldArg('currency_symbol', 'Currency Symbol ($)', 'amCurrencySymbol', 'currency-symbol'),
-            $this->createFieldArg('open_time', 'Open Time', 'amOpenTime', 'select-time'),
-            $this->createFieldArg('close_time', 'Close Time', 'amCloseTime', 'select-time'),
-            $this->createFieldArg('time_slot_duration', 'Time Slot Duration (every x minutes)', 'amTimeSlotDuration', 'select-time'),
-            $this->createFieldArg('buffer_time', 'Buffer Time', 'amBufferTime', 'select-time'),
-            $this->createFieldArg('dates_range', 'Allowed Bookings Date Range', 'amDatesRange', 'select-time'),
-            $this->createFieldArg('open_days', 'Open Days', 'amOpenDays', 'select-allowed-dates'),
-            $this->createFieldArg('break_start', 'Break Start', 'amBreakStart', 'select-time'),
-            $this->createFieldArg('break_end', 'Break End', 'amBreakEnd', 'select-time'),
-            $this->createFieldArg('background_color', 'Background Color', 'amBackgroundColor', 'select-color'),
-            $this->createFieldArg('primary_color', 'Primary Color', 'amPrimaryColor', 'select-color'),
-            $this->createFieldArg('secondary_color', 'Secondary Color', 'amSecondaryColor', 'select-color'),
-            $this->createFieldArg('text_color', 'Text Color', 'amTextColor', 'select-color'),
+            $this->createFieldArg('currency_symbol', 'Currency Symbol ($)', 'quickappointCurrencySymbol', 'currency-symbol'),
+            $this->createFieldArg('open_time', 'Open Time', 'quickappointOpenTime', 'select-time'),
+            $this->createFieldArg('close_time', 'Close Time', 'quickappointCloseTime', 'select-time'),
+            $this->createFieldArg('time_slot_duration', 'Time Slot Duration (every x minutes)', 'quickappointTimeSlotDuration', 'select-time'),
+            $this->createFieldArg('buffer_time', 'Buffer Time', 'quickappointBufferTime', 'select-time'),
+            $this->createFieldArg('dates_range', 'Allowed Bookings Date Range', 'quickappointDatesRange', 'select-time'),
+            $this->createFieldArg('open_days', 'Open Days', 'quickappointOpenDays', 'select-allowed-dates'),
+            $this->createFieldArg('break_start', 'Break Start', 'quickappointBreakStart', 'select-time'),
+            $this->createFieldArg('break_end', 'Break End', 'quickappointBreakEnd', 'select-time'),
+            $this->createFieldArg('background_color', 'Background Color', 'quickappointBackgroundColor', 'select-color'),
+            $this->createFieldArg('primary_color', 'Primary Color', 'quickappointPrimaryColor', 'select-color'),
+            $this->createFieldArg('secondary_color', 'Secondary Color', 'quickappointSecondaryColor', 'select-color'),
+            $this->createFieldArg('text_color', 'Text Color', 'quickappointTextColor', 'select-color'),
         ];
 
         $this->settings->setFields($args);

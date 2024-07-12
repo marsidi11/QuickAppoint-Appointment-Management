@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-x-auto sm:rounded-lg min-h-60">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-[14px] text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-[12px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th v-for="column in columns" :key="column" scope="col" class="px-6 py-3 uppercase">
             {{ column }}
@@ -24,13 +24,13 @@
           <td class="px-6 py-4">
             <div class="relative">
               <select v-if="editingStatus[user.id]" v-model="user.status"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-300 ease-in-out">
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-300 ease-in-out">
                 <option value="Confirmed">Confirmed</option>
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
               <span v-else :class="{
-                'px-2 py-1 rounded-full text-xs font-semibold': true,
+                'px-2 py-1 rounded-full text-[12px] font-semibold': true,
                 'bg-green-100 text-green-800': user.status === 'Confirmed',
                 'bg-yellow-100 text-yellow-800': user.status === 'Pending',
                 'bg-red-100 text-red-800': user.status === 'Cancelled'
@@ -42,12 +42,12 @@
           <td class="px-6 py-4">
             <div class="flex items-center justify-end relative">
               <button v-if="editingStatus[user.id]" @click="saveStatus(user.id)" :disabled="savingStatus[user.id]"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all duration-300 ease-in-out">
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[14px] px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all duration-300 ease-in-out">
                 {{ savingStatus[user.id] ? 'Saving...' : 'Save' }}
               </button>
               <button v-else @click="toggleDropdown(user.id)" :aria-expanded="dropdownStates[user.id] || false"
                 :aria-controls="'userDropdown-' + user.id"
-                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600 transition-all duration-300 ease-in-out">
+                class="inline-flex items-center p-2 text-[14px] font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600 transition-all duration-300 ease-in-out">
                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -56,7 +56,7 @@
               </button>
               <div v-show="dropdownStates[user.id] && !editingStatus[user.id]" :id="'userDropdown-' + user.id"
                 class="absolute right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton">
+                <ul class="py-2 text-[14px] text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton">
                   <li>
                     <button @click="startEditingStatus(user.id)"
                       class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left transition-all duration-300 ease-in-out">

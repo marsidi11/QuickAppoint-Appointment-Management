@@ -2,7 +2,7 @@
     <button 
       @click="confirmDelete" 
       :disabled="isLoading"
-      class="inline-flex items-center gap-x-2 px-3 py-2 text-sm font-semibold rounded-lg border border-red-600 text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="inline-flex items-center gap-x-2 px-3 py-2 text-[14px] font-semibold rounded-lg border border-red-600 text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {{ isLoading ? 'Deleting...' : 'Delete' }}
     </button>

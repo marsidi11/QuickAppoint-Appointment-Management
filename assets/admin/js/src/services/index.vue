@@ -1,8 +1,8 @@
 <template>
   <div class="p-6 bg-white rounded-lg">
     <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left text-gray-700">
-        <thead class="text-xs uppercase bg-gray-100">
+      <table class="w-full text-[14px] text-left text-gray-700">
+        <thead class="text-[12px] uppercase bg-gray-100">
           <tr>
             <th v-for="column in columns" :key="column" scope="col" class="px-6 py-4 font-semibold tracking-wider">
               {{ column }}

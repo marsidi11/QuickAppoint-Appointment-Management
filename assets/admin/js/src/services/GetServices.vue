@@ -7,7 +7,7 @@
           </svg>
         </div>
         <div class="ml-3">
-          <p class="text-sm text-red-700">
+          <p class="text-[14px] text-red-700">
             {{ errorMessage }}
           </p>
         </div>

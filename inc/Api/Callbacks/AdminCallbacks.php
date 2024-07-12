@@ -37,7 +37,7 @@ class AdminCallbacks extends BaseController
      * @param mixed $input The input value.
      * @return mixed The input value unchanged.
      */
-    public function amOptionsData($input)
+    public function quickappointOptionsData($input)
     {
         return $input;
     }
@@ -67,7 +67,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amCurrencySymbol(): void
+    public function quickappointCurrencySymbol(): void
     {
         $this->renderInputField('currency_symbol', 'text', '$', 'Currency Symbol');
     }
@@ -77,7 +77,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amOpenTime(): void
+    public function quickappointOpenTime(): void
     {
         $this->renderInputField('open_time', 'time', '09:00', 'Select start time');
     }
@@ -87,7 +87,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amCloseTime(): void
+    public function quickappointCloseTime(): void
     {
         $this->renderInputField('close_time', 'time', '17:00', 'Select close time');
     }
@@ -97,7 +97,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amTimeSlotDuration(): void
+    public function quickappointTimeSlotDuration(): void
     {
         $this->renderInputField('time_slot_duration', 'text', '30', 'Time Slot Duration');
     }
@@ -107,7 +107,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amBufferTime(): void
+    public function quickappointBufferTime(): void
     {
         $this->renderInputField('buffer_time', 'text', '5', 'Buffer Time');
     }
@@ -117,7 +117,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amDatesRange(): void
+    public function quickappointDatesRange(): void
     {
         $this->renderInputField('dates_range', 'text', '21', 'Dates Range to Allow Bookings');
     }
@@ -127,7 +127,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amOpenDays(): void
+    public function quickappointOpenDays(): void
     {
         $value = get_option('open_days', []);
         $days = [
@@ -151,7 +151,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amBreakStart(): void
+    public function quickappointBreakStart(): void
     {
         $this->renderInputField('break_start', 'time', '', 'Select start time');
     }
@@ -161,7 +161,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amBreakEnd(): void
+    public function quickappointBreakEnd(): void
     {
         $this->renderInputField('break_end', 'time', '', 'Select close time');
     }
@@ -171,7 +171,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amBackgroundColor(): void
+    public function quickappointBackgroundColor(): void
     {
         $this->renderColorField('background_color', '#ffffff', 'Select background color');
     }
@@ -181,7 +181,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amPrimaryColor(): void
+    public function quickappointPrimaryColor(): void
     {
         $this->renderColorField('primary_color', '#6b7280', 'Select primary color');
     }
@@ -191,7 +191,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amSecondaryColor(): void
+    public function quickappointSecondaryColor(): void
     {
         $this->renderColorField('secondary_color', '#1d4ed8', 'Select secondary color');
     }
@@ -201,7 +201,7 @@ class AdminCallbacks extends BaseController
      *
      * @return void
      */
-    public function amTextColor(): void
+    public function quickappointTextColor(): void
     {
         $this->renderColorField('text_color', '#272525', 'Select text color');
     }

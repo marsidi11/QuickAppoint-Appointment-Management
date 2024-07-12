@@ -1,7 +1,7 @@
 <template>
   <div class="flex rounded-md border-2 border-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 overflow-hidden font-[sans-serif]">
     <input type="text" v-model="searchQuery" placeholder="Search by Name, Email or Phone"
-      class="w-full outline-none bg-white text-gray-600 text-sm px-4 py-2" />
+      class="w-full outline-none bg-white text-gray-600 text-[14px] px-4 py-2" />
 
     <button @click="emitSearchQuery" type='button' class="flex items-center justify-center bg-primary-700 px-5">
 

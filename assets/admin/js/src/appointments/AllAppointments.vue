@@ -27,7 +27,7 @@
           @appointment-deleted="handleAppointmentDelete" 
         />
 
-        <div class="p-6 bg-gray-50 dark:bg-gray-700">
+        <div class="p-4 bg-gray-50 dark:bg-gray-700">
           <div v-if="loading" class="flex justify-center items-center">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
           </div>
