@@ -99,4 +99,4 @@ Yes, QuickAppoint sends automated email notifications for various actions includ
 = How do I add the booking form to my website? =
 You can easily add the booking form to any page on your website using the shortcode [quickappoint_form].
 = Where can I find the confirmation page? =
-The confirmation page should be accessible at yoursite.com/appointment-confirmation. Ensure you have a page with this slug set up in your WordPress site.
+The confirmation page should be accessible at www.yoursite.com/appointment-confirmation. Ensure you have a page with this slug set up in your WordPress site.
