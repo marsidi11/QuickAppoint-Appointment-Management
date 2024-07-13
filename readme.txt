@@ -1,4 +1,4 @@
-# QuickAppoint - Efficient Appointment Management
+=== QuickAppoint - Efficient Appointment Management ===
 Contributors: QuickAppoint
 Tags: appointment, booking, scheduling, calendar, reservation, salon, spa, medical, fitness, barbershop, dentist, consultant, therapist
 Requires at least: 5.0
